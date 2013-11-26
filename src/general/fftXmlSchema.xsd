@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://xml.netbeans.org/schema/fftXmlSchema"
+            xmlns:tns="http://xml.netbeans.org/schema/fftXmlSchema"
+            elementFormDefault="qualified">
+    <xsd:element name="Espectro">
+        <xsd:complexType>
+                 <xsd:sequence>
+                    <xsd:element name="Datos" minOccurs="0" maxOccurs="unbounded">
+                         <xsd:complexType>
+                             <xsd:sequence>
+                                 <xsd:element name="Frecuencia" type="xsd:double"/>
+                                 <xsd:element name="Nivel" type="xsd:double"/>
+                            </xsd:sequence>
+                              <xsd:attribute name="id" type="xsd:int"/>
+                         </xsd:complexType>
+                   </xsd:element>
+               </xsd:sequence>
+            </xsd:complexType>
+       </xsd:element>
+</xsd:schema>
