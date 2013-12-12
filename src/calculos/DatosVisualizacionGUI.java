@@ -18,10 +18,14 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Shape;
 import java.awt.event.WindowEvent;
+import java.awt.font.TextAttribute;
 import java.awt.geom.Rectangle2D;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.AttributedString;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -34,6 +38,7 @@ import org.jfree.chart.ChartMouseEvent;
 import org.jfree.chart.ChartMouseListener;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.chart.plot.PlotOrientation;
@@ -57,7 +62,9 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
     private Integer valBinMin;
     private Integer valBinMax;
     private Double valorK;
-    private double[] regNacelle;
+    private Double valorKRF;
+    private double[] regVelMedida;
+    private double[] regVelMedidaRF;
     private ArrayList<Integer[]> modosFunc; //<[BinIniModo, BinFinModo], ..., [BinIniModo, BinFinModo]>
     private ArrayList<Integer> modoSalida;
     
@@ -65,7 +72,11 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
     private HashMap<String, HashMap<Integer, Double[]>> coeficientesBin;
     private HashMap<String, HashMap<Integer, Double[]>> coeficientesModosFunc;
     private Integer idNorma;
+    private Boolean esMiniAero;
     private ArrayList<AsuntoIncert> incertidumbres;
+    private Integer tipoCalculo;
+    private Integer tipoAjuste;
+    private Integer tipoAjusteRF;
     
     private ArrayList<Integer[]> idValiDatosModif; //<idDato, ValidoAnt> En válido almacenamos el valor anterior
     //private ArrayList<Integer[]> idDatosXMLInvalidos; //<[idDato, idDatoXML], ..., [, ]>
@@ -83,14 +94,19 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
     
     private final int NUM_MUESTRAS = 200;
     
-    private final Shape SHAPE_DATO_IGNORADO = new Rectangle2D.Double(-4, -4, 4, 4);
-    private final Shape SHAPE_DATO_VALIDO = ShapeUtilities.createDiagonalCross(2, (float) 0.5);
-    private final Shape SHAPE_DATO_INGNORADO_INSUF = ShapeUtilities.createDiamond((float) 2.5);
+    private final Shape SHAPE_CUADRADO = new Rectangle2D.Double(-4, -4, 4, 4);
+    private final Shape SHAPE_CRUZ = ShapeUtilities.createDiagonalCross(2, (float) 0.5);
+    private final Shape SHAPE_DIAMANTE = ShapeUtilities.createDiamond((float) 2.5);
 
-	private final String PREF_POLINOMIO = "Polinomio ";
-	private final String PREF_LINEAL = "Lineal ";
-    
-    public DatosVisualizacionGUI(java.awt.Frame parent, String tipoTabla, Integer idAsunto, Integer idSite, Integer valBinMin, Integer valBinMax, Double valorK, double[] regNacelle, ArrayList<Integer[]> modosFunc, ArrayList<Integer> modoSalida, Integer idNorma, ArrayList<AsuntoIncert> incertidumbres) {
+    private final String PREF_POLINOMIO = "Polinomio ";
+    private final String PREF_LINEAL = "Lineal ";
+
+    private final String PREF_VEL_ANEMO = "Anemómetro";
+    private final String PREF_VEL_NAC = "Góndola";
+    private final String PREF_VEL_DER = "Velocidad derivada de CP";
+    private final String PREF_VEL_K = "Velocidad desde k";
+
+    public DatosVisualizacionGUI(java.awt.Frame parent, String tipoTabla, Integer idAsunto, Integer idSite, Integer valBinMin, Integer valBinMax, Double valorK, Double valorKRF, double[] regVelMedida, double[] regVelMedidaRF, ArrayList<Integer[]> modosFunc, ArrayList<Integer> modoSalida, Integer idNorma, Boolean esMiniAero, ArrayList<AsuntoIncert> incertidumbres, Integer tipoCalculo, Integer tipoAjuste, Integer tipoAjusteRF) {
         super(parent, true);
 
         initComponents();
@@ -101,13 +117,20 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         this.valBinMin = valBinMin;
         this.valBinMax = valBinMax;
         this.valorK = valorK;
-        this.regNacelle = regNacelle;
+        this.valorKRF = valorKRF;
+        this.regVelMedida = regVelMedida;
+        this.regVelMedidaRF = regVelMedidaRF;
         this.modosFunc = modosFunc;
         this.modoSalida = modoSalida; //variable para control de llamadas entre diálogos
         
         AsuntoIncert.filtrarTipoAnalisis(incertidumbres, tipoTabla, idNorma);
         this.idNorma = idNorma;
+        this.esMiniAero = esMiniAero;
         this.incertidumbres = incertidumbres;
+
+		this.tipoCalculo = tipoCalculo;
+		this.tipoAjuste = tipoAjuste;
+		this.tipoAjusteRF = tipoAjusteRF;
         
         this.idValiDatosModif = new ArrayList<Integer[]>(); //variable para controlar idDatos que han sido invalidados (por si hubiera que deshacer)
 //        this.idDatosXMLInvalidos = new ArrayList<Integer[]>(); //variable para controlar idDatos que han sido invalidados (por si hubiera que deshacer)
@@ -226,6 +249,22 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jbAnGraEspFFTSig = new javax.swing.JButton();
         jpContGraficaFFT = new javax.swing.JPanel();
         jpGraficaAnGraFFT = new javax.swing.JPanel();
+        jpNivelVel = new javax.swing.JPanel();
+        jlTitNivelVel = new javax.swing.JLabel();
+        jpContGraficaNivelVel = new javax.swing.JPanel();
+        jpGraficaNivelVel = new javax.swing.JPanel();
+        jpNivelPot = new javax.swing.JPanel();
+        jlTitNivelPot = new javax.swing.JLabel();
+        jpContGraficaNivelPot = new javax.swing.JPanel();
+        jpGraficaNivelPot = new javax.swing.JPanel();
+        jpCompVelAG = new javax.swing.JPanel();
+        jlTitCompVelAG = new javax.swing.JLabel();
+        jpContGraficaCompVelAG = new javax.swing.JPanel();
+        jpGraficaCompVelAG = new javax.swing.JPanel();
+        jpCompVelRF = new javax.swing.JPanel();
+        jlTitCompVelRF = new javax.swing.JLabel();
+        jpContGraficaCompVelRF = new javax.swing.JPanel();
+        jpGraficaCompVelRF = new javax.swing.JPanel();
         jbDeshacer = new javax.swing.JButton();
         jbSig = new javax.swing.JButton();
 
@@ -385,7 +424,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jpAjustes.setBackground(new java.awt.Color(255, 255, 255));
 
         jlTitAjustes.setBackground(new java.awt.Color(255, 255, 255));
-        jlTitAjustes.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlTitAjustes.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlTitAjustes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitAjustes.setText("AJUSTES");
 
@@ -406,9 +445,11 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
             }
         });
         jspAjustes.setViewportView(jtAjustes);
-        jtAjustes.getColumnModel().getColumn(0).setMinWidth(120);
-        jtAjustes.getColumnModel().getColumn(0).setPreferredWidth(120);
-        jtAjustes.getColumnModel().getColumn(0).setMaxWidth(120);
+        if (jtAjustes.getColumnModel().getColumnCount() > 0) {
+            jtAjustes.getColumnModel().getColumn(0).setMinWidth(120);
+            jtAjustes.getColumnModel().getColumn(0).setPreferredWidth(120);
+            jtAjustes.getColumnModel().getColumn(0).setMaxWidth(120);
+        }
 
         javax.swing.GroupLayout jpAjustesLayout = new javax.swing.GroupLayout(jpAjustes);
         jpAjustes.setLayout(jpAjustesLayout);
@@ -416,9 +457,9 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
             jpAjustesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpAjustesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpAjustesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jspAjustes, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlTitAjustes, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE))
+                .addGroup(jpAjustesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jlTitAjustes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jspAjustes, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jpAjustesLayout.setVerticalGroup(
@@ -474,11 +515,11 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jpClave.setBackground(new java.awt.Color(255, 255, 255));
         jpClave.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlAsunto.setText("  Asunto: ");
 
-        jtfAsunto.setBackground(new java.awt.Color(204, 204, 204));
         jtfAsunto.setEditable(false);
+        jtfAsunto.setBackground(new java.awt.Color(204, 204, 204));
         jtfAsunto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout jpClaveLayout = new javax.swing.GroupLayout(jpClave);
@@ -488,7 +529,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
             .addGroup(jpClaveLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jlAsunto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 358, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jtfAsunto, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -506,7 +547,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jpDatos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jpBaseNeta.setBackground(new java.awt.Color(255, 255, 255));
-        jpBaseNeta.setName("GEN_BaseNeta"); // NOI18N
+        jpBaseNeta.setName(Auxiliares.TIPO_GEN + "_BaseNeta");
 
         jlTitBaseNeta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitBaseNeta.setText("BASE NETA");
@@ -551,13 +592,13 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jtpDatos.addTab("", jpBaseNeta);
 
         jpCompletitud.setBackground(new java.awt.Color(255, 255, 255));
-        jpCompletitud.setName("GEN_Completitud"); // NOI18N
+        jpCompletitud.setName(Auxiliares.TIPO_GEN + "_Completitud");
 
         jlTitCompletitud.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitCompletitud.setText("RESULTADOS POR BIN");
         jlTitCompletitud.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlCompAG.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlCompAG.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlCompAG.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlCompAG.setText("AEROGENERADOR");
 
@@ -581,7 +622,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jtCompAG.getTableHeader().setReorderingAllowed(false);
         jspCompAG.setViewportView(jtCompAG);
 
-        jlCompRF.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlCompRF.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlCompRF.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlCompRF.setText("RUIDO FONDO");
 
@@ -608,14 +649,14 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
 
         jlTotalCompAG.setText("TOTAL » ");
 
-        jtfTotalCompAG.setBackground(new java.awt.Color(204, 204, 204));
         jtfTotalCompAG.setEditable(false);
+        jtfTotalCompAG.setBackground(new java.awt.Color(204, 204, 204));
         jtfTotalCompAG.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jlTotalCompRF.setText("TOTAL » ");
 
-        jtfTotalCompRF.setBackground(new java.awt.Color(204, 204, 204));
         jtfTotalCompRF.setEditable(false);
+        jtfTotalCompRF.setBackground(new java.awt.Color(204, 204, 204));
         jtfTotalCompRF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jpContAjustes.setBackground(new java.awt.Color(255, 255, 255));
@@ -624,7 +665,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jpContAjustes.setLayout(jpContAjustesLayout);
         jpContAjustesLayout.setHorizontalGroup(
             jpContAjustesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 536, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jpContAjustesLayout.setVerticalGroup(
             jpContAjustesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -636,33 +677,33 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jpCompletitudLayout.setHorizontalGroup(
             jpCompletitudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpCompletitudLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jpCompletitudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jlTitCompletitud, javax.swing.GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE)
-                    .addComponent(jpContAjustes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-            .addGroup(jpCompletitudLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(jpCompletitudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jpCompletitudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpCompletitudLayout.createSequentialGroup()
-                        .addComponent(jlTotalCompAG)
-                        .addGap(18, 18, 18)
-                        .addComponent(jtfTotalCompAG, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jlCompAG, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jspCompAG, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jpCompletitudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jpCompletitudLayout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addGroup(jpCompletitudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(10, 10, 10)
+                        .addGroup(jpCompletitudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jpCompletitudLayout.createSequentialGroup()
-                                .addComponent(jlTotalCompRF)
+                                .addComponent(jlTotalCompAG)
                                 .addGap(18, 18, 18)
+                                .addComponent(jtfTotalCompAG, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jlCompAG, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jspCompAG, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jpCompletitudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpCompletitudLayout.createSequentialGroup()
+                                .addComponent(jlTotalCompRF)
+                                .addGap(21, 21, 21)
                                 .addComponent(jtfTotalCompRF, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jlCompRF, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpCompletitudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jspCompRF, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                                .addComponent(jlCompRF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jpCompletitudLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jspCompRF, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(10, Short.MAX_VALUE))
+                        .addGap(12, 12, 12)
+                        .addComponent(jpContAjustes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jpCompletitudLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jlTitCompletitud, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jpCompletitudLayout.setVerticalGroup(
             jpCompletitudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -690,7 +731,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jtpDatos.addTab("", jpCompletitud);
 
         jpAjustePol.setBackground(new java.awt.Color(255, 255, 255));
-        jpAjustePol.setName("SPL_AjustePol"); // NOI18N
+        jpAjustePol.setName(Auxiliares.TIPO_SPL + "_AjustePol");
 
         jlTitAP.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitAP.setText("AJUSTE POLINOMIAL");
@@ -717,9 +758,11 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jtAjustePol.getTableHeader().setReorderingAllowed(false);
         //this.RellenarCoeficientes();
         jspAjustePol.setViewportView(jtAjustePol);
-        jtAjustePol.getColumnModel().getColumn(0).setMinWidth(50);
-        jtAjustePol.getColumnModel().getColumn(0).setPreferredWidth(50);
-        jtAjustePol.getColumnModel().getColumn(0).setMaxWidth(50);
+        if (jtAjustePol.getColumnModel().getColumnCount() > 0) {
+            jtAjustePol.getColumnModel().getColumn(0).setMinWidth(50);
+            jtAjustePol.getColumnModel().getColumn(0).setPreferredWidth(50);
+            jtAjustePol.getColumnModel().getColumn(0).setMaxWidth(50);
+        }
 
         jpContGraficaAjPol.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -773,7 +816,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jtpDatos.addTab("", jpAjustePol);
 
         jpAjusteLin.setBackground(new java.awt.Color(255, 255, 255));
-        jpAjusteLin.setName("SPL_AjusteLin"); // NOI18N
+        jpAjusteLin.setName(Auxiliares.TIPO_SPL + "_AjusteLin");
 
         jlTitAjLin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitAjLin.setText("AJUSTE LINEAL");
@@ -799,12 +842,14 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         });
         jtAjLinAG.setToolTipText("Rectas Ajuste Lineal AG");
         jspAjLinAG.setViewportView(jtAjLinAG);
-        jtAjLinAG.getColumnModel().getColumn(0).setMinWidth(60);
-        jtAjLinAG.getColumnModel().getColumn(0).setPreferredWidth(60);
-        jtAjLinAG.getColumnModel().getColumn(0).setMaxWidth(60);
-        jtAjLinAG.getColumnModel().getColumn(2).setMinWidth(60);
-        jtAjLinAG.getColumnModel().getColumn(2).setPreferredWidth(60);
-        jtAjLinAG.getColumnModel().getColumn(2).setMaxWidth(60);
+        if (jtAjLinAG.getColumnModel().getColumnCount() > 0) {
+            jtAjLinAG.getColumnModel().getColumn(0).setMinWidth(60);
+            jtAjLinAG.getColumnModel().getColumn(0).setPreferredWidth(60);
+            jtAjLinAG.getColumnModel().getColumn(0).setMaxWidth(60);
+            jtAjLinAG.getColumnModel().getColumn(2).setMinWidth(60);
+            jtAjLinAG.getColumnModel().getColumn(2).setPreferredWidth(60);
+            jtAjLinAG.getColumnModel().getColumn(2).setMaxWidth(60);
+        }
 
         jlAjLinRF.setText("RF");
 
@@ -827,12 +872,14 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jtAjLinRF.setToolTipText("Rectas Ajuste Lineal RF");
         //this.RellenarCoeficientes2();
         jspAjLinRF.setViewportView(jtAjLinRF);
-        jtAjLinRF.getColumnModel().getColumn(0).setMinWidth(60);
-        jtAjLinRF.getColumnModel().getColumn(0).setPreferredWidth(60);
-        jtAjLinRF.getColumnModel().getColumn(0).setMaxWidth(60);
-        jtAjLinRF.getColumnModel().getColumn(2).setMinWidth(60);
-        jtAjLinRF.getColumnModel().getColumn(2).setPreferredWidth(60);
-        jtAjLinRF.getColumnModel().getColumn(2).setMaxWidth(60);
+        if (jtAjLinRF.getColumnModel().getColumnCount() > 0) {
+            jtAjLinRF.getColumnModel().getColumn(0).setMinWidth(60);
+            jtAjLinRF.getColumnModel().getColumn(0).setPreferredWidth(60);
+            jtAjLinRF.getColumnModel().getColumn(0).setMaxWidth(60);
+            jtAjLinRF.getColumnModel().getColumn(2).setMinWidth(60);
+            jtAjLinRF.getColumnModel().getColumn(2).setPreferredWidth(60);
+            jtAjLinRF.getColumnModel().getColumn(2).setMaxWidth(60);
+        }
 
         jpContGraficaAjLin.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -903,7 +950,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jtpDatos.addTab("", jpAjusteLin);
 
         jpAnalisisGraOCT.setBackground(new java.awt.Color(255, 255, 255));
-        jpAnalisisGraOCT.setName("OCT_AnalisisGra"); // NOI18N
+        jpAnalisisGraOCT.setName(Auxiliares.TIPO_OCT + "_AnalisisGra");
 
         jlTitAnalisisGraOT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitAnalisisGraOT.setText("GRÁFICA ESPECTRO TERCIO DE OCTAVA");
@@ -1000,7 +1047,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jtpDatos.addTab("", jpAnalisisGraOCT);
 
         jpAnalisisGraFFT.setBackground(new java.awt.Color(255, 255, 255));
-        jpAnalisisGraFFT.setName("FFT_AnalisisGra"); // NOI18N
+        jpAnalisisGraFFT.setName(Auxiliares.TIPO_FFT + "_AnalisisGra");
 
         jlTitAnalisisGraFFT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitAnalisisGraFFT.setText("GRÁFICAS ESPECTROS FFT");
@@ -1096,16 +1143,252 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
 
         jtpDatos.addTab("", jpAnalisisGraFFT);
 
+        jpNivelVel.setBackground(new java.awt.Color(255, 255, 255));
+        jpNivelVel.setName(Auxiliares.TIPO_GEN + "_" + Auxiliares.TIPO_IEC_3_0 + "_NivelVel");
+
+        jlTitNivelVel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlTitNivelVel.setText("NIVEL Vs. VELOCIDAD");
+        jlTitNivelVel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jpContGraficaNivelVel.setBackground(new java.awt.Color(255, 255, 255));
+
+        jpGraficaNivelVel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+        javax.swing.GroupLayout jpGraficaNivelVelLayout = new javax.swing.GroupLayout(jpGraficaNivelVel);
+        jpGraficaNivelVel.setLayout(jpGraficaNivelVelLayout);
+        jpGraficaNivelVelLayout.setHorizontalGroup(
+            jpGraficaNivelVelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 771, Short.MAX_VALUE)
+        );
+        jpGraficaNivelVelLayout.setVerticalGroup(
+            jpGraficaNivelVelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 636, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jpContGraficaNivelVelLayout = new javax.swing.GroupLayout(jpContGraficaNivelVel);
+        jpContGraficaNivelVel.setLayout(jpContGraficaNivelVelLayout);
+        jpContGraficaNivelVelLayout.setHorizontalGroup(
+            jpContGraficaNivelVelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 773, Short.MAX_VALUE)
+            .addGroup(jpContGraficaNivelVelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jpGraficaNivelVel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jpContGraficaNivelVelLayout.setVerticalGroup(
+            jpContGraficaNivelVelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 642, Short.MAX_VALUE)
+            .addGroup(jpContGraficaNivelVelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jpGraficaNivelVel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jpNivelVelLayout = new javax.swing.GroupLayout(jpNivelVel);
+        jpNivelVel.setLayout(jpNivelVelLayout);
+        jpNivelVelLayout.setHorizontalGroup(
+            jpNivelVelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpNivelVelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpNivelVelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlTitNivelVel, javax.swing.GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE)
+                    .addComponent(jpContGraficaNivelVel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jpNivelVelLayout.setVerticalGroup(
+            jpNivelVelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpNivelVelLayout.createSequentialGroup()
+                .addComponent(jlTitNivelVel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jpContGraficaNivelVel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jtpDatos.addTab("", jpNivelVel);
+
+        jpNivelPot.setBackground(new java.awt.Color(255, 255, 255));
+        jpNivelPot.setName(Auxiliares.TIPO_GEN + "_" + Auxiliares.TIPO_IEC_3_0 + "_NivelPot");
+
+        jlTitNivelPot.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlTitNivelPot.setText("NIVEL Vs. POTENCIA ELÉCTRICA");
+        jlTitNivelPot.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jpContGraficaNivelPot.setBackground(new java.awt.Color(255, 255, 255));
+
+        jpGraficaNivelPot.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+        javax.swing.GroupLayout jpGraficaNivelPotLayout = new javax.swing.GroupLayout(jpGraficaNivelPot);
+        jpGraficaNivelPot.setLayout(jpGraficaNivelPotLayout);
+        jpGraficaNivelPotLayout.setHorizontalGroup(
+            jpGraficaNivelPotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 771, Short.MAX_VALUE)
+        );
+        jpGraficaNivelPotLayout.setVerticalGroup(
+            jpGraficaNivelPotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 636, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jpContGraficaNivelPotLayout = new javax.swing.GroupLayout(jpContGraficaNivelPot);
+        jpContGraficaNivelPot.setLayout(jpContGraficaNivelPotLayout);
+        jpContGraficaNivelPotLayout.setHorizontalGroup(
+            jpContGraficaNivelPotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 773, Short.MAX_VALUE)
+            .addGroup(jpContGraficaNivelPotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jpGraficaNivelPot, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jpContGraficaNivelPotLayout.setVerticalGroup(
+            jpContGraficaNivelPotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 642, Short.MAX_VALUE)
+            .addGroup(jpContGraficaNivelPotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jpGraficaNivelPot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jpNivelPotLayout = new javax.swing.GroupLayout(jpNivelPot);
+        jpNivelPot.setLayout(jpNivelPotLayout);
+        jpNivelPotLayout.setHorizontalGroup(
+            jpNivelPotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpNivelPotLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpNivelPotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlTitNivelPot, javax.swing.GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE)
+                    .addComponent(jpContGraficaNivelPot, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jpNivelPotLayout.setVerticalGroup(
+            jpNivelPotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpNivelPotLayout.createSequentialGroup()
+                .addComponent(jlTitNivelPot)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jpContGraficaNivelPot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jtpDatos.addTab("", jpNivelPot);
+
+        jpCompVelAG.setBackground(new java.awt.Color(255, 255, 255));
+        jpCompVelAG.setName(Auxiliares.TIPO_GEN + "_" + Auxiliares.TIPO_IEC_3_0 + "_CompVelAG");
+
+        jlTitCompVelAG.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlTitCompVelAG.setText("COMPARATIVA DE VELOCIDADES - AEROGENERADOR");
+        jlTitCompVelAG.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jpContGraficaCompVelAG.setBackground(new java.awt.Color(255, 255, 255));
+
+        jpGraficaCompVelAG.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+        javax.swing.GroupLayout jpGraficaCompVelAGLayout = new javax.swing.GroupLayout(jpGraficaCompVelAG);
+        jpGraficaCompVelAG.setLayout(jpGraficaCompVelAGLayout);
+        jpGraficaCompVelAGLayout.setHorizontalGroup(
+            jpGraficaCompVelAGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 771, Short.MAX_VALUE)
+        );
+        jpGraficaCompVelAGLayout.setVerticalGroup(
+            jpGraficaCompVelAGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 636, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jpContGraficaCompVelAGLayout = new javax.swing.GroupLayout(jpContGraficaCompVelAG);
+        jpContGraficaCompVelAG.setLayout(jpContGraficaCompVelAGLayout);
+        jpContGraficaCompVelAGLayout.setHorizontalGroup(
+            jpContGraficaCompVelAGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 773, Short.MAX_VALUE)
+            .addGroup(jpContGraficaCompVelAGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jpGraficaCompVelAG, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jpContGraficaCompVelAGLayout.setVerticalGroup(
+            jpContGraficaCompVelAGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 642, Short.MAX_VALUE)
+            .addGroup(jpContGraficaCompVelAGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jpGraficaCompVelAG, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jpCompVelAGLayout = new javax.swing.GroupLayout(jpCompVelAG);
+        jpCompVelAG.setLayout(jpCompVelAGLayout);
+        jpCompVelAGLayout.setHorizontalGroup(
+            jpCompVelAGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpCompVelAGLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpCompVelAGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlTitCompVelAG, javax.swing.GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE)
+                    .addComponent(jpContGraficaCompVelAG, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jpCompVelAGLayout.setVerticalGroup(
+            jpCompVelAGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpCompVelAGLayout.createSequentialGroup()
+                .addComponent(jlTitCompVelAG)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jpContGraficaCompVelAG, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jtpDatos.addTab("", jpCompVelAG);
+
+        jpCompVelRF.setBackground(new java.awt.Color(255, 255, 255));
+        jpCompVelRF.setName(Auxiliares.TIPO_GEN + "_" + Auxiliares.TIPO_IEC_3_0 + "_CompVelRF");
+
+        jlTitCompVelRF.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlTitCompVelRF.setText("COMPARATIVA DE VELOCIDADES - RUIDO DE FONDO");
+        jlTitCompVelRF.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jpContGraficaCompVelRF.setBackground(new java.awt.Color(255, 255, 255));
+
+        jpGraficaCompVelRF.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+        javax.swing.GroupLayout jpGraficaCompVelRFLayout = new javax.swing.GroupLayout(jpGraficaCompVelRF);
+        jpGraficaCompVelRF.setLayout(jpGraficaCompVelRFLayout);
+        jpGraficaCompVelRFLayout.setHorizontalGroup(
+            jpGraficaCompVelRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 771, Short.MAX_VALUE)
+        );
+        jpGraficaCompVelRFLayout.setVerticalGroup(
+            jpGraficaCompVelRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 636, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jpContGraficaCompVelRFLayout = new javax.swing.GroupLayout(jpContGraficaCompVelRF);
+        jpContGraficaCompVelRF.setLayout(jpContGraficaCompVelRFLayout);
+        jpContGraficaCompVelRFLayout.setHorizontalGroup(
+            jpContGraficaCompVelRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 773, Short.MAX_VALUE)
+            .addGroup(jpContGraficaCompVelRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jpGraficaCompVelRF, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jpContGraficaCompVelRFLayout.setVerticalGroup(
+            jpContGraficaCompVelRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 642, Short.MAX_VALUE)
+            .addGroup(jpContGraficaCompVelRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jpGraficaCompVelRF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jpCompVelRFLayout = new javax.swing.GroupLayout(jpCompVelRF);
+        jpCompVelRF.setLayout(jpCompVelRFLayout);
+        jpCompVelRFLayout.setHorizontalGroup(
+            jpCompVelRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpCompVelRFLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpCompVelRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlTitCompVelRF, javax.swing.GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE)
+                    .addComponent(jpContGraficaCompVelRF, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jpCompVelRFLayout.setVerticalGroup(
+            jpCompVelRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpCompVelRFLayout.createSequentialGroup()
+                .addComponent(jlTitCompVelRF)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jpContGraficaCompVelRF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jtpDatos.addTab("", jpCompVelRF);
+
         javax.swing.GroupLayout jpDatosLayout = new javax.swing.GroupLayout(jpDatos);
         jpDatos.setLayout(jpDatosLayout);
         jpDatosLayout.setHorizontalGroup(
             jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jtpDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 798, Short.MAX_VALUE)
+            .addComponent(jtpDatos)
         );
         jpDatosLayout.setVerticalGroup(
             jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpDatosLayout.createSequentialGroup()
-                .addComponent(jtpDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
+                .addComponent(jtpDatos)
                 .addContainerGap())
         );
 
@@ -1139,7 +1422,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
                     .addComponent(jpDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
                         .addComponent(jbDeshacer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 602, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbSig, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jpClave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -1169,8 +1452,8 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
             .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-830)/2, (screenSize.height-857)/2, 830, 857);
+        setSize(new java.awt.Dimension(838, 857));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private JFreeChart crearGraficaAjPolLin(XYDataset dataset) {
@@ -1189,6 +1472,20 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         chart.setBackgroundPaint(Color.WHITE);
 
 		XYPlot plot = chart.getXYPlot();
+
+		ValueAxis ranAxis = plot.getRangeAxis();
+		String labelAxis = ranAxis.getLabel();
+		Font f = ranAxis.getLabelFont();
+
+		AttributedString as = new AttributedString(labelAxis);
+
+		as.addAttribute(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUB, labelAxis.indexOf("A)"), labelAxis.indexOf("A)") + 1);
+		as.addAttribute(TextAttribute.SIZE, f.getSize());
+		as.addAttribute(TextAttribute.FAMILY, f.getFamily());
+		if (f.isBold())
+			as.addAttribute(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+
+		ranAxis.setAttributedLabel(as);
 
 		int nSeries = dataset.getSeriesCount();
 		String serieKey, numeroEnSerieKey;
@@ -1219,18 +1516,18 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
 			if (serieKey.contains(PREF_POLINOMIO) || serieKey.contains(PREF_LINEAL)) {
 				rend.setSeriesLinesVisible(0, true);
 				rend.setSeriesShapesVisible(0, false);
-                rend.setSeriesStroke(0, new BasicStroke(2.0f));
-                rend.setSeriesPaint(0, colorOpuesto);
+				rend.setSeriesStroke(0, new BasicStroke(2.0f));
+				rend.setSeriesPaint(0, colorOpuesto);
 			} else {
 			    if (serieKey.contains(Auxiliares.PREF_DATOS_IGNORADOS))
-					shape = SHAPE_DATO_IGNORADO;
+				shape = SHAPE_CRUZ;
 			    else if (serie.getItemCount() > 1)
-					shape = SHAPE_DATO_VALIDO;
+				shape = SHAPE_CUADRADO;
 			    else
-					shape = SHAPE_DATO_INGNORADO_INSUF;
+				shape = SHAPE_DIAMANTE;
 
-				rend.setSeriesLinesVisible(0, false);
-				rend.setSeriesShapesVisible(0, true);
+			    rend.setSeriesLinesVisible(0, false);
+			    rend.setSeriesShapesVisible(0, true);
 			    rend.setSeriesPaint(0, color);
 			    rend.setSeriesShape(0, shape);
 			}
@@ -1263,6 +1560,20 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         texto.setFont(new Font("Arial", Font.BOLD, 13));
         chart.setBackgroundPaint(Color.WHITE);
         XYPlot plot = (XYPlot) chart.getPlot();
+
+		ValueAxis ranAxis = plot.getRangeAxis();
+		String labelAxis = ranAxis.getLabel();
+		Font f = ranAxis.getLabelFont();
+
+		AttributedString as = new AttributedString(labelAxis);
+
+		as.addAttribute(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUB, labelAxis.indexOf("A)"), labelAxis.indexOf("A)") + 1);
+		as.addAttribute(TextAttribute.SIZE, f.getSize());
+		as.addAttribute(TextAttribute.FAMILY, f.getFamily());
+		if (f.isBold())
+			as.addAttribute(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+
+		ranAxis.setAttributedLabel(as);
         
         //DATOS AERO
         XYLineAndShapeRenderer rend;
@@ -1295,10 +1606,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
                 //No pasamos la correlación
                 nCoefAux = coef.length - 1;
                 coefAux = new double[nCoefAux];
-                
-                for (int j = 0; j < nCoefAux; j++) {
-                    coefAux[j] = coef[j];
-                }
+				System.arraycopy(coef, 0, coefAux, 0, nCoefAux);
                 
                 funPol = new PolynomialFunction2D(coefAux);
                 dsGrafica = DatasetUtilities.sampleFunction2D(funPol, this.valBinMin - 0.5, this.valBinMax + 0.5, NUM_MUESTRAS, PREF_POLINOMIO + serieKey);
@@ -1323,11 +1631,11 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
             }
             
             if (serieKey.contains(Auxiliares.PREF_DATOS_IGNORADOS))
-                shape = SHAPE_DATO_IGNORADO;
+                shape = SHAPE_CRUZ;
             else if (dataset.getItemCount(i) >= DatosRA2.ORDEN_REG_POL)
-                shape = SHAPE_DATO_VALIDO;
+                shape = SHAPE_CUADRADO;
             else
-                shape = SHAPE_DATO_INGNORADO_INSUF;
+                shape = SHAPE_DIAMANTE;
 
             datasetDatos = new XYSeriesCollection();
             datasetDatos.addSeries(((XYSeriesCollection)dataset).getSeries(i));
@@ -1361,6 +1669,20 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         texto.setFont(new Font("Arial", Font.BOLD, 13));
         chart.setBackgroundPaint(Color.WHITE);
         XYPlot plot = (XYPlot) chart.getPlot();
+
+		ValueAxis ranAxis = plot.getRangeAxis();
+		String labelAxis = ranAxis.getLabel();
+		Font f = ranAxis.getLabelFont();
+
+		AttributedString as = new AttributedString(labelAxis);
+
+		as.addAttribute(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUB, labelAxis.indexOf("A)"), labelAxis.indexOf("A)") + 1);
+		as.addAttribute(TextAttribute.SIZE, f.getSize());
+		as.addAttribute(TextAttribute.FAMILY, f.getFamily());
+		if (f.isBold())
+			as.addAttribute(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+
+		ranAxis.setAttributedLabel(as);
         
         //DATOS AERO
         XYLineAndShapeRenderer rend;
@@ -1444,11 +1766,11 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
             }
 
             if (!serieKey.contains(Auxiliares.PREF_DATOS_IGNORADOS))
-                shape = SHAPE_DATO_IGNORADO;
+                shape = SHAPE_CUADRADO;
             else if (dataset.getItemCount(i) > 1)
-                shape = SHAPE_DATO_VALIDO;
+                shape = SHAPE_CRUZ;
             else
-                shape = SHAPE_DATO_INGNORADO_INSUF;
+                shape = SHAPE_DIAMANTE;
 
             datasetDatos = new XYSeriesCollection();
             datasetDatos.addSeries(((XYSeriesCollection)dataset).getSeries(i));
@@ -1464,6 +1786,148 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         return chart;
     }
     
+    private JFreeChart crearGraficaNivelVel(XYDataset dataset) {
+        XYItemRenderer rendDatos;
+
+        JFreeChart chart = ChartFactory.createScatterPlot(
+                "",
+                "Velocidad de referencia Vs (m/s)",
+                "Presión sonora equivalente (dBA)",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false);
+
+        TextTitle texto = chart.getTitle();
+        texto.setFont(new Font("Arial", Font.BOLD, 13));
+        chart.setBackgroundPaint(Color.WHITE);
+        XYPlot plot = (XYPlot) chart.getPlot();
+
+		ValueAxis ranAxis = plot.getRangeAxis();
+		String labelAxis = ranAxis.getLabel();
+		Font f = ranAxis.getLabelFont();
+
+		AttributedString as = new AttributedString(labelAxis);
+
+		as.addAttribute(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUB, labelAxis.indexOf("A)"), labelAxis.indexOf("A)") + 1);
+		as.addAttribute(TextAttribute.SIZE, f.getSize());
+		as.addAttribute(TextAttribute.FAMILY, f.getFamily());
+		if (f.isBold())
+			as.addAttribute(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+
+		ranAxis.setAttributedLabel(as);
+        
+        Color color;
+        Shape shape;
+        
+        int nSeries = dataset.getSeriesCount();
+        String serieKey;
+        
+        //Datos brutos
+		rendDatos = new XYLineAndShapeRenderer(false, true);
+        for (int i = 0; i < nSeries; i++) {
+            serieKey = (String) dataset.getSeriesKey(i);
+
+            if (serieKey.contains(Auxiliares.PREF_DATOS_AG)) {
+                color = Auxiliares.COLORES_SERIE0.get(0);
+            } else {
+                color = Auxiliares.COLORES_SERIE1.get(0);
+            }
+
+            if (serieKey.contains(PREF_VEL_DER))
+                shape = SHAPE_CUADRADO;
+            else
+                shape = SHAPE_DIAMANTE;
+
+            rendDatos.setSeriesPaint(i, color);
+            rendDatos.setSeriesShape(i, shape);
+        }
+
+		plot.setRenderer(rendDatos);
+
+        return chart;
+    }
+    
+    private JFreeChart crearGraficaNivelPot(XYDataset dataset) {
+        XYItemRenderer rendDatos;
+
+        JFreeChart chart = ChartFactory.createScatterPlot(
+                "",
+                "Potencia eléctrica (kW)",
+                "Presión sonora equivalente (dBA)",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false);
+
+        TextTitle texto = chart.getTitle();
+        texto.setFont(new Font("Arial", Font.BOLD, 13));
+        chart.setBackgroundPaint(Color.WHITE);
+        XYPlot plot = (XYPlot) chart.getPlot();
+
+		ValueAxis ranAxis = plot.getRangeAxis();
+		String labelAxis = ranAxis.getLabel();
+		Font f = ranAxis.getLabelFont();
+
+		AttributedString as = new AttributedString(labelAxis);
+
+		as.addAttribute(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUB, labelAxis.indexOf("A)"), labelAxis.indexOf("A)") + 1);
+		as.addAttribute(TextAttribute.SIZE, f.getSize());
+		as.addAttribute(TextAttribute.FAMILY, f.getFamily());
+		if (f.isBold())
+			as.addAttribute(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+
+		ranAxis.setAttributedLabel(as);
+        
+        Color color;
+        Shape shape;
+        
+        int nSeries = dataset.getSeriesCount();
+        String serieKey;
+        
+        //Datos brutos
+		rendDatos = new XYLineAndShapeRenderer(false, true);
+        for (int i = 0; i < nSeries; i++) {
+            serieKey = (String) dataset.getSeriesKey(i);
+
+			color = Auxiliares.COLORES_SERIE0.get(0);
+			shape = SHAPE_CUADRADO;
+
+            rendDatos.setSeriesPaint(i, color);
+            rendDatos.setSeriesShape(i, shape);
+        }
+
+		plot.setRenderer(rendDatos);
+
+        return chart;
+    }
+
+    private JFreeChart crearGraficaCompVel(XYDataset dataset) {
+        XYItemRenderer rendDatos;
+
+        JFreeChart chart = ChartFactory.createScatterPlot(
+                "",
+                "Datos ordenados por velocidad",
+                "Velocidad (m/s)",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false);
+
+        TextTitle texto = chart.getTitle();
+        texto.setFont(new Font("Arial", Font.BOLD, 13));
+        chart.setBackgroundPaint(Color.WHITE);
+        XYPlot plot = (XYPlot) chart.getPlot();
+        
+		rendDatos = new XYLineAndShapeRenderer(true, false);
+		plot.setRenderer(rendDatos);
+
+        return chart;
+    }
+
     private JFreeChart crearGraficaEspectros(XYDataset dataset) {
         XYItemRenderer rendDatos = new XYLineAndShapeRenderer(true, false);
         
@@ -1482,6 +1946,20 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         chart.setBackgroundPaint(Color.WHITE);
         XYPlot plot = (XYPlot) chart.getPlot();
         Rectangle2D.Double r = new Rectangle2D.Double(-1, -1, 2, 2);
+
+		ValueAxis ranAxis = plot.getRangeAxis();
+		String labelAxis = ranAxis.getLabel();
+		Font f = ranAxis.getLabelFont();
+
+		AttributedString as = new AttributedString(labelAxis);
+
+		as.addAttribute(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUB, labelAxis.indexOf("A)"), labelAxis.indexOf("A)") + 1);
+		as.addAttribute(TextAttribute.SIZE, f.getSize());
+		as.addAttribute(TextAttribute.FAMILY, f.getFamily());
+		if (f.isBold())
+			as.addAttribute(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+
+		ranAxis.setAttributedLabel(as);
 
         int nSeries = plot.getSeriesCount();
         
@@ -1649,16 +2127,19 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         atdCompRF.maximizaSiEsPosible();
         Auxiliares.centrarTabla(this.jtCompRF);
         
-        
         //Ajustes
-        if (this.valorK != null || this.regNacelle != null) {
+        if (this.valorK != null || this.valorKRF != null || this.regVelMedida != null || this.regVelMedidaRF != null) {
             DefaultTableModel dtmAjustes = (DefaultTableModel) this.jtAjustes.getModel();
             dtmAjustes.setRowCount(0);
 
             if (this.valorK != null)
-                dtmAjustes.addRow(new Object[]{"K Torre", this.valorK});
-            if (this.regNacelle != null)
-                dtmAjustes.addRow(new Object[]{"Reg. Nacelle", DatosRA2.getRectaCoef(this.regNacelle)});
+                dtmAjustes.addRow(new Object[]{"K", this.valorK});
+            if (this.valorKRF != null)
+                dtmAjustes.addRow(new Object[]{"K RF", this.valorKRF});
+            if (this.regVelMedida != null)
+                dtmAjustes.addRow(new Object[]{"Reg. Vel. Medida", DatosRA2.getRectaCoef(this.regVelMedida)});
+            if (this.regVelMedidaRF != null)
+                dtmAjustes.addRow(new Object[]{"Reg. Vel. Medida RF", DatosRA2.getRectaCoef(this.regVelMedida)});
 
             Auxiliares.centrarTabla(this.jtAjustes);
             
@@ -1835,12 +2316,13 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
 
         int nDatos = this.jtBaseNeta.getRowCount();
         int colValido = this.jtBaseNeta.getColumnModel().getColumnIndex(DatosRA2.CAMPO_VALIDO);
+        int colValidoSys = this.jtBaseNeta.getColumnModel().getColumnIndex(DatosRA2.CAMPO_VALIDO_SYS);
         int colRF = this.jtBaseNeta.getColumnModel().getColumnIndex(DatosRA2.CAMPO_RF);
         int colVS = this.jtBaseNeta.getColumnModel().getColumnIndex(DatosRA2.CAMPO_V_S);
         int colLAeq1 = this.jtBaseNeta.getColumnModel().getColumnIndex(DatosRA2.CAMPO_L_A_EQ_1);
 
         for (int i = 0; i < nDatos; i++) {
-            if (Integer.parseInt(this.jtBaseNeta.getValueAt(i, colValido).toString()) == 1) {
+            if (Integer.parseInt(this.jtBaseNeta.getValueAt(i, colValido).toString()) * Integer.parseInt(this.jtBaseNeta.getValueAt(i, colValidoSys).toString()) == 1) {
                 if (Integer.parseInt(this.jtBaseNeta.getValueAt(i, colRF).toString()) == 0)
                     serie = serieAG;
                 else
@@ -1978,7 +2460,140 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
 
         return dataset;
     }
+
+    private XYDataset crearDatasetNivelVel() throws SQLException {
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		XYSeries velDerCP_AG = new XYSeries(Auxiliares.PREF_DATOS_AG + " " + PREF_VEL_DER);
+		XYSeries velK_AG = new XYSeries(Auxiliares.PREF_DATOS_AG + " " + PREF_VEL_K);
+		XYSeries velDerCP_RF = new XYSeries(Auxiliares.PREF_DATOS_RF + " " + PREF_VEL_DER);
+		XYSeries velK_RF = new XYSeries(Auxiliares.PREF_DATOS_RF + " " + PREF_VEL_K);
+		XYSeries serie;
+
+		DefaultTableModel dtmBaseNeta = (DefaultTableModel) this.jtBaseNeta.getModel();
+
+		int nFilas = dtmBaseNeta.getRowCount();
+
+        int colRF = dtmBaseNeta.findColumn(DatosRA2.CAMPO_RF);
+        int colValido = dtmBaseNeta.findColumn(DatosRA2.CAMPO_VALIDO);
+        int colValidoSys = dtmBaseNeta.findColumn(DatosRA2.CAMPO_VALIDO_SYS);
+        int colVD = dtmBaseNeta.findColumn(DatosRA2.CAMPO_V_D);
+        int colVS = dtmBaseNeta.findColumn(DatosRA2.CAMPO_V_S);
+        int colNivel = dtmBaseNeta.findColumn(DatosRA2.CAMPO_L_A_EQ_1);
+
+		for (int i = 0; i < nFilas; i++) {
+			if ((Integer) dtmBaseNeta.getValueAt(i, colValido) * (Integer) dtmBaseNeta.getValueAt(i, colValidoSys) == 0)
+				continue;
+
+			if ((Integer) dtmBaseNeta.getValueAt(i, colRF) == 0)
+				serie = colVD != -1 && dtmBaseNeta.getValueAt(i, colVD) != null ? velDerCP_AG : velK_AG;
+			else
+				serie = colVD != -1 && dtmBaseNeta.getValueAt(i, colVD) != null ? velDerCP_RF : velK_RF;
+			
+			serie.add(((BigDecimal) dtmBaseNeta.getValueAt(i, colVS)).doubleValue(), ((BigDecimal) dtmBaseNeta.getValueAt(i, colNivel)).doubleValue());
+		}
+		
+		if (!velDerCP_AG.isEmpty())
+			dataset.addSeries(velDerCP_AG);
+		if (!velK_AG.isEmpty())
+			dataset.addSeries(velK_AG);
+		if (!velDerCP_RF.isEmpty())
+			dataset.addSeries(velDerCP_RF);
+		if (!velK_RF.isEmpty())
+			dataset.addSeries(velK_RF);
+
+        return dataset;
+    }
     
+    public Comparator<Object[]> PosVelComparator = new Comparator<Object[]>() {
+		public int compare(Object[] dato1, Object[] dato2) {
+			if (dato1[2] != null && dato2[2] != null)
+			return ((Double) dato1[2]).compareTo((Double) dato2[2]);
+			else
+			return -1;
+		}
+    };
+    
+    private XYDataset crearDatasetCompVel(Integer rF) throws SQLException {
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		XYSeries serieVelDerCP = new XYSeries(PREF_VEL_DER);
+		XYSeries serieVelMedida = new XYSeries(rF == 0 ? (this.tipoAjuste == DatosRA2.AJUSTE_K_TORRE ? PREF_VEL_ANEMO : PREF_VEL_NAC) : (this.tipoAjusteRF == DatosRA2.AJUSTE_K_TORRE ? PREF_VEL_ANEMO : PREF_VEL_NAC));
+
+		DefaultTableModel dtmBaseNeta = (DefaultTableModel) this.jtBaseNeta.getModel();
+
+		int nFilas = dtmBaseNeta.getRowCount();
+
+        int colRF = dtmBaseNeta.findColumn(DatosRA2.CAMPO_RF);
+        int colValido = dtmBaseNeta.findColumn(DatosRA2.CAMPO_VALIDO);
+        int colValidoSys = dtmBaseNeta.findColumn(DatosRA2.CAMPO_VALIDO_SYS);
+        int colVelFinal = dtmBaseNeta.findColumn(DatosRA2.CAMPO_V_S);
+        int colVelMedida = dtmBaseNeta.findColumn(rF == 0 ? (this.tipoAjuste == DatosRA2.AJUSTE_K_TORRE ? DatosRA2.CAMPO_V_Z : DatosRA2.CAMPO_V_N) : (this.tipoAjusteRF == DatosRA2.AJUSTE_K_TORRE ? DatosRA2.CAMPO_V_Z : DatosRA2.CAMPO_V_N));
+
+		ArrayList<Object[]> posVel = new ArrayList<Object[]>(); //pos, velDerCP, velAnemo, velNac
+		Double velDerCP, velMedida;
+
+		for (int i = 0; i < nFilas; i++) {
+			if ((Integer) dtmBaseNeta.getValueAt(i, colValido) * (Integer) dtmBaseNeta.getValueAt(i, colValidoSys) == 0)
+				continue;
+
+			if (!rF.equals((Integer) dtmBaseNeta.getValueAt(i, colRF)))
+				continue;
+
+			velDerCP = colVelFinal != -1 ? ((BigDecimal) dtmBaseNeta.getValueAt(i, colVelFinal)).doubleValue() : null;
+			velMedida = colVelMedida != -1 ? ((BigDecimal) dtmBaseNeta.getValueAt(i, colVelMedida)).doubleValue() : null;
+
+			posVel.add(new Object[]{i, velDerCP, velMedida});
+		}
+
+		Object[][] posVelObj = Auxiliares.arrayObjToObjObj(posVel.toArray());
+		Arrays.sort(posVelObj, PosVelComparator);
+
+		int nPosVel = posVelObj.length;
+		for (int i = 0; i < nPosVel; i++) {
+			if (posVelObj[i][1] != null)
+				serieVelDerCP.add(i, (Double) posVelObj[i][1]);
+			
+			if (posVelObj[i][2] != null)
+				serieVelMedida.add(i, (Double) posVelObj[i][2]);
+		}
+
+		if (!serieVelDerCP.isEmpty())
+			dataset.addSeries(serieVelDerCP);
+		if (!serieVelMedida.isEmpty())
+			dataset.addSeries(serieVelMedida);
+
+		return dataset;
+	}
+		
+	private XYDataset crearDatasetNivelPot() throws SQLException {
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		XYSeries niveles = new XYSeries(Auxiliares.PREF_DATOS_AG);
+
+		DefaultTableModel dtmBaseNeta = (DefaultTableModel) this.jtBaseNeta.getModel();
+
+		int nFilas = dtmBaseNeta.getRowCount();
+
+        int colRF = dtmBaseNeta.findColumn(DatosRA2.CAMPO_RF);
+        int colValido = dtmBaseNeta.findColumn(DatosRA2.CAMPO_VALIDO);
+        int colValidoSys = dtmBaseNeta.findColumn(DatosRA2.CAMPO_VALIDO_SYS);
+        int colPot = dtmBaseNeta.findColumn(DatosRA2.CAMPO_P_N);
+        int colNivel = dtmBaseNeta.findColumn(DatosRA2.CAMPO_L_A_EQ_1);
+
+		for (int i = 0; i < nFilas; i++) {
+			if ((Integer) dtmBaseNeta.getValueAt(i, colValido) * (Integer) dtmBaseNeta.getValueAt(i, colValidoSys) == 0)
+				continue;
+
+			if ((Integer) dtmBaseNeta.getValueAt(i, colRF) != 0)
+				continue;
+			
+			niveles.add(((BigDecimal) dtmBaseNeta.getValueAt(i, colPot)).doubleValue(), ((BigDecimal) dtmBaseNeta.getValueAt(i, colNivel)).doubleValue());
+		}
+	
+		if (!niveles.isEmpty())
+			dataset.addSeries(niveles);
+
+        return dataset;
+    }
+
     private void rellenarAnalisisOCT(JProgressBar jpb) throws SQLException, NoSuchFieldException {
         //Creamos la gráfica
         this.datasetOCT = crearDatasetAnGraOCT();
@@ -1987,19 +2602,20 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
     
     private LinkedHashMap<Double, Double> getColsNivel(int fila) {
         LinkedHashMap<Double, Double> res = null;
-        String nomCol;
+        String numNomCol, nomCol;
         
         TableColumnModel tcm = this.jtBaseNeta.getColumnModel();
         int nCols = this.jtBaseNeta.getColumnCount();
-        
+
         for (int i = 0; i < nCols; i++) {
-            nomCol = ((String) tcm.getColumn(i).getHeaderValue()).replaceAll("[^0-9]+", "").trim();
+            nomCol = (String) tcm.getColumn(i).getHeaderValue();
+            numNomCol = ((String) tcm.getColumn(i).getHeaderValue()).replaceAll("[^0-9]+", "").trim();
             
-            if (nomCol.length() > 0) { //Si la cebcera contiene números, será una de las columnas de niveles
+            if (numNomCol.length() > 0 && nomCol.contains("Hz")) { //Si la cabecera contiene Hz, será una de las columnas de niveles
                 if (res == null)
                     res = new LinkedHashMap<Double, Double>();
-                
-                res.put(Double.parseDouble(nomCol), ((BigDecimal) this.jtBaseNeta.getValueAt(fila, i)).doubleValue());
+
+				res.put(Double.parseDouble(numNomCol), ((BigDecimal) this.jtBaseNeta.getValueAt(fila, i)).doubleValue());
             }
         }
         
@@ -2008,12 +2624,12 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
     
     private XYSeriesCollection crearDatasetAnGraOCT() {
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         XYSeries serie;
 
         int nDatos = this.jtBaseNeta.getRowCount();
         
         int colValido = this.jtBaseNeta.getColumnModel().getColumnIndex(DatosRA2.CAMPO_VALIDO);
+        int colValidoSys = this.jtBaseNeta.getColumnModel().getColumnIndex(DatosRA2.CAMPO_VALIDO_SYS);
         int colRF = this.jtBaseNeta.getColumnModel().getColumnIndex(DatosRA2.CAMPO_RF);
         int colVS = this.jtBaseNeta.getColumnModel().getColumnIndex(DatosRA2.CAMPO_V_S);
         LinkedHashMap<Double, Double> colsNivel;
@@ -2038,7 +2654,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
                     continue;
                 
                 key = "";
-                if (Integer.parseInt(this.jtBaseNeta.getValueAt(j, colValido).toString()) == 0) {
+                if (Integer.parseInt(this.jtBaseNeta.getValueAt(j, colValido).toString()) * Integer.parseInt(this.jtBaseNeta.getValueAt(j, colValidoSys).toString()) == 0) {
                     key += Auxiliares.PREF_DATOS_IGNORADOS + " ";
                 }
                 
@@ -2094,12 +2710,12 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         DatoXML datoXml;
         
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         XYSeries serie;
 
         int nDatos = this.jtBaseNeta.getRowCount();
         int colIdDato = this.jtBaseNeta.getColumnModel().getColumnIndex(DatosRA2.CAMPO_ID_DATO);
         int colValido = this.jtBaseNeta.getColumnModel().getColumnIndex(DatosRA2.CAMPO_VALIDO);
+        int colValidoSys = this.jtBaseNeta.getColumnModel().getColumnIndex(DatosRA2.CAMPO_VALIDO_SYS);
         int colRF = this.jtBaseNeta.getColumnModel().getColumnIndex(DatosRA2.CAMPO_RF);
         int colVS = this.jtBaseNeta.getColumnModel().getColumnIndex(DatosRA2.CAMPO_V_S);
         
@@ -2107,8 +2723,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         campoXML.add(DatosRA2.CAMPO_XML);
         
         String key;
-        //HasMap<AG/RF, numEspectro>>>
-        HashMap<String, Integer> contAG_RF = null;
+        HashMap<String, Integer> contAG_RF = null; //HasMap<AG/RF, numEspectro>>>
         int cont, contAux;
         
         for (int i = this.valBinMin; i <= this.valBinMax; i++) {
@@ -2123,7 +2738,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
                 if (Math.round(((BigDecimal) this.jtBaseNeta.getValueAt(j, colVS)).doubleValue()) != i)
                     continue;
                 
-                if (soloValidos && Integer.parseInt(this.jtBaseNeta.getValueAt(j, colValido).toString()) == 0)
+                if (soloValidos && Integer.parseInt(this.jtBaseNeta.getValueAt(j, colValido).toString()) * Integer.parseInt(this.jtBaseNeta.getValueAt(j, colValidoSys).toString()) == 0)
                     continue;
 
                 xml = (String) DatosRA2.getDatosVistaNetaIdDato(this.tipoTabla, this.idAsunto, this.idSite, (Integer) this.jtBaseNeta.getValueAt(j, colIdDato), campoXML, null, null).get(0)[0];
@@ -2133,7 +2748,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
                     nDatosXml = datosXml.size();
                 
                     key = "";
-                    if (Integer.parseInt(this.jtBaseNeta.getValueAt(j, colValido).toString()) == 0) {
+                    if (Integer.parseInt(this.jtBaseNeta.getValueAt(j, colValido).toString()) * Integer.parseInt(this.jtBaseNeta.getValueAt(j, colValidoSys).toString()) == 0) {
                         key += Auxiliares.PREF_DATOS_IGNORADOS + " ";
                     }
 
@@ -2202,10 +2817,20 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
             rellenarCompletitud(jpb);
             
             //SPL
-            if (this.tipoTabla.compareTo(Auxiliares.TIPO_SPL) == 0) {
-                rellenarCoefAjPol(jpb);
-                rellenarCoefAjLin(jpb);
-            }
+            if (!this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) {
+				if (this.tipoTabla.compareTo(Auxiliares.TIPO_SPL) == 0) {
+					rellenarCoefAjPol(jpb);
+					rellenarCoefAjLin(jpb);
+				}
+            } else {
+				Auxiliares.asignaPanelGrafica(this, this.jpGraficaNivelVel, crearGraficaNivelVel(crearDatasetNivelVel()), false, null);
+				Auxiliares.asignaPanelGrafica(this, this.jpGraficaNivelPot, crearGraficaNivelPot(crearDatasetNivelPot()), false, null);
+
+				if (this.tipoCalculo.equals(DatosRA2.VEL_DERIVADA_CP)) {
+					Auxiliares.asignaPanelGrafica(this, this.jpGraficaCompVelAG, crearGraficaCompVel(crearDatasetCompVel(0)), false, null);
+					Auxiliares.asignaPanelGrafica(this, this.jpGraficaCompVelRF, crearGraficaCompVel(crearDatasetCompVel(1)), false, null);
+				}
+			}
             
             //OCT
             if (this.tipoTabla.compareTo(Auxiliares.TIPO_OCT) == 0) {
@@ -2217,7 +2842,18 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
 
                 if (opcionGraficar != JOptionPane.CANCEL_OPTION)
                     rellenarAnalisisFFT(jpb, opcionGraficar == JOptionPane.NO_OPTION);
-            }
+				else  {
+					//Deshabilitamos la pestaña de FFT
+					int nTabs = this.jtpDatos.getTabCount();
+					for (int i = nTabs - 1; i >= 0; i--) {
+						if (this.jtpDatos.getComponentAt(i).getName().startsWith(this.tipoTabla))
+							this.jtpDatos.remove(i);
+					}
+
+					//Maximizamos las pestañas
+					Auxiliares.maximizaTitulosJTabbedPane(this.jtpDatos);
+				}
+			}
 
             Auxiliares.ocultaProgress(jpb);
             Auxiliares.bloqueaDialog(this, false);
@@ -2257,13 +2893,27 @@ private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
     this.jbAnGraEspFFTSig.setIcon(Auxiliares.ICONO_NEXT);
 
     //Establecemos las pestañas de JTabbedPane
-    Auxiliares.setTitulosJTabbedPane(this.jtpDatos, new String[]{"DATOS NETOS", "RESULTADOS POR BIN", "AJUSTE POLINOMIAL", "AJUSTE LINEAL", "ESPECTRO OCT", "ESPECTROS FFT"});
+    Auxiliares.setTitulosJTabbedPane(this.jtpDatos, new String[]{"DATOS NETOS", "RESULTADOS POR BIN", "AJUSTE POLINOMIAL", "AJUSTE LINEAL", "ESPECTRO OCT", "ESPECTROS FFT", "NIVEL Vs. VELOCIDAD", "NIVEL Vs. POTENCIA", "COMP. VELOCIDAD AG", "COMP. VELOCIDAD RF"});
 
     //Eliminamos las pestañas que no se corresponden con el tipo de análisis a realizar
     int nTabs = this.jtpDatos.getTabCount();
+    String nombre;
     for (int i = nTabs - 1; i >= 0; i--) {
-        if (!this.jtpDatos.getComponentAt(i).getName().startsWith(Auxiliares.TIPO_GEN) && !this.jtpDatos.getComponentAt(i).getName().startsWith(this.tipoTabla))
+		nombre = this.jtpDatos.getComponentAt(i).getName();
+        if (!nombre.startsWith(Auxiliares.TIPO_GEN) && !nombre.startsWith(this.tipoTabla))
             this.jtpDatos.remove(i);
+		else {
+			if (this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) { //Si es IEC3 también quitamos las pestañas de ajustes lineales y polinomiales
+				if (nombre.startsWith(Auxiliares.TIPO_SPL))
+					this.jtpDatos.remove(i);
+
+				if (nombre.contains("CompVel") && !this.tipoCalculo.equals(DatosRA2.VEL_DERIVADA_CP)) //Quitamos las comparativas si la velocidad no ha sido derivada de CP
+					this.jtpDatos.remove(i);
+			} else {
+				if (nombre.contains(Auxiliares.TIPO_IEC_3_0)) 
+					this.jtpDatos.remove(i);
+			}
+		}
     }
     
     //Maximizamos las pestañas
@@ -2274,7 +2924,7 @@ private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
 
 private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
     int nDatos = this.idValiDatosModif.size();
-    Integer idDato, validoAnt;
+    Integer idDato, validoAnt, validoSysAnt;
     
     try {
         if (Auxiliares.esSalidaUndefined(this.modoSalida)) { //Se ha cancelado desde la propia ventana
@@ -2283,8 +2933,9 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
                     for (int i = 0; i < nDatos; i++) {
                         idDato = (Integer) this.idValiDatosModif.get(i)[0];
                         validoAnt = (Integer) this.idValiDatosModif.get(i)[1];
+                        validoSysAnt = (Integer) this.idValiDatosModif.get(i)[2];
                         
-                        DatosRA2.setDatoValido(this.tipoTabla, this.idAsunto, idDato, validoAnt);
+                        DatosRA2.setDatoValido(this.tipoTabla, this.idAsunto, this.idSite, idDato, validoAnt, validoSysAnt);
                     }
                     
                     //Y salimos del diálogo
@@ -2298,8 +2949,9 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
                 for (int i = 0; i < nDatos; i++) {
                     idDato = (Integer)this.idValiDatosModif.get(i)[0];
                     validoAnt = (Integer)this.idValiDatosModif.get(i)[1];
+					validoSysAnt = (Integer) this.idValiDatosModif.get(i)[2];
 
-                    DatosRA2.setDatoValido(this.tipoTabla, this.idAsunto, idDato, validoAnt);
+                    DatosRA2.setDatoValido(this.tipoTabla, this.idAsunto, this.idSite, idDato, validoAnt, validoSysAnt);
                 }
             }
             
@@ -2313,14 +2965,15 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
 
 private void deshacerModificacion(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deshacerModificacion
     int nDatos = this.idValiDatosModif.size();
-    Integer idDato, validoAnt;
+    Integer idDato, validoAnt, validoSysAnt;
     
     try {
         if (nDatos > 0) {
             idDato = this.idValiDatosModif.get(nDatos - 1)[0];
             validoAnt = this.idValiDatosModif.get(nDatos - 1)[1];
+			validoSysAnt = this.idValiDatosModif.get(nDatos - 1)[2];
 
-            if (DatosRA2.setDatoValido(this.tipoTabla, this.idAsunto, idDato, validoAnt) > 0) {
+            if (DatosRA2.setDatoValido(this.tipoTabla, this.idAsunto, this.idSite, idDato, validoAnt, validoSysAnt) > 0) {
                 this.idValiDatosModif.remove(nDatos - 1);
 
                 if (nDatos - 1 == 0)
@@ -2338,129 +2991,144 @@ private void deshacerModificacion(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
 private void siguiente(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguiente
     if (this.tipoTabla.equals(Auxiliares.TIPO_SPL)) {
-        int tipoCalculoAG = DatosRA2.TIPO_CAL_REG_LIN;
-        int tipoCalculoRF = DatosRA2.TIPO_CAL_REG_LIN;
-        
-        double[] coefPolAG = this.coeficientesPol.get(Auxiliares.PREF_DATOS_AG);
-        double[] coefPolRF = this.coeficientesPol.get(Auxiliares.PREF_DATOS_RF);
-        double coefCorrAG = coefPolAG[coefPolAG.length - 1];
-        double coefCorrRF = coefPolRF[coefPolRF.length - 1];
-        
-        this.jlCoefCorrAG.setText("<html>Coeficiente de correlación AG calculado: <b>" + coefCorrAG + "</b></html>");
-        this.jlCoefCorrRF.setText("<html>Coeficiente de correlación RF calculado: <b>" + coefCorrRF + "</b></html>");
-        
-        this.jrbRegPolAG.setSelected(coefCorrAG >= 0.8);
-        this.jrbRegLinAG.setSelected(coefCorrAG < 0.8);
-        this.jrbRegPolRF.setSelected(coefCorrRF >= 0.8);
-        this.jrbRegLinRF.setSelected(coefCorrRF < 0.8);
+		if (this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) {
+			this.setVisible(false);
+			DatosResultadosSPLGUI dR = new DatosResultadosSPLGUI((Frame) this.getParent(), this.tipoTabla, this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, this.modosFunc, this.coeficientesPol, this.coeficientesBin, null, null, this.coeficientesModosFunc, this.modoSalida, this.idNorma, this.esMiniAero, this.incertidumbres);
+			dR.setVisible(true);
+	    
+		} else {
+			int tipoCalculoAG = DatosRA2.TIPO_CAL_REG_LIN;
+			int tipoCalculoRF = DatosRA2.TIPO_CAL_REG_LIN;
+	    
+			double[] coefPolAG = this.coeficientesPol.get(Auxiliares.PREF_DATOS_AG);
+			double[] coefPolRF = this.coeficientesPol.get(Auxiliares.PREF_DATOS_RF);
+			double coefCorrAG = coefPolAG[coefPolAG.length - 1];
+			double coefCorrRF = coefPolRF[coefPolRF.length - 1];
+	    
+			this.jlCoefCorrAG.setText("<html>Coeficiente de correlación AG calculado: <b>" + coefCorrAG + "</b></html>");
+			this.jlCoefCorrRF.setText("<html>Coeficiente de correlación RF calculado: <b>" + coefCorrRF + "</b></html>");
+	    
+			this.jrbRegPolAG.setSelected(coefCorrAG >= 0.8);
+			this.jrbRegLinAG.setSelected(coefCorrAG < 0.8);
+			this.jrbRegPolRF.setSelected(coefCorrRF >= 0.8);
+			this.jrbRegLinRF.setSelected(coefCorrRF < 0.8);
 
-        if (!this.idNorma.equals(NormaRA.ID_NORMA_BWEA)) {
-            if (this.idNorma.equals(NormaRA.ID_NORMA_AWEA) || JOptionPane.showConfirmDialog(this, this.jpTipoCalculoSPL, "Seleccione tipo de cálculo a realizar", JOptionPane.OK_OPTION) == JOptionPane.OK_OPTION) {
-                if (this.idNorma.equals(NormaRA.ID_NORMA_AWEA)) {
-                    this.jrbRegLinAG.setSelected(true);
-                    this.jrbRegPolAG.setSelected(false);
-                    this.jrbRegLinRF.setSelected(true);
-                    this.jrbRegPolRF.setSelected(false);                    
-                }                
-                
-                if (this.jrbRegLinAG.isSelected()) {
-                    tipoCalculoAG = DatosRA2.TIPO_CAL_REG_LIN;
-                    
-                    try {
-                        String valiRegLin = DatosRA2.validaDatosRegLin(this.tipoTabla, this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, 0);
+			if (!this.idNorma.equals(NormaRA.ID_NORMA_BWEA)) {
+				if (this.idNorma.equals(NormaRA.ID_NORMA_AWEA) || JOptionPane.showConfirmDialog(this, this.jpTipoCalculoSPL, "Seleccione tipo de cálculo a realizar", JOptionPane.OK_OPTION) == JOptionPane.OK_OPTION) {
+					if (this.idNorma.equals(NormaRA.ID_NORMA_AWEA)) {
+						this.jrbRegLinAG.setSelected(true);
+						this.jrbRegPolAG.setSelected(false);
+						this.jrbRegLinRF.setSelected(true);
+						this.jrbRegPolRF.setSelected(false);                    
+					}                
+		    
+					if (this.jrbRegLinAG.isSelected()) {
+						tipoCalculoAG = DatosRA2.TIPO_CAL_REG_LIN;
+				
+						try {
+							String valiRegLin = DatosRA2.validaDatosRegLin(this.tipoTabla, this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, 0);
 
-                        if (valiRegLin != null && !valiRegLin.isEmpty())
-                            MensajeApp.muestraWarning(this, valiRegLin);
-                    } catch (SQLException e) {
-                        MensajeApp.muestraError(this, e, "Fallo al consultar la base de datos");
-                    }
-                } else
-                    tipoCalculoAG = DatosRA2.TIPO_CAL_REG_POL;
-                
-                if (this.jrbRegLinRF.isSelected()) {
-                    tipoCalculoRF = DatosRA2.TIPO_CAL_REG_LIN;
-                    
-                    try {
-                        String valiRegLin = DatosRA2.validaDatosRegLin(this.tipoTabla, this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, 1);
+							if (valiRegLin != null && !valiRegLin.isEmpty())
+								MensajeApp.muestraWarning(this, valiRegLin);
+						} catch (SQLException e) {
+							MensajeApp.muestraError(this, e, "Fallo al consultar la base de datos");
+						}
+					} else
+						tipoCalculoAG = DatosRA2.TIPO_CAL_REG_POL;
+				
+					if (this.jrbRegLinRF.isSelected()) {
+						tipoCalculoRF = DatosRA2.TIPO_CAL_REG_LIN;
+			
+						try {
+							String valiRegLin = DatosRA2.validaDatosRegLin(this.tipoTabla, this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, 1);
 
-                        if (valiRegLin != null && !valiRegLin.isEmpty())
-                            MensajeApp.muestraWarning(this, valiRegLin);
-                    } catch (SQLException e) {
-                        MensajeApp.muestraError(this, e, "Fallo al consultar la base de datos");
-                    }
-                } else
-                    tipoCalculoRF = DatosRA2.TIPO_CAL_REG_POL;
+							if (valiRegLin != null && !valiRegLin.isEmpty())
+								MensajeApp.muestraWarning(this, valiRegLin);
+						} catch (SQLException e) {
+							MensajeApp.muestraError(this, e, "Fallo al consultar la base de datos");
+						}
+					} else
+						tipoCalculoRF = DatosRA2.TIPO_CAL_REG_POL;
 
-                this.setVisible(false);
-                
-                //Graficamos las regresiones con las que se obtendrán los resultados
-                if (this.idNorma.equals(NormaRA.ID_NORMA_IEC_2_1)) {
-                    XYPlot plotAjPol = ((ChartPanel) this.jpGraficaAjPol.getComponent(0)).getChart().getXYPlot();
-                    XYPlot plotAjLin = ((ChartPanel) this.jpGraficaAjLin.getComponent(0)).getChart().getXYPlot();
-                    XYSeriesCollection dsResultados = new XYSeriesCollection();
-                    XYPlot plotAux;
-                    String serieKey;
-                    
-                    //AG
-                    plotAux = tipoCalculoAG == DatosRA2.TIPO_CAL_REG_POL ? plotAjPol : plotAjLin;
-                    int nDatasets = plotAux.getDatasetCount();
-                    
-                    for (int i = 0; i < nDatasets; i++) {
-                        for (int j = 0; j < plotAux.getDataset(i).getSeriesCount(); j++) {
-                            serieKey = (String) plotAux.getDataset(i).getSeriesKey(j);
-                            if (serieKey.contains(Auxiliares.PREF_DATOS_AG) && !serieKey.contains(Auxiliares.PREF_DATOS_IGNORADOS))
-                                dsResultados.addSeries(((XYSeriesCollection) plotAux.getDataset(i)).getSeries(j));
-                        }
-                    }
-                    
-                    //RF
-                    plotAux = tipoCalculoRF == DatosRA2.TIPO_CAL_REG_POL ? plotAjPol : plotAjLin;
-                    nDatasets = plotAux.getDatasetCount();
-                    
-                    for (int i = 0; i < nDatasets; i++) {
-                        for (int j = 0; j < plotAux.getDataset(i).getSeriesCount(); j++) {
-                            serieKey = (String) plotAux.getDataset(i).getSeriesKey(j);
-                            if (serieKey.contains(Auxiliares.PREF_DATOS_RF) && !serieKey.contains(Auxiliares.PREF_DATOS_IGNORADOS))
-                                dsResultados.addSeries(((XYSeriesCollection) plotAux.getDataset(i)).getSeries(j));
-                        }
-                    }
-                    
-                    Auxiliares.asignaPanelGrafica(this, this.jpContGraficaAjPolLin, crearGraficaAjPolLin(dsResultados), false, null);
-				    //JOptionPane.showMessageDialog(this, this.jpContGraficaAjPolLin, "Regresiones seleccionadas", JOptionPane.PLAIN_MESSAGE);
-				    JDialog jd = new JDialog((Frame) this.getOwner(), "Regresiones seleccionadas", true);
-				    jd.setLocationByPlatform(true);
-				    jd.getContentPane().add(this.jpContGraficaAjPolLin, BorderLayout.CENTER);
-				    jd.pack();
-					jd.setSize(this.getSize());
-					jd.setLocationRelativeTo(jd.getParent());
-					jd.setVisible(true);
-                }
-                    
-                DatosResultadosSPLGUI dR = new DatosResultadosSPLGUI((Frame) this.getParent(), this.tipoTabla, this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, this.modosFunc, this.coeficientesPol, this.coeficientesBin, tipoCalculoAG, tipoCalculoRF, this.coeficientesModosFunc, this.modoSalida, this.idNorma, this.incertidumbres);
-                dR.setVisible(true);
-            } else
-                return;
-        } else if (this.idNorma.equals(NormaRA.ID_NORMA_BWEA)) {
-            Integer binEstudio;
-           
-            //Establecemos el bin de estudios por defecto
-            this.jtfBinEstudio.setText(BIN_ESTUDIO_MODO_FUNC.toString());
-            if (JOptionPane.showConfirmDialog(this, this.jpTipoCalculoSPLModoFunc, "Seleccione bin a estudiar", JOptionPane.OK_OPTION) == JOptionPane.OK_OPTION) {
-                binEstudio = Integer.parseInt(this.jtfBinEstudio.getText());
-                
-                this.setVisible(false);
-                DatosResultadosSPLGUI dR = new DatosResultadosSPLGUI((Frame) this.getParent(), this.tipoTabla, this.idAsunto, this.idSite, binEstudio, binEstudio, this.modosFunc, this.coeficientesPol, this.coeficientesBin, tipoCalculoAG, tipoCalculoRF, this.coeficientesModosFunc, this.modoSalida, this.idNorma, this.incertidumbres);
-                dR.setVisible(true);
-            } else
-                return;
-        }
-    } else if (this.tipoTabla.equals(Auxiliares.TIPO_OCT)) {
+					this.setVisible(false);
+		    
+					//Graficamos las regresiones con las que se obtendrán los resultados
+					if (this.idNorma.equals(NormaRA.ID_NORMA_IEC_2_1)) {
+						XYPlot plotAjPol = ((ChartPanel) this.jpGraficaAjPol.getComponent(0)).getChart().getXYPlot();
+						XYPlot plotAjLin = ((ChartPanel) this.jpGraficaAjLin.getComponent(0)).getChart().getXYPlot();
+						XYSeriesCollection dsResultados = new XYSeriesCollection();
+						XYPlot plotAux;
+						String serieKey;
+			
+						//AG
+						plotAux = tipoCalculoAG == DatosRA2.TIPO_CAL_REG_POL ? plotAjPol : plotAjLin;
+						int nDatasets = plotAux.getDatasetCount();
+			
+						for (int i = 0; i < nDatasets; i++) {
+							for (int j = 0; j < plotAux.getDataset(i).getSeriesCount(); j++) {
+							serieKey = (String) plotAux.getDataset(i).getSeriesKey(j);
+							if (serieKey.contains(Auxiliares.PREF_DATOS_AG) && !serieKey.contains(Auxiliares.PREF_DATOS_IGNORADOS))
+								dsResultados.addSeries(((XYSeriesCollection) plotAux.getDataset(i)).getSeries(j));
+							}
+						}
+			
+						//RF
+						plotAux = tipoCalculoRF == DatosRA2.TIPO_CAL_REG_POL ? plotAjPol : plotAjLin;
+						nDatasets = plotAux.getDatasetCount();
+			
+						for (int i = 0; i < nDatasets; i++) {
+							for (int j = 0; j < plotAux.getDataset(i).getSeriesCount(); j++) {
+							serieKey = (String) plotAux.getDataset(i).getSeriesKey(j);
+							if (serieKey.contains(Auxiliares.PREF_DATOS_RF) && !serieKey.contains(Auxiliares.PREF_DATOS_IGNORADOS))
+								dsResultados.addSeries(((XYSeriesCollection) plotAux.getDataset(i)).getSeries(j));
+							}
+						}
+			
+						Auxiliares.asignaPanelGrafica(this, this.jpContGraficaAjPolLin, crearGraficaAjPolLin(dsResultados), false, null);
+						//JOptionPane.showMessageDialog(this, this.jpContGraficaAjPolLin, "Regresiones seleccionadas", JOptionPane.PLAIN_MESSAGE);
+						JDialog jd = new JDialog((Frame) this.getOwner(), "Regresiones seleccionadas", true);
+						jd.setLocationByPlatform(true);
+						jd.getContentPane().add(this.jpContGraficaAjPolLin, BorderLayout.CENTER);
+						jd.pack();
+						jd.setSize(this.getSize());
+						jd.setLocationRelativeTo(jd.getParent());
+						jd.setVisible(true);
+					}
+				
+					DatosResultadosSPLGUI dR = new DatosResultadosSPLGUI((Frame) this.getParent(), this.tipoTabla, this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, this.modosFunc, this.coeficientesPol, this.coeficientesBin, tipoCalculoAG, tipoCalculoRF, this.coeficientesModosFunc, this.modoSalida, this.idNorma, this.esMiniAero, this.incertidumbres);
+					dR.setVisible(true);
+				} else
+					return;
+			} else if (this.idNorma.equals(NormaRA.ID_NORMA_BWEA)) {
+				Integer binEstudio;
+			   
+				//Establecemos el bin de estudios por defecto
+				this.jtfBinEstudio.setText(BIN_ESTUDIO_MODO_FUNC.toString());
+				if (JOptionPane.showConfirmDialog(this, this.jpTipoCalculoSPLModoFunc, "Seleccione bin a estudiar", JOptionPane.OK_OPTION) == JOptionPane.OK_OPTION) {
+					binEstudio = Integer.parseInt(this.jtfBinEstudio.getText());
+				
+					this.setVisible(false);
+					DatosResultadosSPLGUI dR = new DatosResultadosSPLGUI((Frame) this.getParent(), this.tipoTabla, this.idAsunto, this.idSite, binEstudio, binEstudio, this.modosFunc, this.coeficientesPol, this.coeficientesBin, tipoCalculoAG, tipoCalculoRF, this.coeficientesModosFunc, this.modoSalida, this.idNorma, this.esMiniAero, this.incertidumbres);
+					dR.setVisible(true);
+				} else
+					return;
+			}
+		}
+	} else if (this.tipoTabla.equals(Auxiliares.TIPO_OCT)) {
         this.setVisible(false);
         DatosResultadosOCTGUI dR = new DatosResultadosOCTGUI((Frame) this.getParent(), this.tipoTabla, this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, this.modosFunc, this.modoSalida, this.idNorma, this.incertidumbres);
         dR.setVisible(true);
     } else if (this.tipoTabla.equals(Auxiliares.TIPO_FFT)) {
+		DefaultTableModel dtmDatosAG = (DefaultTableModel) this.jtCompAG.getModel();
+		int nFilas = dtmDatosAG.getRowCount();
+		ArrayList<Integer[]> numEspectroBin = new ArrayList<Integer[]>();
+
+		for (int i = 0; i < nFilas; i++) {
+			numEspectroBin.add(new Integer[]{(Integer) dtmDatosAG.getValueAt(i, 0), (Integer) dtmDatosAG.getValueAt(i, 1)}); //Bin, numEspectros
+		}
+	
         this.setVisible(false);
-        DatosResultadosFFTGUI dR = new DatosResultadosFFTGUI((Frame) this.getParent(), this.tipoTabla, this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, this.modoSalida, this.idNorma, this.incertidumbres);
+        DatosResultadosFFTGUI dR = new DatosResultadosFFTGUI((Frame) this.getParent(), this.tipoTabla, this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, this.modoSalida, this.idNorma, this.esMiniAero, this.incertidumbres, numEspectroBin);
         dR.setVisible(true);
     }
     
@@ -2602,7 +3270,7 @@ private void muestraAnGraOCT(Boolean siguiente, Boolean siguienteEsp) {
                 this.update(this.getGraphics());
             }
         }
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
         MensajeApp.muestraError(this, e, "Fallo realizando la operación");
     }
 }
@@ -2686,7 +3354,7 @@ private void muestraAnGraFFT(Boolean siguiente, Boolean siguienteEsp) {
                 this.update(this.getGraphics());
             }
         }
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
         MensajeApp.muestraError(this, e, "Fallo realizando la operación");
     }
 }
@@ -2765,16 +3433,15 @@ private Integer localizaDatoEspectro(XYItemEntity item) {
             valido = 1;
 
         String nomSerieSplit[] = nomSerie.split(Auxiliares.TXT_SERIE_SEP);
-
-        for (int i = 0; i < nomSerieSplit.length; i++) {
-            if (nomSerieSplit[i].contains(Auxiliares.TXT_SERIE_BIN)) {
-                numBin = Integer.parseInt(nomSerieSplit[i].replace(Auxiliares.TXT_SERIE_BIN, "").trim());
-            } else if (nomSerieSplit[i].contains(Auxiliares.TXT_SERIE_ESPECTRO))
-                numEsp = Integer.parseInt(nomSerieSplit[i].replace(Auxiliares.TXT_SERIE_ESPECTRO, "").trim());
-            
-            if (numBin != null && numEsp != null)
-                break;
-        }
+		for (String nomSerieSplit1 : nomSerieSplit) {
+			if (nomSerieSplit1.contains(Auxiliares.TXT_SERIE_BIN)) {
+				numBin = Integer.parseInt(nomSerieSplit1.replace(Auxiliares.TXT_SERIE_BIN, "").trim());
+			} else if (nomSerieSplit1.contains(Auxiliares.TXT_SERIE_ESPECTRO)) {
+				numEsp = Integer.parseInt(nomSerieSplit1.replace(Auxiliares.TXT_SERIE_ESPECTRO, "").trim());
+			}
+			if (numBin != null && numEsp != null)
+				break;
+		}
 
         //Buscamos el datos que coincida
         DefaultTableModel dtmBaseNeta = (DefaultTableModel) this.jtBaseNeta.getModel();
@@ -2783,6 +3450,7 @@ private Integer localizaDatoEspectro(XYItemEntity item) {
         int colIdDato = dtmBaseNeta.findColumn(DatosRA2.CAMPO_ID_DATO);
         int colRF = dtmBaseNeta.findColumn(DatosRA2.CAMPO_RF);
         int colValido = dtmBaseNeta.findColumn(DatosRA2.CAMPO_VALIDO);
+        int colValidoSys = dtmBaseNeta.findColumn(DatosRA2.CAMPO_VALIDO_SYS);
         int colVS = dtmBaseNeta.findColumn(DatosRA2.CAMPO_V_S);
 
         espFila = 1;
@@ -2795,7 +3463,7 @@ private Integer localizaDatoEspectro(XYItemEntity item) {
             if (Math.round(((BigDecimal) this.jtBaseNeta.getValueAt(i, colVS)).doubleValue()) != numBin)
                 continue;
             
-            validoFila = (Integer) dtmBaseNeta.getValueAt(i, colValido);
+            validoFila = (Integer) dtmBaseNeta.getValueAt(i, colValido) * (Integer) dtmBaseNeta.getValueAt(i, colValidoSys);
             if (!validoFila.equals(valido))
                 continue;
             
@@ -2807,7 +3475,7 @@ private Integer localizaDatoEspectro(XYItemEntity item) {
             
             espFila++;
         }
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
         MensajeApp.muestraError(this, e, "Fallo realizando la operación");
     } finally {
         return res;
@@ -2841,6 +3509,7 @@ private Integer localizaDatoEspectro(XYItemEntity item) {
 
     private Integer cambiarDatoValido(Integer idDato) {
         Integer valido = null, validoAct = null;
+        Integer validoSys = null, validoSysAct = null;
         this.jlPregunta.setText("¿Desea modificar la validez del dato <" + idDato + ">?");
 
         try {
@@ -2851,22 +3520,27 @@ private Integer localizaDatoEspectro(XYItemEntity item) {
                 
                 int colIdDato = dtm.findColumn(DatosRA2.CAMPO_ID_DATO);
                 int colValido = dtm.findColumn(DatosRA2.CAMPO_VALIDO);
+                int colValidoSys = dtm.findColumn(DatosRA2.CAMPO_VALIDO_SYS);
                 
                 for (int i = 0; i < nFilas; i++) {
                     if (((Integer) dtm.getValueAt(i, colIdDato)).equals(idDato)) {
                         validoAct = (Integer) dtm.getValueAt(i, colValido);
+						validoSysAct = (Integer) dtm.getValueAt(i, colValidoSys);
                         
-                        if (validoAct == 1)
-                            valido = 0;
-                        else
+                        if (validoAct * validoSysAct == 1) {
+							valido = 0;
+							validoSys = 0;
+						} else {
                             valido = 1;
+                            validoSys = 1;
+						}
                         break;
                     }
                 }
                 
-                if (DatosRA2.setDatoValido(this.tipoTabla, this.idAsunto, idDato, valido) > 0) {
+                if (DatosRA2.setDatoValido(this.tipoTabla, this.idAsunto, this.idSite, idDato, valido, validoSys) > 0) {
                     //Añadimos a la lista temporal de datos modificados con el valor de antes de la modificación
-                    this.idValiDatosModif.add(new Integer[]{idDato, validoAct});
+                    this.idValiDatosModif.add(new Integer[]{idDato, validoAct, validoSysAct});
 
                     if (!this.jbDeshacer.isEnabled())
                         this.jbDeshacer.setEnabled(true);
@@ -2941,7 +3615,11 @@ private Integer localizaDatoEspectro(XYItemEntity item) {
     private javax.swing.JLabel jlTitAnalisisGraFFT;
     private javax.swing.JLabel jlTitAnalisisGraOT;
     private javax.swing.JLabel jlTitBaseNeta;
+    private javax.swing.JLabel jlTitCompVelAG;
+    private javax.swing.JLabel jlTitCompVelRF;
     private javax.swing.JLabel jlTitCompletitud;
+    private javax.swing.JLabel jlTitNivelPot;
+    private javax.swing.JLabel jlTitNivelVel;
     private javax.swing.JLabel jlTotalCompAG;
     private javax.swing.JLabel jlTotalCompRF;
     private javax.swing.JPanel jpAjusteLin;
@@ -2951,12 +3629,18 @@ private Integer localizaDatoEspectro(XYItemEntity item) {
     private javax.swing.JPanel jpAnalisisGraOCT;
     private javax.swing.JPanel jpBaseNeta;
     private javax.swing.JPanel jpClave;
+    private javax.swing.JPanel jpCompVelAG;
+    private javax.swing.JPanel jpCompVelRF;
     private javax.swing.JPanel jpCompletitud;
     private javax.swing.JPanel jpContAjustes;
     private javax.swing.JPanel jpContGraficaAjLin;
     private javax.swing.JPanel jpContGraficaAjPol;
     private javax.swing.JPanel jpContGraficaAjPolLin;
+    private javax.swing.JPanel jpContGraficaCompVelAG;
+    private javax.swing.JPanel jpContGraficaCompVelRF;
     private javax.swing.JPanel jpContGraficaFFT;
+    private javax.swing.JPanel jpContGraficaNivelPot;
+    private javax.swing.JPanel jpContGraficaNivelVel;
     private javax.swing.JPanel jpContGraficaOCT;
     private javax.swing.JPanel jpDatos;
     private javax.swing.JPanel jpGraficaAjLin;
@@ -2964,6 +3648,12 @@ private Integer localizaDatoEspectro(XYItemEntity item) {
     private javax.swing.JPanel jpGraficaAjPolLin;
     private javax.swing.JPanel jpGraficaAnGraFFT;
     private javax.swing.JPanel jpGraficaAnGraOCT;
+    private javax.swing.JPanel jpGraficaCompVelAG;
+    private javax.swing.JPanel jpGraficaCompVelRF;
+    private javax.swing.JPanel jpGraficaNivelPot;
+    private javax.swing.JPanel jpGraficaNivelVel;
+    private javax.swing.JPanel jpNivelPot;
+    private javax.swing.JPanel jpNivelVel;
     private javax.swing.JPanel jpObs;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JPanel jpTipoCalculoSPL;

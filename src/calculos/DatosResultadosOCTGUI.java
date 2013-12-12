@@ -15,7 +15,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.WindowEvent;
+import java.awt.font.TextAttribute;
 import java.sql.SQLException;
+import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
@@ -24,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
@@ -48,6 +51,8 @@ public class DatosResultadosOCTGUI extends JDialog {
     private ArrayList<Integer> modoSalida;
     private Integer idNorma;
     private ArrayList<AsuntoIncert> incertidumbres;
+
+    private ArrayList<ArrayList<Double>> resIncert_IEC_3_0;
     
     public DatosResultadosOCTGUI(java.awt.Frame parent, String tipoTabla, Integer idAsunto, Integer idSite, Integer valBinMin, Integer valBinMax, ArrayList<Integer[]> modosFunc, ArrayList<Integer> modoSalida, Integer idNorma, ArrayList<AsuntoIncert> incertidumbres) {
         super(parent, true);
@@ -66,6 +71,8 @@ public class DatosResultadosOCTGUI extends JDialog {
         
         this.idNorma = idNorma;
         this.incertidumbres = incertidumbres;
+
+		this.resIncert_IEC_3_0 = null;
         
         this.posGraDatos = 0;
         
@@ -116,11 +123,11 @@ public class DatosResultadosOCTGUI extends JDialog {
         jpClave.setBackground(new java.awt.Color(255, 255, 255));
         jpClave.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlAsunto.setText("  Asunto: ");
 
-        jtfAsunto.setBackground(new java.awt.Color(204, 204, 204));
         jtfAsunto.setEditable(false);
+        jtfAsunto.setBackground(new java.awt.Color(204, 204, 204));
         jtfAsunto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout jpClaveLayout = new javax.swing.GroupLayout(jpClave);
@@ -149,7 +156,7 @@ public class DatosResultadosOCTGUI extends JDialog {
 
         jpAnalisis.setBackground(new java.awt.Color(255, 255, 255));
 
-        jlTitAnalisis.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jlTitAnalisis.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jlTitAnalisis.setForeground(new java.awt.Color(102, 102, 102));
         jlTitAnalisis.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitAnalisis.setText("ANÁLISIS TERCIO DE OCTAVA");
@@ -186,7 +193,7 @@ public class DatosResultadosOCTGUI extends JDialog {
             .addGroup(jpAnalisisLayout.createSequentialGroup()
                 .addComponent(jlTitAnalisis, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jspDatosAnalisis, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                .addComponent(jspDatosAnalisis, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -194,7 +201,7 @@ public class DatosResultadosOCTGUI extends JDialog {
 
         jpGrafica.setBackground(new java.awt.Color(255, 255, 255));
 
-        jlTitGrafica.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jlTitGrafica.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jlTitGrafica.setForeground(new java.awt.Color(102, 102, 102));
         jlTitGrafica.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitGrafica.setText("GRÁFICAS TERCIO DE OCTAVA");
@@ -210,7 +217,7 @@ public class DatosResultadosOCTGUI extends JDialog {
         );
         jpGraficaDatosLayout.setVerticalGroup(
             jpGraficaDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 469, Short.MAX_VALUE)
+            .addGap(0, 464, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jpContGraficaLayout = new javax.swing.GroupLayout(jpContGrafica);
@@ -281,7 +288,7 @@ public class DatosResultadosOCTGUI extends JDialog {
             jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpDatosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jtpDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+                .addComponent(jtpDatos)
                 .addContainerGap())
         );
 
@@ -341,11 +348,11 @@ public class DatosResultadosOCTGUI extends JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 688, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-804)/2, (screenSize.height-722)/2, 804, 722);
+        setSize(new java.awt.Dimension(804, 722));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void crearColsDatos() throws SQLException {
@@ -504,12 +511,11 @@ public class DatosResultadosOCTGUI extends JDialog {
 
         //<bin, valBanda1, valBanda2, ...>
         ArrayList<ArrayList<Entry<Double, Integer>>> resOCTCorregidos = null;
-        ArrayList<ArrayList<Double>> resIncert = null;
         if (!this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0))
             resOCTCorregidos = DatosRA2.getResultadosOCTCorregidos(this.idAsunto, this.idSite, this.valBinMin, this.valBinMax);
         else {
-            resIncert = new ArrayList<ArrayList<Double>>();
-            resOCTCorregidos = DatosRA2.getResultadosOCTCorregidos_IEC3(this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, this.incertidumbres, resIncert);
+            this.resIncert_IEC_3_0 = new ArrayList<ArrayList<Double>>();
+            resOCTCorregidos = DatosRA2.getResultadosOCTCorregidos_IEC3(this.tipoTabla, this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, this.incertidumbres, this.resIncert_IEC_3_0);
         }
         
         Auxiliares.incPorcentajeProgress(jpb, 0.1);
@@ -644,6 +650,20 @@ public class DatosResultadosOCTGUI extends JDialog {
         chart.setBackgroundPaint(Color.WHITE);
         CategoryPlot plot = (CategoryPlot) chart.getPlot();
 
+		ValueAxis ranAxis = plot.getRangeAxis();
+		String labelAxis = ranAxis.getLabel();
+		Font f = ranAxis.getLabelFont();
+
+		AttributedString as = new AttributedString(labelAxis);
+
+		as.addAttribute(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUB, labelAxis.indexOf("A)"), labelAxis.indexOf("A)") + 1);
+		as.addAttribute(TextAttribute.SIZE, f.getSize());
+		as.addAttribute(TextAttribute.FAMILY, f.getFamily());
+		if (f.isBold())
+			as.addAttribute(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+
+		ranAxis.setAttributedLabel(as);
+
         plot.getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI * 0.25));
       
         CategoryItemRenderer rendNivel = new BarRenderer();
@@ -740,7 +760,7 @@ private void muestraGraDatos(Boolean siguiente) {
                 this.update(this.getGraphics());
             }
         }
-    } catch (Exception e) {
+    } catch (CloneNotSupportedException e) {
         MensajeApp.muestraError(this, e, "Fallo realizando la operación");
     }
 }
@@ -811,22 +831,41 @@ private void siguiente(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguie
     int nFilas = this.jtDatosAnalisis.getRowCount();
     
     try {
-        for (int i = this.valBinMin; i <= this.valBinMax; i++) {
-            datoBinIncertidumbre = new LinkedHashMap<Object, DatosIncertidumbre>();
-            
-            for (int j = 0; j < nFilas; j++) {
-                campoFrecuencia = (String) this.jtDatosAnalisis.getValueAt(j, 0);
+		if (this.resIncert_IEC_3_0 != null) {
+			ArrayList<Double> resIncert_IEC_3_0_Bin;
+			for (int i = this.valBinMin; i <= this.valBinMax; i++) {
+				datoBinIncertidumbre = new LinkedHashMap<Object, DatosIncertidumbre>();
 
-                datoIncertidumbre = DatosRA2.getIncertidumbreOCT(this.idNorma, this.incertidumbres, this.tipoTabla, this.idAsunto, this.idSite, i, campoFrecuencia);
+				resIncert_IEC_3_0_Bin = this.resIncert_IEC_3_0.get(i - this.valBinMin);
+				
+				for (int j = 0; j < nFilas; j++) {
+					campoFrecuencia = (String) this.jtDatosAnalisis.getValueAt(j, 0);
 
-                datoBinIncertidumbre.put(campoFrecuencia, datoIncertidumbre);
-            }
-            
-            datosIncertidumbre.put(i, datoBinIncertidumbre);
-        }
+					datoIncertidumbre = new DatosIncertidumbre(resIncert_IEC_3_0_Bin.get(j));
+
+					datoBinIncertidumbre.put(campoFrecuencia, datoIncertidumbre);
+				}
+				
+				datosIncertidumbre.put(i, datoBinIncertidumbre);
+			}
+		} else {
+			for (int i = this.valBinMin; i <= this.valBinMax; i++) {
+				datoBinIncertidumbre = new LinkedHashMap<Object, DatosIncertidumbre>();
+				
+				for (int j = 0; j < nFilas; j++) {
+					campoFrecuencia = (String) this.jtDatosAnalisis.getValueAt(j, 0);
+
+					datoIncertidumbre = DatosRA2.getIncertidumbreOCT(this.idNorma, this.incertidumbres, this.tipoTabla, this.idAsunto, this.idSite, i, campoFrecuencia);
+
+					datoBinIncertidumbre.put(campoFrecuencia, datoIncertidumbre);
+				}
+				
+				datosIncertidumbre.put(i, datoBinIncertidumbre);
+			}
+		}
 
         this.setVisible(false);
-        DatosIncertidumbreGUI dI = new DatosIncertidumbreGUI((Frame) this.getParent(), this.tipoTabla, this.idAsunto, datosIncertidumbre, this.modoSalida);
+        DatosIncertidumbreGUI dI = new DatosIncertidumbreGUI((Frame) this.getParent(), this.tipoTabla, this.idAsunto, datosIncertidumbre, this.idNorma, this.modoSalida);
         dI.setVisible(true);
 
         //Si volvemos para una modificación (atrás), mostramos de nuevo el diálogo

@@ -311,6 +311,6 @@ public class PosicionRA {
     
     @Override
     public String toString() {
-        return this.posX + "; " + this.posY + "; " + this.posZ;
+        return TratDecimales.round(this.posX, 3) + "; " + TratDecimales.round(this.posY, 3) + "; " + TratDecimales.round(this.posZ, 3);
     }
 } 

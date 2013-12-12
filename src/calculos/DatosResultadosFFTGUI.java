@@ -3,6 +3,7 @@ package calculos;
 import RA.AsuntoIncert;
 import RA.AsuntoRA;
 import RA.DatosRA2;
+import RA.NormaRA;
 import general.Auxiliares;
 import general.DatosBC;
 import general.DatosTonoFFT;
@@ -18,7 +19,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.WindowEvent;
+import java.awt.font.TextAttribute;
 import java.sql.SQLException;
+import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,6 +40,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.annotations.CategoryTextAnnotation;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.CategoryItemEntity;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.plot.CategoryMarker;
@@ -72,7 +76,6 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
     
     private DatosBC[] datosBC; //[Bin, Espectro, numBC, BCClasificada, BCdeRF]
     
-    
     private final String COL_BIN = "Bin";
     private final String COL_ESP = "Esp";
     private final String COL_BC = "BC";
@@ -86,6 +89,8 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
     
     private final String TXT_SEP_ESPECTRO = " - Espectro ";
     private final String TXT_SEP_PROMEDIO = " - Promedio";
+
+    private final String TXT_TAB_GRAFICAS = "GRÁFICAS";
     
     private DatosTonoFFT[] frecMaxDatos; //[[Bin, Espectro, BC, Clave, Frecuencia, PosClasificacion]]; -- Ordenado por Bin-Espectro-BC
     private DatosTonoFFT[] tonoBinDatos; //[[Bin, Espectro, BC, Clave, Frecuencia, PosClasificacion]]; -- Ordenado por Bin-PosClasificacion
@@ -94,6 +99,10 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
     private ArrayList<Integer> modoSalida;
     private Integer idNorma;
     private ArrayList<AsuntoIncert> incertidumbres;
+
+    private Boolean esMiniAero;
+
+    private ArrayList<Integer[]> numEspectrosBin;
     
     private Integer valBinClasificacion;
     
@@ -107,7 +116,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
     private final Color COLOR_NADA = new Color(0, 255, 0);
     private final Color COLOR_ENMASCARAMIENTO = new Color(0, 0, 255);
     
-    public DatosResultadosFFTGUI(java.awt.Frame parent, String tipoTabla, Integer idAsunto, Integer idSite, Integer valBinMin, Integer valBinMax, ArrayList<Integer> modoSalida, Integer idNorma, ArrayList<AsuntoIncert> incertidumbres) {
+    public DatosResultadosFFTGUI(java.awt.Frame parent, String tipoTabla, Integer idAsunto, Integer idSite, Integer valBinMin, Integer valBinMax, ArrayList<Integer> modoSalida, Integer idNorma, Boolean esMiniAero, ArrayList<AsuntoIncert> incertidumbres, ArrayList<Integer[]> numEspectrosBin) {
         super(parent, true);
 
         initComponents();
@@ -121,12 +130,15 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
         this.modoSalida = modoSalida; //variable para control de llamadas entre diálogos
         
         this.idNorma = idNorma;
+        this.esMiniAero = esMiniAero;
         this.incertidumbres = incertidumbres;
         
         this.posGraDatos = 0;
         this.posGraDatosEsp = 0;
         this.posGraDatosEspBC = 0;
         this.mapMaxPosDatos = new LinkedHashMap<Integer, LinkedHashMap<Integer, Integer>>();
+
+		this.numEspectrosBin = numEspectrosBin;
         
         try {
             this.jtfAsunto.setText(AsuntoRA.getAsuntoPorId(idAsunto).getNombreCompleto());
@@ -299,15 +311,16 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
         });
 
         jpPrincipal.setBackground(new java.awt.Color(255, 255, 255));
+        jpPrincipal.setPreferredSize(new java.awt.Dimension(802, 693));
 
         jpClave.setBackground(new java.awt.Color(255, 255, 255));
         jpClave.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlAsunto.setText("  Asunto: ");
 
-        jtfAsunto.setBackground(new java.awt.Color(204, 204, 204));
         jtfAsunto.setEditable(false);
+        jtfAsunto.setBackground(new java.awt.Color(204, 204, 204));
         jtfAsunto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout jpClaveLayout = new javax.swing.GroupLayout(jpClave);
@@ -317,7 +330,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
             .addGroup(jpClaveLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jlAsunto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 338, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jtfAsunto, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -336,7 +349,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
 
         jpDatosFFT.setBackground(new java.awt.Color(255, 255, 255));
 
-        jlTitDatos.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jlTitDatos.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jlTitDatos.setForeground(new java.awt.Color(102, 102, 102));
         jlTitDatos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitDatos.setText("DATOS");
@@ -381,7 +394,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
 
         jpAnalisis.setBackground(new java.awt.Color(255, 255, 255));
 
-        jlTitAnalisis.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jlTitAnalisis.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jlTitAnalisis.setForeground(new java.awt.Color(102, 102, 102));
         jlTitAnalisis.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitAnalisis.setText("ANÁLISIS DE TONALIDAD");
@@ -498,13 +511,13 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
         jpClasificacion.setBackground(new java.awt.Color(255, 255, 255));
         jpClasificacion.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlTitClasificacion.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jlTitClasificacion.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jlTitClasificacion.setForeground(new java.awt.Color(102, 102, 102));
         jlTitClasificacion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitClasificacion.setText("CLASIFICACIÓN DE TONALIDAD");
         jlTitClasificacion.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlClasificacion.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlClasificacion.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlClasificacion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlClasificacion.setText("CLASIFICACIÓN DE TONOS");
 
@@ -539,7 +552,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
             }
         });
 
-        jlTonosEsp.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlTonosEsp.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlTonosEsp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTonosEsp.setText("TONOS DEL ESPECTRO");
 
@@ -588,7 +601,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
             }
         });
 
-        jlBinEstudio.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlBinEstudio.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlBinEstudio.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jpClasificacionLayout = new javax.swing.GroupLayout(jpClasificacion);
@@ -606,33 +619,26 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
                                     .addGroup(jpClasificacionLayout.createSequentialGroup()
                                         .addComponent(jbBinAnt, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jlBinEstudio, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                                        .addComponent(jlBinEstudio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGap(18, 18, 18)
                                         .addComponent(jbBinSig, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jlClasificacion, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE))
+                                    .addComponent(jlClasificacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(6, 6, 6))
-                            .addGroup(jpClasificacionLayout.createSequentialGroup()
-                                .addComponent(jspClasificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addComponent(jspClasificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jpClasificacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpClasificacionLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jbAnadirTono, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jbAnadirTono, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpClasificacionLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 4, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jpClasificacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jbSetValor, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jbClearValor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)))
-                            .addGroup(jpClasificacionLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jbEliminarTono, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jbClearValor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jbEliminarTono, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jpClasificacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jpClasificacionLayout.createSequentialGroup()
                                 .addGap(25, 25, 25)
                                 .addComponent(jlTonosEsp, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpClasificacionLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jpClasificacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jbAutocompletar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jspTonosEsp, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))))))
@@ -675,7 +681,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
         jpTonAud.setBackground(new java.awt.Color(255, 255, 255));
         jpTonAud.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlTitTonAud.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jlTitTonAud.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jlTitTonAud.setForeground(new java.awt.Color(102, 102, 102));
         jlTitTonAud.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitTonAud.setText("TONALIDAD / AUDIBILIDAD");
@@ -701,7 +707,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
         jspTonAud.setViewportView(jtTonAud);
 
         jbRecalcular.setBackground(new java.awt.Color(102, 102, 102));
-        jbRecalcular.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jbRecalcular.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jbRecalcular.setForeground(new java.awt.Color(255, 255, 255));
         jbRecalcular.setText("RECALCULAR");
         jbRecalcular.addActionListener(new java.awt.event.ActionListener() {
@@ -741,14 +747,14 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
             jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpDatosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jtpDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 758, Short.MAX_VALUE)
+                .addComponent(jtpDatos)
                 .addContainerGap())
         );
         jpDatosLayout.setVerticalGroup(
             jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpDatosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jtpDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+                .addComponent(jtpDatos)
                 .addContainerGap())
         );
 
@@ -781,9 +787,9 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jpDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jpClave, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpPrincipalLayout.createSequentialGroup()
+                    .addGroup(jpPrincipalLayout.createSequentialGroup()
                         .addComponent(jbAnt, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 582, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbSig, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -794,11 +800,11 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
                 .addComponent(jpClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jpDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbSig)
-                    .addComponent(jbAnt))
-                .addGap(45, 45, 45))
+                    .addComponent(jbAnt)
+                    .addComponent(jbSig))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -809,11 +815,11 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-810)/2, (screenSize.height-734)/2, 810, 734);
+        setSize(new java.awt.Dimension(818, 731));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void crearColsDatos() throws SQLException {
@@ -845,7 +851,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
         Object[] cols, colsBC;
         crearColsDatos();
         
-        ArrayList<ResultadoBinFFT> resultados = DatosRA2.getResultadosFFTClasificados(this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, this.desdeFrec, this.hastaFrec, jpb, 0.75, true);
+        ArrayList<ResultadoBinFFT> resultados = DatosRA2.getResultadosFFTClasificados(this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, this.desdeFrec, this.hastaFrec, jpb, 0.75, !this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0));
         ResultadoBinFFT resultadoBin;
         ArrayList<ResultadoEspectroFFT> resultadosEsp;
         ResultadoEspectroFFT resultadoEsp;
@@ -885,10 +891,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
                     cols[1] = j + 1;
                     cols[2] = k + 1;
                     //cols[3] = resultadoEsp.getXmlEspectro();
-                    
-                    for (int l = 0; l < colsBC.length; l++) {
-                        cols[l+3] = colsBC[l];
-                    }
+					System.arraycopy(colsBC, 0, cols, 3, colsBC.length);
                     
                     dtmDatosCoRF.addRow(cols);
                     
@@ -981,6 +984,20 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
         texto.setFont(new Font("Arial", Font.BOLD, 13));
         chart.setBackgroundPaint(Color.WHITE);
         CategoryPlot plot = (CategoryPlot) chart.getPlot();
+
+		ValueAxis ranAxis = plot.getRangeAxis();
+		String labelAxis = ranAxis.getLabel();
+		Font f = ranAxis.getLabelFont();
+
+		AttributedString as = new AttributedString(labelAxis);
+
+		as.addAttribute(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUB, labelAxis.indexOf("A)"), labelAxis.indexOf("A)") + 1);
+		as.addAttribute(TextAttribute.SIZE, f.getSize());
+		as.addAttribute(TextAttribute.FAMILY, f.getFamily());
+		if (f.isBold())
+			as.addAttribute(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+
+		ranAxis.setAttributedLabel(as);
         
         plot.getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 4.0));
         
@@ -1374,7 +1391,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
                 this.update(this.getGraphics());
             }
         }
-    } catch (Exception e) {
+    } catch (CloneNotSupportedException e) {
         MensajeApp.muestraError(this, e, "Fallo realizando la operación");
     }
 }
@@ -1396,7 +1413,8 @@ private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
         this.jbGraDatosEspBCSig.setIcon(Auxiliares.ICONO_NEXT);
         
         //Establecemos las pestañas de JTabbedPane
-        Auxiliares.setTitulosJTabbedPane(this.jtpDatos, new String[]{"DATOS", "GRÁFICAS", "CLASIFICACIÓN", "TONALIDAD / AUDIBILIDAD"});
+		String[] titulosTabs = new String[]{"DATOS", TXT_TAB_GRAFICAS, "CLASIFICACIÓN", "TONALIDAD / AUDIBILIDAD"};
+        Auxiliares.setTitulosJTabbedPane(this.jtpDatos, titulosTabs);
         
         //Maximizamos las pestañas
         Auxiliares.maximizaTitulosJTabbedPane(this.jtpDatos);
@@ -1410,7 +1428,17 @@ private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
         
             if (JOptionPane.showConfirmDialog(this, "¿Desea graficar los resultados? Esto podría incrementar el tiempo de espera", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 graficar = true;
-            }
+            } else {
+				//Deshabilitamos la pestaña de FFT
+				int nTabs = titulosTabs.length;
+				for (int i = nTabs - 1; i >= 0; i--) {
+					if (titulosTabs[i].contentEquals(TXT_TAB_GRAFICAS))
+					this.jtpDatos.remove(i);
+				}
+
+				//Maximizamos las pestañas
+				Auxiliares.maximizaTitulosJTabbedPane(this.jtpDatos);
+			}
 
             //Rellenamos los datos
             Auxiliares.bloqueaDialog(this, true);
@@ -1621,7 +1649,7 @@ private void siguiente(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguie
         Auxiliares.bloqueaDialog(this, false);
 
         this.setVisible(false);
-        DatosIncertidumbreGUI dI = new DatosIncertidumbreGUI((Frame) this.getParent(), this.tipoTabla, this.idAsunto, datosIncertidumbre, this.modoSalida);
+        DatosIncertidumbreGUI dI = new DatosIncertidumbreGUI((Frame) this.getParent(), this.tipoTabla, this.idAsunto, datosIncertidumbre, this.idNorma, this.modoSalida);
         dI.setVisible(true);
 
         //Si volvemos para una modificación (atrás), mostramos de nuevo el diálogo
@@ -1911,6 +1939,36 @@ private int getFilaDatos(Integer valBin, Integer valEsp, Integer valBC, DefaultT
     return fila;
 }
 
+private String criterioAudibilidad(Integer valBin, Double audibilidad, Integer nTonos) {
+    String res = null;
+
+    if (this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) {
+		int n = this.numEspectrosBin.size();
+
+		for (int i = 0; i < n; i++) {
+			if (this.numEspectrosBin.get(i)[0].equals(valBin)) { //Estamos en el bin correcto
+				int numEspectros = this.numEspectrosBin.get(i)[1];
+
+				if (audibilidad >= -3.0) {
+					if (nTonos < 0.2 * numEspectros && numEspectros >= 10)
+					res = audibilidad + " - Tono no relevante";
+					else if (nTonos > 0.2 * numEspectros && nTonos < 6)
+					res = audibilidad + " - Se requieren más medidas";
+					else
+					res = audibilidad.toString();
+					
+				} else
+					res = audibilidad + " - Tono no relevante";
+			
+				break;
+			}
+		}
+    } else
+		res = audibilidad >= -3.0 ? audibilidad.toString() : audibilidad + " - Tono no relevante";
+
+    return res;
+}
+
 private void recalcularTonAud(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recalcularTonAud
     DefaultTableModel dtmDatos = (DefaultTableModel) this.jtDatos.getModel();
     TableColumnModel tcmDatos = this.jtDatos.getColumnModel();
@@ -1939,7 +1997,10 @@ private void recalcularTonAud(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
     Integer posClasificacion = null, posClasificacionAnt = null;
     
     RowsTableCellRenderer rtcr = new RowsTableCellRenderer();
-    
+
+    Boolean anadirTonalidadSinTonos = !this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) || this.esMiniAero; //Aplicable para todas las normas excepto IEC 3.0 donde solo se aplica a miniaeros
+    Boolean corregirRF = !this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0); //Aplicable para todas las normas excepto IEC 3.0
+	    
     int nDatosTonoBin = this.tonoBinDatos.length;
     for (int i = 0; i < nDatosTonoBin; i++) {
         tonoBinDato = this.tonoBinDatos[i];
@@ -1953,7 +2014,7 @@ private void recalcularTonAud(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
                 tonalidad = DatosRA2.getTonalidadPromedioEspectros(tonalidadesEsp);
                 audibilidad = DatosRA2.getAudibilidadTonal(tonalidad, frecSum/tonalidadesEsp.size());
                 
-                dtmTonAud.addRow(new Object[]{valBinAnt, posClasificacionAnt + TXT_SEP_PROMEDIO, tonalidad, audibilidad >= -3.0 ? audibilidad + " *** " : audibilidad});
+                dtmTonAud.addRow(new Object[]{valBinAnt, posClasificacionAnt + TXT_SEP_PROMEDIO, tonalidad, criterioAudibilidad(valBin, audibilidad, tonalidadesEsp.size())});
                 rtcr.addColoredRow(dtmTonAud.getRowCount() - 1, Color.LIGHT_GRAY, Color.BLACK);
             }
             
@@ -1977,7 +2038,7 @@ private void recalcularTonAud(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
         bandaCriticaRF = datoBC.getBandaCriticaRF();
         nivelCriterio = (Double) dtmDatos.getValueAt(getFilaDatos(valBin, tonoBinDato.getValEsp(), tonoBinDato.getValBC(), dtmDatos, tcmDatos), colNivelCriterio);
 
-        tonalidadEsp = DatosRA2.getTonalidadEspectro(bandaCriticaClasAG, tonoBinDato.getFrecMax(), bandaCriticaRF, nivelCriterio, true, true);
+        tonalidadEsp = DatosRA2.getTonalidadEspectro(bandaCriticaClasAG, tonoBinDato.getFrecMax(), bandaCriticaRF, nivelCriterio, anadirTonalidadSinTonos, corregirRF);
         
         //Lo guardamos para posibles futuros usos
         this.tonoBinDatos[i].setTonalidad(tonalidadEsp);
@@ -1993,7 +2054,7 @@ private void recalcularTonAud(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
             tonalidad = DatosRA2.getTonalidadPromedioEspectros(tonalidadesEsp);
             audibilidad = DatosRA2.getAudibilidadTonal(tonalidad, frecSum/tonalidadesEsp.size());
             
-            dtmTonAud.addRow(new Object[]{valBin, posClasificacion + TXT_SEP_PROMEDIO, tonalidad, audibilidad >= -3.0 ? audibilidad + " *** " : audibilidad});
+            dtmTonAud.addRow(new Object[]{valBin, posClasificacion + TXT_SEP_PROMEDIO, tonalidad, criterioAudibilidad(valBin, audibilidad, tonalidadesEsp.size())});
             rtcr.addColoredRow(dtmTonAud.getRowCount() - 1, Color.LIGHT_GRAY, Color.BLACK);
         }
     }
@@ -2025,6 +2086,8 @@ private void autocompletarClasificacion(java.awt.event.ActionEvent evt) {//GEN-F
         Double frecMax = null;
         Double anchoBandaCritica = null;
         int nDatosMaxBin = -1, ultPosOcup = -1;
+
+		Double margenTono = this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) ? 0.25 : 0.1;
                 
         for (int i = 0; i < nDatos; i++) {
             valBin = this.frecMaxDatos[i].getValBin();
@@ -2050,7 +2113,7 @@ private void autocompletarClasificacion(java.awt.event.ActionEvent evt) {//GEN-F
             this.frecMaxDatos[i].setPosClasificacion(null);
             
             for (int j = 0; j < nDatosMaxBin; j++) {
-                if (ultPosOcup != (j + 1) && Math.abs(frecMax - datoMaxBin[j].getFrecMax()) <= anchoBandaCritica * 0.1) {  //Lo consideramos el mismo tono
+                if (ultPosOcup != (j + 1) && Math.abs(frecMax - datoMaxBin[j].getFrecMax()) <= anchoBandaCritica * margenTono) {  //Lo consideramos el mismo tono
                     this.frecMaxDatos[i].setPosClasificacion(j + 1);
                     ultPosOcup = j + 1;
                     break;
@@ -2138,7 +2201,7 @@ private void modificarTipoDato(CategoryItemEntity item) {
 
                 //Actualizamos las gráficas para visualizar el cambio
                 if (this.datasetDatos != null)
-                this.datasetDatos.setValue(null, rowKey + txtSufijo, frecMax);
+					this.datasetDatos.setValue(null, rowKey + txtSufijo, frecMax);
                 this.datasetDatos.setValue(nivelFrecMax, rowKey + txtSufijoNuevo, frecMax);
                 
                 muestraGraDatos(null, null, null);

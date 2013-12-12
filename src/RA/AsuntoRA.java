@@ -356,9 +356,7 @@ public class AsuntoRA {
         return res;
     }
     
-    private static String getCondicion(Integer idAsunto, String codigo, String nombre, Integer pE, Integer idNorma, Integer periodicidad, Boolean clave,
-            Integer idCliente, Integer idResponsable, Integer idAero, Boolean abierto, String posicion, String nCorto, Character idioma,
-            Long finiPC, Long finiSC, Long finiME1, Long finiME10, Integer tipo, ArrayList<Object[]> paramsPS) {
+    private static String getCondicion(Integer idAsunto, String codigo, String nombre, Integer pE, Integer idNorma, Integer periodicidad, Boolean clave, Integer idCliente, Integer idResponsable, Integer idAero, Boolean abierto, String posicion, String nCorto, Character idioma, Long finiPC, Long finiSC, Long finiME1, Long finiME10, Integer tipo, ArrayList<Object[]> paramsPS) {
         String condicion = "";
         
         if (idAsunto != null) {
@@ -423,10 +421,7 @@ public class AsuntoRA {
     }
     
     //Función para obtener la colección de Asuntos que se ajustan a los limites pasados
-    public static ArrayList<AsuntoRA> getAsuntos(Integer idAsunto, String codigo, String nombre, Integer pE, Integer idNorma, Integer periodicidad, Boolean clave,
-            Integer idCliente, Integer idResponsable, Integer idAero, Boolean abierto, String posicion, String nCorto, Character idioma,
-            Long finiPC, Long finiSC, Long finiME1, Long finiME10, Integer tipo,  
-            ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
+    public static ArrayList<AsuntoRA> getAsuntos(Integer idAsunto, String codigo, String nombre, Integer pE, Integer idNorma, Integer periodicidad, Boolean clave, Integer idCliente, Integer idResponsable, Integer idAero, Boolean abierto, String posicion, String nCorto, Character idioma, Long finiPC, Long finiSC, Long finiME1, Long finiME10, Integer tipo,  ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
         InteraccionBD interBD = new InteraccionBD();
 
         ArrayList<AsuntoRA> res = null;
@@ -456,8 +451,7 @@ public class AsuntoRA {
     }
     
     //Función para obtener la colección de Asunos que se ajustan a los limites pasados
-    public static ArrayList<AsuntoRA> getAsuntosPorId(Integer desdeIdAsunto, Integer hastaIdAsunto,
-            ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
+    public static ArrayList<AsuntoRA> getAsuntosPorId(Integer desdeIdAsunto, Integer hastaIdAsunto, ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
         InteraccionBD interBD = new InteraccionBD();
 
         ArrayList<AsuntoRA> res = null;
@@ -503,17 +497,14 @@ public class AsuntoRA {
     // Inserta una linea en interpolacion (si tipo=0,1)
     // Inserta en la tabla contactos (si jesus no es contatco de cliente, se inserta tb como contacto)
     // Devuelve true si el codigo del asunto ya existe
-    public boolean insertAsunto(String codigo, String nombre, Integer pe, Integer norma, Integer periodicidad, Integer cliente, Integer responsable,
-            Integer aero, String nPos, ArrayList<String> contactoAsunto, String nCorto, String idioma, Integer tipo, String sqlExtra) throws SQLException, NoSuchFieldException, IOException, ClassNotFoundException {
+    public boolean insertAsunto(String codigo, String nombre, Integer pe, Integer norma, Integer periodicidad, Integer cliente, Integer responsable, Integer aero, String nPos, ArrayList<String> contactoAsunto, String nCorto, String idioma, Integer tipo, String sqlExtra) throws SQLException, NoSuchFieldException, IOException, ClassNotFoundException {
 
         InteraccionBD interBD = new InteraccionBD();
         boolean res = false;
-        int nFilas = 0;
         File folder = null;
 
         try {
             Aerogenerador AG = new Aerogenerador();
-            Cliente C = new Cliente();
 
             // Se comprueba si existe y el último insertado
             ArrayList<String> campos = new ArrayList<String>();
@@ -617,7 +608,7 @@ public class AsuntoRA {
                 campos.add(CAMPO_TIPO);
             }
 
-            nFilas = interBD.insertDatosTabla(TABLA, campos, valores, paramsPS, null, autoInc, condAutoInc);
+            int nFilas = interBD.insertDatosTabla(TABLA, campos, valores, paramsPS, null, autoInc, condAutoInc);
 
             // Se inserta la linea de interpolacion
             Double vCut = AG.getVcut(aero);
@@ -650,12 +641,7 @@ public class AsuntoRA {
         return res;
     }
     //Función para añadir una incidencia a la BD
-    public static int updateAsunto(Integer idAsunto, String codigo, String nombre, Integer pE, Integer idNorma, Integer periodicidad, Boolean clave,
-            Integer idCliente, Integer idResponsable, Integer idAero, Boolean abierto, String posicion, String nCorto, Character idioma,
-            Long finiPC, Long finiSC, Long finiME1, Long finiME10, Integer tipo,
-            Integer idAsuntoVal, String codigoVal, String nombreVal, Integer pEVal, Integer idNormaVal, Integer periodicidadVal, Boolean claveVal,
-            Integer idClienteVal, Integer idResponsableVal, Integer idAeroVal, Boolean abiertoVal, String posicionVal, String nCortoVal, Character idiomaVal,
-            Long finiPCVal, Long finiSCVal, Long finiME1Val, Long finiME10Val, Integer tipoVal, ArrayList<String> contactoAsuntoVal, String sqlExtra) throws SQLException, IOException, ClassNotFoundException, NoSuchFieldException {
+    public static int updateAsunto(Integer idAsunto, String codigo, String nombre, Integer pE, Integer idNorma, Integer periodicidad, Boolean clave, Integer idCliente, Integer idResponsable, Integer idAero, Boolean abierto, String posicion, String nCorto, Character idioma, Long finiPC, Long finiSC, Long finiME1, Long finiME10, Integer tipo, Integer idAsuntoVal, String codigoVal, String nombreVal, Integer pEVal, Integer idNormaVal, Integer periodicidadVal, Boolean claveVal, Integer idClienteVal, Integer idResponsableVal, Integer idAeroVal, Boolean abiertoVal, String posicionVal, String nCortoVal, Character idiomaVal, Long finiPCVal, Long finiSCVal, Long finiME1Val, Long finiME10Val, Integer tipoVal, ArrayList<String> contactoAsuntoVal, String sqlExtra) throws SQLException, IOException, ClassNotFoundException, NoSuchFieldException {
         InteraccionBD interBD = new InteraccionBD();
 
         String condicion = "";
@@ -756,8 +742,7 @@ public class AsuntoRA {
         interFic.escribeLineaFic("Proceso de Modificación (Asunto) a: " + formatoFechaHora.format(new Date()));
         interFic.escribeLineaFic("Estado previo:");
 
-        AsuntoRA asunto = new AsuntoRA(idAsunto, codigo, nombre, pE, idNorma, periodicidad, clave, idCliente, idResponsable, idAero, abierto,
-                posicion, nCorto, idioma, finiPC, finiSC, finiME1, finiME10, tipo);
+        AsuntoRA asunto = new AsuntoRA(idAsunto, codigo, nombre, pE, idNorma, periodicidad, clave, idCliente, idResponsable, idAero, abierto, posicion, nCorto, idioma, finiPC, finiSC, finiME1, finiME10, tipo);
         interFic.escribeLineaFic(asunto.toString());
 
         interBD.inicioTransaccion();
@@ -921,9 +906,7 @@ public class AsuntoRA {
     }
     
     //Función para eliminar Asuntos que se ajustan a los limites pasados
-    public static int deleteAsuntos(Integer idAsunto, String codigo, String nombre, Integer pE, Integer idNorma, Integer periodicidad, Boolean clave,
-            Integer idCliente, Integer idResponsable, Integer idAero, Boolean abierto, String posicion, String nCorto, Character idioma,
-            Long finiPC, Long finiSC, Long finiME1, Long finiME10, Integer tipo, String sqlExtra) throws SQLException, ClassNotFoundException, IOException {
+    public static int deleteAsuntos(Integer idAsunto, String codigo, String nombre, Integer pE, Integer idNorma, Integer periodicidad, Boolean clave, Integer idCliente, Integer idResponsable, Integer idAero, Boolean abierto, String posicion, String nCorto, Character idioma, Long finiPC, Long finiSC, Long finiME1, Long finiME10, Integer tipo, String sqlExtra) throws SQLException, ClassNotFoundException, IOException {
         InteraccionBD interBD = new InteraccionBD();
         
         String condicion = "";
@@ -936,7 +919,7 @@ public class AsuntoRA {
         Interpolacion.deleteInterpolaciones(idAsunto, null, null, null);
         AsuntoContacto.deleteAsuntoConta(null, idAsunto, null, null, null);
         AsuntoPosicionRA.deletePosicionesRA(idAsunto, null, null, null, null, null, null);
-        AsuntoConfRA.deleteAsuntoConfs(idAsunto, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        AsuntoConfRA.deleteAsuntoConfs(idAsunto, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         AsuntoConfRAModos.deleteAsuntoConfs(idAsunto, null, null, null);
         AsuntoIncert.deleteAsuntoIncerts(idAsunto, null, null, null, null, null);
         

@@ -21,19 +21,18 @@ public class AerogeneradorRA {
     private Double longBuje;
     
     public static final String TABLA = "Aerogenerador";
-    public static final String CAMPO_ID_AERO = "Id_aero";
-    public static final String CAMPO_MODELO = "Modelo";
-    public static final String CAMPO_H_B = "Hb";
-    public static final String CAMPO_FAB = "Fabricante";
-    public static final String CAMPO_D_N = "Dn";
-    public static final String CAMPO_P_NOM = "Pnominal";
-    public static final String CAMPO_V_IN = "Vin";
-    public static final String CAMPO_V_CUT = "Vcut";
-    public static final String CAMPO_LINEAS = "Lineas";
-    public static final String CAMPO_REG = "Regulacion";
-    public static final String CAMPO_V_NOM = "Vnominal";
-    public static final String CAMPO_PEQ = "Pequeño";
-    public static final String CAMPO_LONG_BUJE = "LongBuje";
+    public static final String CAMPO_ID_AERO = TABLA + "." + "Id_aero";
+    public static final String CAMPO_MODELO = TABLA + "." + "Modelo";
+    public static final String CAMPO_H_B = TABLA + "." + "Hb";
+    public static final String CAMPO_FAB = TABLA + "." + "Fabricante";
+    public static final String CAMPO_D_N = TABLA + "." + "Dn";
+    public static final String CAMPO_P_NOM = TABLA + "." + "Pnominal";
+    public static final String CAMPO_V_IN = TABLA + "." + "Vin";
+    public static final String CAMPO_V_CUT = TABLA + "." + "Vcut";
+    public static final String CAMPO_LINEAS = TABLA + "." + "Lineas";
+    public static final String CAMPO_REG = TABLA + "." + "Regulacion";
+    public static final String CAMPO_V_NOM = TABLA + "." + "Vnominal";
+    public static final String CAMPO_PEQ = TABLA + "." + "Pequeño";
 
     public AerogeneradorRA(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje) {
         this.idAero = idAero;
@@ -206,7 +205,7 @@ public class AerogeneradorRA {
             this.vNominal = (Double) valor;
         } else if (campo.compareTo(CAMPO_PEQ) == 0) {
             this.pequeno = (Boolean) valor;
-        } else if (campo.compareTo(CAMPO_LONG_BUJE) == 0) {
+        } else if (campo.compareTo(AeroExtraRA.CAMPO_LONG_BUJE) == 0) {
             if (valor != null)
                 this.longBuje = ((BigDecimal) valor).doubleValue();
             else
@@ -216,8 +215,7 @@ public class AerogeneradorRA {
         }
     }
     
-    private static String getCondicion(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, 
-            Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, ArrayList<Object[]> paramsPS) {
+    private static String getCondicion(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, ArrayList<Object[]> paramsPS) {
         String condicion = "";
         
         if (idAero != null) {
@@ -256,17 +254,17 @@ public class AerogeneradorRA {
         if (pequeno != null) {
             condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CAMPO_PEQ, "=", pequeno);
         }
+
+		//Campos externos
         if (longBuje != null) {
-            condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CAMPO_LONG_BUJE, "=", longBuje);
+            condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, AeroExtraRA.CAMPO_LONG_BUJE, "=", longBuje);
         }
         
         return condicion;
     }
 
     //Función para obtener la colección de Aerogeneradores que se ajustan a los limites pasados
-    public static ArrayList<AerogeneradorRA> getAeros(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, 
-            Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, 
-            ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
+    public static ArrayList<AerogeneradorRA> getAeros(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
         InteraccionBD interBD = new InteraccionBD();
         
         ArrayList<AerogeneradorRA> res = null;
@@ -274,14 +272,40 @@ public class AerogeneradorRA {
         ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
 
         condicion = getCondicion(idAero, modelo, hB, fabricante, dN, pNominal, vIn, vCut, lineas, regulacion, vNominal, pequeno, longBuje, paramsPS);
-        
+
+		//Añadimos la conectividad entre tablas
+        if (longBuje != null) {
+			condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CAMPO_ID_AERO, InteraccionBD.ASIGNACION_CAMPOS, AeroExtraRA.CAMPO_ID_AERO);
+        }
+
+		if (campos == null || campos.isEmpty()) {
+			Object[] camposAero = interBD.getCamposTabla(TABLA);
+			Object[] camposAeroExtra = interBD.getCamposTabla(AeroExtraRA.TABLA);
+
+			campos = new ArrayList<String>();
+
+			int nCamposAero = camposAero.length;
+			for (int i = 0; i < nCamposAero; i++) {
+				campos.add(TABLA + "." + (String) camposAero[i]);
+			}
+
+			int nCamposAeroExtra = camposAeroExtra.length;
+			for (int i = 0; i < nCamposAeroExtra; i++) {
+				if (!campos.contains(TABLA + "." + (String) camposAeroExtra[i])) //Si el campo ya está es porque es de interrelación
+					campos.add(AeroExtraRA.TABLA + "." + (String) camposAeroExtra[i]);
+			}
+		}
+
+        String tabla = InteraccionBD.anadeTabla(null, TABLA);
+        tabla = InteraccionBD.anadeTabla(tabla, AeroExtraRA.TABLA);
+
         //Por defecto lo devolvemos ordenado por aero
         if (sqlExtra == null || sqlExtra.trim().length() == 0) {
             String sqlOrderBy = InteraccionBD.anadeCampoOrderBy(null, CAMPO_ID_AERO);
             sqlExtra = InteraccionBD.anadeSqlExtra(null, sqlOrderBy);
         }
 
-        ArrayList<Object[]> resAux = interBD.getDatosTabla(TABLA, campos, condicion, paramsPS, sqlExtra, distinct);
+        ArrayList<Object[]> resAux = interBD.getDatosTabla(tabla, campos, condicion, paramsPS, sqlExtra, distinct);
 
         if (resAux != null) {
             int n = resAux.size();
@@ -376,8 +400,7 @@ public class AerogeneradorRA {
     }
 
     //Función para añadir una aero a la BD
-    public static int insertAerogenerador(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, 
-            Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, String sqlExtra) throws SQLException {
+    public static int insertAerogenerador(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         
         String valores = "";
@@ -385,7 +408,7 @@ public class AerogeneradorRA {
         ArrayList<String> campos = new ArrayList<String>();
         ArrayList<String> autoInc = new ArrayList<String>();
         ArrayList<String> condAutoInc = new ArrayList<String>();
-        int res = 0;
+        int res = 0, resExtra = 0;
         
         if (idAero != null) {
             valores = InteraccionBD.anadeCampoValor(valores, paramsPS, idAero);
@@ -440,34 +463,38 @@ public class AerogeneradorRA {
             valores = InteraccionBD.anadeCampoValor(valores, paramsPS, pequeno);
             campos.add(CAMPO_PEQ);
         }
-        if (longBuje != null) {
-            valores = InteraccionBD.anadeCampoValor(valores, paramsPS, longBuje);
-            campos.add(CAMPO_PEQ);
-        }
 
         interBD.inicioTransaccion();
         res = interBD.insertDatosTabla(TABLA, campos, valores, paramsPS, sqlExtra, autoInc, condAutoInc);
+
+		//Campos externos
+        if (longBuje != null) {
+			resExtra = AeroExtraRA.insertAeroExtra(idAero, longBuje, sqlExtra);
+
+			if (res != resExtra) {
+				interBD.rollback();
+
+				res = res * resExtra;
+			}
+        }
+
         interBD.finTransaccion();
         
         return res;
     }
     
     public static int insertAerogenerador(AerogeneradorRA aero, String sqlExtra) throws SQLException {
-        return insertAerogenerador(aero.idAero, aero.modelo, aero.hB, aero.fabricante, aero.dN, aero.pNominal, 
-            aero.vIn, aero.vCut, aero.lineas, aero.regulacion, aero.vNominal, aero.pequeno, aero.longBuje, sqlExtra);
+        return insertAerogenerador(aero.idAero, aero.modelo, aero.hB, aero.fabricante, aero.dN, aero.pNominal, aero.vIn, aero.vCut, aero.lineas, aero.regulacion, aero.vNominal, aero.pequeno, aero.longBuje, sqlExtra);
     }
     
     //Función para añadir una aero a la BD
-    public static int updateAerogenerador(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, 
-            Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, 
-            Integer idAeroVal, String modeloVal, Double hBVal, String fabricanteVal, Double dNVal, Double pNominalVal, 
-            Double vInVal, Double vCutVal, Integer lineasVal, Boolean regulacionVal, Double vNominalVal, Boolean pequenoVal, Double longBujeVal, String sqlExtra) throws SQLException {
+    public static int updateAerogenerador(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, Integer idAeroVal, String modeloVal, Double hBVal, String fabricanteVal, Double dNVal, Double pNominalVal, Double vInVal, Double vCutVal, Integer lineasVal, Boolean regulacionVal, Double vNominalVal, Boolean pequenoVal, Double longBujeVal, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         
         String condicion = "";
         ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
         ArrayList<String> campos = new ArrayList<String>();
-        int res = 0;
+        int res = 0, resExtra = 0;
         
         if (idAeroVal != null && !idAeroVal.equals(idAero)) {
             InteraccionBD.anadeCampoValor(null, paramsPS, idAeroVal);
@@ -517,37 +544,41 @@ public class AerogeneradorRA {
             InteraccionBD.anadeCampoValor(null, paramsPS, pequenoVal);
             campos.add(CAMPO_PEQ);
         }
-        if (longBujeVal != null && !longBujeVal.equals(longBuje)) {
-            InteraccionBD.anadeCampoValor(null, paramsPS, longBujeVal);
-            campos.add(CAMPO_LONG_BUJE);
-        }
-        
+
         //Condiciones de actualización
-        condicion = getCondicion(idAero, modelo, hB, fabricante, dN, pNominal, vIn, vCut, lineas, regulacion, vNominal, pequeno, longBuje, paramsPS);
+        condicion = getCondicion(idAero, modelo, hB, fabricante, dN, pNominal, vIn, vCut, lineas, regulacion, vNominal, pequeno, null, paramsPS);
+
+		ArrayList<String> tablas = new ArrayList<String>();
+		tablas.add(TABLA);
+		tablas.add(AeroExtraRA.TABLA);
         
         interBD.inicioTransaccion();
-        res = interBD.updateDatosTabla(TABLA, campos, condicion, paramsPS, sqlExtra);
+		res = interBD.updateDatosTablaFrom(TABLA, tablas, campos, condicion, paramsPS, sqlExtra);
+
+		//Campos extermos
+        if (longBujeVal != null && !longBujeVal.equals(longBuje)) {
+			resExtra = AeroExtraRA.updateAeroExtra(idAero, longBuje, idAeroVal, longBujeVal, sqlExtra);
+
+			if (res != resExtra) {
+				interBD.rollback();
+
+				res = res * resExtra;
+			}
+        }
         interBD.finTransaccion();
         
         return res;
     }
     
     public static int updateAerogenerador(AerogeneradorRA aeroViejo, AerogeneradorRA aeroNuevo, String sqlExtra) throws SQLException {
-        return updateAerogenerador(aeroViejo.idAero, aeroViejo.modelo, aeroViejo.hB, aeroViejo.fabricante, aeroViejo.dN, aeroViejo.pNominal, 
-            aeroViejo.vIn, aeroViejo.vCut, aeroViejo.lineas, aeroViejo.regulacion, aeroViejo.vNominal, aeroViejo.pequeno, aeroViejo.longBuje, 
-            aeroNuevo.idAero, aeroNuevo.modelo, aeroNuevo.hB, aeroNuevo.fabricante, aeroNuevo.dN, aeroNuevo.pNominal, 
-            aeroNuevo.vIn, aeroNuevo.vCut, aeroNuevo.lineas, aeroNuevo.regulacion, aeroNuevo.vNominal, aeroNuevo.pequeno, aeroNuevo.longBuje, sqlExtra);
+        return updateAerogenerador(aeroViejo.idAero, aeroViejo.modelo, aeroViejo.hB, aeroViejo.fabricante, aeroViejo.dN, aeroViejo.pNominal, aeroViejo.vIn, aeroViejo.vCut, aeroViejo.lineas, aeroViejo.regulacion, aeroViejo.vNominal, aeroViejo.pequeno, aeroViejo.longBuje, aeroNuevo.idAero, aeroNuevo.modelo, aeroNuevo.hB, aeroNuevo.fabricante, aeroNuevo.dN, aeroNuevo.pNominal, aeroNuevo.vIn, aeroNuevo.vCut, aeroNuevo.lineas, aeroNuevo.regulacion, aeroNuevo.vNominal, aeroNuevo.pequeno, aeroNuevo.longBuje, sqlExtra);
     }
     
     //Función para añadir/modificar una aero a la BD
-    public static int insertOrUpdateAerogenerador(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, 
-            Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, 
-            Integer idAeroVal, String modeloVal, Double hBVal, String fabricanteVal, Double dNVal, Double pNominalVal, 
-            Double vInVal, Double vCutVal, Integer lineasVal, Boolean regulacionVal, Double vNominalVal, Boolean pequenoVal, Double longBujeVal, String sqlExtra) throws SQLException {
+    public static int insertOrUpdateAerogenerador(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, Integer idAeroVal, String modeloVal, Double hBVal, String fabricanteVal, Double dNVal, Double pNominalVal, Double vInVal, Double vCutVal, Integer lineasVal, Boolean regulacionVal, Double vNominalVal, Boolean pequenoVal, Double longBujeVal, String sqlExtra) throws SQLException {
         int res;
         
-        res = updateAerogenerador(idAero, modelo, hB, fabricante, dN, pNominal, vIn, vCut, lineas, regulacion, vNominal, pequeno, longBuje, 
-                idAeroVal, modeloVal, hBVal, fabricanteVal, dNVal, pNominalVal, vInVal, vCutVal, lineasVal, regulacionVal, vNominalVal, pequenoVal, longBujeVal, sqlExtra);
+        res = updateAerogenerador(idAero, modelo, hB, fabricante, dN, pNominal, vIn, vCut, lineas, regulacion, vNominal, pequeno, longBuje, idAeroVal, modeloVal, hBVal, fabricanteVal, dNVal, pNominalVal, vInVal, vCutVal, lineasVal, regulacionVal, vNominalVal, pequenoVal, longBujeVal, sqlExtra);
         
         if (res < 0)
             res = insertAerogenerador(idAeroVal, modeloVal, hBVal, fabricanteVal, dNVal, pNominalVal, vInVal, vCutVal, lineasVal, regulacionVal, vNominalVal, pequenoVal, longBujeVal, sqlExtra);
@@ -557,38 +588,36 @@ public class AerogeneradorRA {
     
     public static int insertOrUpdateAerogenerador(AerogeneradorRA aeroViejo, AerogeneradorRA aeroNuevo, String sqlExtra) throws SQLException {
         
-        return insertOrUpdateAerogenerador(aeroViejo.idAero, aeroViejo.modelo, aeroViejo.hB, aeroViejo.fabricante, aeroViejo.dN, aeroViejo.pNominal, 
-            aeroViejo.vIn, aeroViejo.vCut, aeroViejo.lineas, aeroViejo.regulacion, aeroViejo.vNominal, aeroViejo.pequeno, aeroViejo.longBuje,
-            aeroNuevo.idAero, aeroNuevo.modelo, aeroNuevo.hB, aeroNuevo.fabricante, aeroNuevo.dN, aeroNuevo.pNominal, 
-            aeroNuevo.vIn, aeroNuevo.vCut, aeroNuevo.lineas, aeroNuevo.regulacion, aeroNuevo.vNominal, aeroNuevo.pequeno, aeroNuevo.longBuje, sqlExtra);
+        return insertOrUpdateAerogenerador(aeroViejo.idAero, aeroViejo.modelo, aeroViejo.hB, aeroViejo.fabricante, aeroViejo.dN, aeroViejo.pNominal, aeroViejo.vIn, aeroViejo.vCut, aeroViejo.lineas, aeroViejo.regulacion, aeroViejo.vNominal, aeroViejo.pequeno, aeroViejo.longBuje, aeroNuevo.idAero, aeroNuevo.modelo, aeroNuevo.hB, aeroNuevo.fabricante, aeroNuevo.dN, aeroNuevo.pNominal, aeroNuevo.vIn, aeroNuevo.vCut, aeroNuevo.lineas, aeroNuevo.regulacion, aeroNuevo.vNominal, aeroNuevo.pequeno, aeroNuevo.longBuje, sqlExtra);
     }
     
     //Función para eliminar Aerogeneradores que se ajustan a los limites pasados
-    public static int deleteAerogeneradores(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, 
-            Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, String sqlExtra) throws SQLException {
+    public static int deleteAerogeneradores(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         
         String condicion = "";
         ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
-        int res = 0;
+        int res = 0, resExtra = 0;
 
         condicion = getCondicion(idAero, modelo, hB, fabricante, dN, pNominal, vIn, vCut, lineas, regulacion, vNominal, pequeno, longBuje, paramsPS);
 
         interBD.inicioTransaccion();
         res  = interBD.deleteDatosTabla(TABLA, condicion, paramsPS, sqlExtra);
+
+		if (res > 0) {
+			resExtra = AeroExtraRA.deleteAeroExtras(idAero, longBuje, sqlExtra);
+		}
         interBD.finTransaccion();
         
         return res;
     }
     
     public static int deleteAerogeneradores(AerogeneradorRA aero, String sqlExtra) throws SQLException {
-        return deleteAerogeneradores(aero.idAero, aero.modelo, aero.hB, aero.fabricante, aero.dN, aero.pNominal, 
-            aero.vIn, aero.vCut, aero.lineas, aero.regulacion, aero.vNominal, aero.pequeno, aero.longBuje, sqlExtra);
+        return deleteAerogeneradores(aero.idAero, aero.modelo, aero.hB, aero.fabricante, aero.dN, aero.pNominal, aero.vIn, aero.vCut, aero.lineas, aero.regulacion, aero.vNominal, aero.pequeno, aero.longBuje, sqlExtra);
     }
     
     public Object[] toObject() {
-        return new Object[]{this.idAero, this.modelo, this.hB, this.fabricante, this.dN, this.pNominal, 
-            this.vIn, this.vCut, this.lineas, this.regulacion, this.vNominal, this.pequeno, this.longBuje};
+        return new Object[]{this.idAero, this.modelo, this.hB, this.fabricante, this.dN, this.pNominal, this.vIn, this.vCut, this.lineas, this.regulacion, this.vNominal, this.pequeno, this.longBuje};
     }
   
     public static Object[] getCamposTabla() throws SQLException {

@@ -170,8 +170,7 @@ public class Contacto {
         }
     }
     
-    private static String getCondicion(Integer idContacto, String nombre, Integer idCliente, String mail, String telefono, String usuario,
-            String password, Boolean web, Boolean interno, Boolean activo, ArrayList<Object[]> paramsPS) {
+    private static String getCondicion(Integer idContacto, String nombre, Integer idCliente, String mail, String telefono, String usuario, String password, Boolean web, Boolean interno, Boolean activo, ArrayList<Object[]> paramsPS) {
         String condicion = "";
         
         if (idContacto != null) {
@@ -209,9 +208,7 @@ public class Contacto {
     }
 
     //Función para obtener la colección de Contactos que se ajustan a los limites pasados
-    public static ArrayList<Contacto> getContactos(Integer idContacto, String nombre, Integer idCliente, String mail, String telefono, String usuario,
-            String password, Boolean web, Boolean interno, Boolean activo,
-            ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
+    public static ArrayList<Contacto> getContactos(Integer idContacto, String nombre, Integer idCliente, String mail, String telefono, String usuario, String password, Boolean web, Boolean interno, Boolean activo, ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
         InteraccionBD interBD = new InteraccionBD();
 
         ArrayList<Contacto> res = null;
@@ -299,8 +296,7 @@ public class Contacto {
     }
 
     //Función para añadir un contacto a la BD
-    public static int insertContacto(Integer idContacto, String nombre, Integer idCliente, String mail, String telefono, String usuario,
-            String password, Boolean web, Boolean interno, Boolean activo, String sqlExtra) throws SQLException {
+    public static int insertContacto(Integer idContacto, String nombre, Integer idCliente, String mail, String telefono, String usuario, String password, Boolean web, Boolean interno, Boolean activo, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
 
         String valores = "";
@@ -365,8 +361,7 @@ public class Contacto {
     }
 
     public static int insertContacto(Contacto contacto, String sqlExtra) throws SQLException {
-        return insertContacto(contacto.idContacto, contacto.nombre, contacto.idCliente, contacto.mail, contacto.telefono, contacto.usuario,
-                contacto.password, contacto.web, contacto.interno, contacto.activo, sqlExtra);
+        return insertContacto(contacto.idContacto, contacto.nombre, contacto.idCliente, contacto.mail, contacto.telefono, contacto.usuario, contacto.password, contacto.web, contacto.interno, contacto.activo, sqlExtra);
     }
     
     public static int insertContactoArray(Integer idCliente, ArrayList<String[]> contactoCliente) throws SQLException {
@@ -396,10 +391,7 @@ public class Contacto {
     }
     
     //Función para añadir un contacto a la BD
-    public static int updateContacto(Integer idContacto, String nombre, Integer idCliente, String mail, String telefono, String usuario,
-            String password, Boolean web, Boolean interno, Boolean activo,
-            Integer idContactoVal, String nombreVal, Integer idClienteVal, String mailVal, String telefonoVal, String usuarioVal,
-            String passwordVal, Boolean webVal, Boolean internoVal, Boolean activoVal, String sqlExtra) throws SQLException {
+    public static int updateContacto(Integer idContacto, String nombre, Integer idCliente, String mail, String telefono, String usuario, String password, Boolean web, Boolean interno, Boolean activo, Integer idContactoVal, String nombreVal, Integer idClienteVal, String mailVal, String telefonoVal, String usuarioVal, String passwordVal, Boolean webVal, Boolean internoVal, Boolean activoVal, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
 
         String condicion = "";
@@ -459,20 +451,13 @@ public class Contacto {
     }
 
     public static int updateContacto(Contacto contactoViejo, Contacto contactoNuevo, String sqlExtra) throws SQLException {
-        return updateContacto(contactoViejo.idContacto, contactoViejo.nombre, contactoViejo.idCliente, contactoViejo.mail, contactoViejo.telefono, contactoViejo.usuario,
-                contactoViejo.password, contactoViejo.web, contactoViejo.interno, contactoViejo.activo,
-                contactoNuevo.idContacto, contactoNuevo.nombre, contactoNuevo.idCliente, contactoNuevo.mail, contactoNuevo.telefono, contactoNuevo.usuario,
-                contactoNuevo.password, contactoNuevo.web, contactoNuevo.interno, contactoNuevo.activo, sqlExtra);
+        return updateContacto(contactoViejo.idContacto, contactoViejo.nombre, contactoViejo.idCliente, contactoViejo.mail, contactoViejo.telefono, contactoViejo.usuario, contactoViejo.password, contactoViejo.web, contactoViejo.interno, contactoViejo.activo, contactoNuevo.idContacto, contactoNuevo.nombre, contactoNuevo.idCliente, contactoNuevo.mail, contactoNuevo.telefono, contactoNuevo.usuario, contactoNuevo.password, contactoNuevo.web, contactoNuevo.interno, contactoNuevo.activo, sqlExtra);
     }
     //Función para añadir/modificar un contacto a la BD
-    public static int insertOrUpdateContacto(Integer idContacto, String nombre, Integer idCliente, String mail, String telefono, String usuario,
-            String password, Boolean web, Boolean interno, Boolean activo,
-            Integer idContactoVal, String nombreVal, Integer idClienteVal, String mailVal, String telefonoVal, String usuarioVal,
-            String passwordVal, Boolean webVal, Boolean internoVal, Boolean activoVal, String sqlExtra) throws SQLException {
+    public static int insertOrUpdateContacto(Integer idContacto, String nombre, Integer idCliente, String mail, String telefono, String usuario, String password, Boolean web, Boolean interno, Boolean activo, Integer idContactoVal, String nombreVal, Integer idClienteVal, String mailVal, String telefonoVal, String usuarioVal, String passwordVal, Boolean webVal, Boolean internoVal, Boolean activoVal, String sqlExtra) throws SQLException {
         int res;
 
-        res = updateContacto(idContacto, nombre, idCliente, mail, telefono, usuario, password, web, interno, activo,
-                idContactoVal, nombreVal, idClienteVal, mailVal, telefonoVal, usuarioVal, passwordVal, webVal, internoVal, activoVal, sqlExtra);
+        res = updateContacto(idContacto, nombre, idCliente, mail, telefono, usuario, password, web, interno, activo, idContactoVal, nombreVal, idClienteVal, mailVal, telefonoVal, usuarioVal, passwordVal, webVal, internoVal, activoVal, sqlExtra);
 
         if (res < 0) {
             res = insertContacto(idContactoVal, nombreVal, idClienteVal, mailVal, telefonoVal, usuarioVal, passwordVal, webVal, internoVal, activoVal, sqlExtra);
@@ -482,14 +467,10 @@ public class Contacto {
 
     public static int insertOrUpdateContacto(Contacto contactoViejo, Contacto contactoNuevo, String sqlExtra) throws SQLException {
 
-        return insertOrUpdateContacto(contactoViejo.idContacto, contactoViejo.nombre, contactoViejo.idCliente, contactoViejo.mail, contactoViejo.telefono, contactoViejo.usuario,
-                contactoViejo.password, contactoViejo.web, contactoViejo.interno, contactoViejo.activo,
-                contactoNuevo.idContacto, contactoNuevo.nombre, contactoNuevo.idCliente, contactoNuevo.mail, contactoNuevo.telefono, contactoNuevo.usuario,
-                contactoNuevo.password, contactoNuevo.web, contactoNuevo.interno, contactoNuevo.activo, sqlExtra);
+        return insertOrUpdateContacto(contactoViejo.idContacto, contactoViejo.nombre, contactoViejo.idCliente, contactoViejo.mail, contactoViejo.telefono, contactoViejo.usuario, contactoViejo.password, contactoViejo.web, contactoViejo.interno, contactoViejo.activo, contactoNuevo.idContacto, contactoNuevo.nombre, contactoNuevo.idCliente, contactoNuevo.mail, contactoNuevo.telefono, contactoNuevo.usuario, contactoNuevo.password, contactoNuevo.web, contactoNuevo.interno, contactoNuevo.activo, sqlExtra);
     }
     //Función para eliminar Contactos que se ajustan a los limites pasados
-    public static int deleteContacto(Integer idContacto, String nombre, Integer idCliente, String mail, String telefono, String usuario,
-            String password, Boolean web, Boolean interno, Boolean activo, String sqlExtra) throws SQLException {
+    public static int deleteContacto(Integer idContacto, String nombre, Integer idCliente, String mail, String telefono, String usuario, String password, Boolean web, Boolean interno, Boolean activo, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
 
         String condicion = "";
@@ -506,14 +487,11 @@ public class Contacto {
     }
 
     public static int deleteContacto(Contacto contacto, String sqlExtra) throws SQLException {
-        return deleteContacto(contacto.idContacto, contacto.nombre, contacto.idCliente, contacto.mail, contacto.telefono, contacto.usuario,
-                contacto.password, contacto.web, contacto.interno, contacto.activo, sqlExtra);
+        return deleteContacto(contacto.idContacto, contacto.nombre, contacto.idCliente, contacto.mail, contacto.telefono, contacto.usuario, contacto.password, contacto.web, contacto.interno, contacto.activo, sqlExtra);
     }
 
     public Object[] toObject() {
-        return new Object[]{this.idContacto, this.nombre, this.idCliente, this.mail, this.telefono, this.usuario,
-                    this.password, this.web, this.interno, this.activo
-                };
+        return new Object[]{this.idContacto, this.nombre, this.idCliente, this.mail, this.telefono, this.usuario, this.password, this.web, this.interno, this.activo};
     }
 
     public static Object[] getCamposTabla() throws SQLException {

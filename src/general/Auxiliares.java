@@ -3,6 +3,7 @@ package general;
 import RA.AsuntoRA;
 import RA.ConfiguracionRA2;
 import RA.NormaRA;
+import RA.PosicionRA;
 import RA.SiteRA;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -56,6 +57,7 @@ public class Auxiliares {
     public static final String TIPO_OCT = "OCT";
     public static final String TIPO_FFT = "FFT";
     public static final String TIPO_GEN = "GEN";
+    public static final String TIPO_IEC_3_0 = "IEC3";
     
     public static final String CANCEL_PROCESS = "Se cancelará el proceso. ¿Desea continuar?";
     public static final String PROCESS_CANCELED = "Proceso cancelado por el usuario";
@@ -229,13 +231,12 @@ public class Auxiliares {
         Component[] com;
 
         com = jp.getComponents();
-
-        for (int i = 0; i < com.length; i++) {
-            if (com[i] instanceof Container)
-                setEnabledCamposPanel((Container)com[i], enabled);
-
-            com[i].setEnabled(enabled);
-        }
+		for (Component com1 : com) {
+			if (com1 instanceof Container) {
+				setEnabledCamposPanel((Container) com1, enabled);
+			}
+			com1.setEnabled(enabled);
+		}
     }
     
     //Función para bloquear/desbloquear un diálogo para que el usuario no pueda interactuar con él hasta que se le vuelva a dar permiso
@@ -256,27 +257,24 @@ public class Auxiliares {
         InputVerifier iv;
 
         com = jp.getComponents();
-
-        for (int i = 0; i < com.length; i++) {
-            if (com[i] instanceof Container) {
-                res = validaCampos((Container)com[i]);
-                
-                if (!res)
-                    return res;
-            }
-
-            try {
-                iv = ((JComponent) com[i]).getInputVerifier();
-                if (iv != null) {
-                    if (!iv.verify((JComponent) com[i])) {
-                        res = false;
-                        return res;
-                    }
-                }
-            } catch (ClassCastException e) {  //Si no se puede pareser a JComponent, no tiene InputVerfier
-                //Seguimos validando con el siguiente campo
-            }
-        }
+		for (Component com1 : com) {
+			if (com1 instanceof Container) {
+				res = validaCampos((Container) com1);
+				if (!res)
+					return res;
+			}
+			try {
+				iv = ((JComponent) com1).getInputVerifier();
+				if (iv != null) {
+					if (!iv.verify((JComponent) com1)) {
+						res = false;
+						return res;
+					}
+				}
+			}catch (ClassCastException e) {  //Si no se puede pareser a JComponent, no tiene InputVerfier
+				//Seguimos validando con el siguiente campo
+			}
+		}
         
         return res;
     }
@@ -409,20 +407,20 @@ public class Auxiliares {
         
         switch (modo) {
             case MODO_ERROR:
-                res = (modoSalida != null && modoSalida.size() > 0 && modoSalida.get(0) == MODO_ERROR);
+                res = (modoSalida != null && !modoSalida.isEmpty() && modoSalida.get(0) == MODO_ERROR);
                 break;
             case MODO_CANCEL:
-                res = (modoSalida != null && modoSalida.size() == 0 && modoSalida.get(0) == MODO_CANCEL);
+                res = (modoSalida != null && modoSalida.isEmpty() && modoSalida.get(0) == MODO_CANCEL);
                 break;
             case MODO_OK:
-                res = (modoSalida != null && modoSalida.size() > 0 && modoSalida.get(0) == MODO_OK);
+                res = (modoSalida != null && !modoSalida.isEmpty() && modoSalida.get(0) == MODO_OK);
                 break;
             case MODO_ANT:
-                res = (modoSalida != null && modoSalida.size() > 0 && modoSalida.get(0) == MODO_ANT);
+                res = (modoSalida != null && !modoSalida.isEmpty() && modoSalida.get(0) == MODO_ANT);
                 break;
             case MODO_UNDEFINED:
             default:
-                res = (modoSalida == null || modoSalida.size() == 0);
+                res = (modoSalida == null || modoSalida.isEmpty());
                 break;
         }
                 
@@ -482,11 +480,11 @@ public class Auxiliares {
         
         nTit = listaTitulos.length;
         if (nTit > 0) {
-         for (int i = 0; i < nTit; i++) {
-            jl = new JLabel(listaTitulos[i], JLabel.CENTER);
-            jl.setForeground(JTP_TIT_TXT);
-            jtp.setTabComponentAt(i, jl);
-            }
+			for (int i = 0; i < nTit; i++) {
+				jl = new JLabel(listaTitulos[i], JLabel.CENTER);
+				jl.setForeground(JTP_TIT_TXT);
+				jtp.setTabComponentAt(i, jl);
+			}
         }
         
         jtp.update(jtp.getGraphics());
@@ -763,7 +761,6 @@ public class Auxiliares {
                 jp.setLocation(0, 0);
             }
             
-            
             jd.update(jd.getGraphics());
         }
     }
@@ -797,8 +794,8 @@ public class Auxiliares {
         Coordinate vectorDirectorRecta = new Coordinate(finRecta.x - iniRecta.x, finRecta.y - iniRecta.y, finRecta.z - iniRecta.z);
         
         res = Math.asin((vectorNormalPlano.x * vectorDirectorRecta.x + vectorNormalPlano.y * vectorDirectorRecta.y + vectorNormalPlano.z * vectorDirectorRecta.z) / 
-                (Math.sqrt(Math.pow(vectorNormalPlano.x, 2.0) + Math.pow(vectorNormalPlano.y, 2.0) + Math.pow(vectorNormalPlano.z, 2.0)) * 
-                Math.sqrt(Math.pow(vectorDirectorRecta.x, 2.0) + Math.pow(vectorDirectorRecta.y, 2.0) + Math.pow(vectorDirectorRecta.z, 2.0))));
+			(Math.sqrt(Math.pow(vectorNormalPlano.x, 2.0) + Math.pow(vectorNormalPlano.y, 2.0) + Math.pow(vectorNormalPlano.z, 2.0)) * 
+			Math.sqrt(Math.pow(vectorDirectorRecta.x, 2.0) + Math.pow(vectorDirectorRecta.y, 2.0) + Math.pow(vectorDirectorRecta.z, 2.0))));
         
         return res;
     }
@@ -911,8 +908,7 @@ public class Auxiliares {
                     posZInf = posZInf == null || posZ > posZInf? posZ : posZInf;
                 else
                     posZSup = posZSup == null || posZ > posZSup? posZ : posZSup;
-            } else
-                continue;
+            }
         }
 
         if (posXInterseccion.equals(posXInf) && posYInterseccion.equals(posYInf)) //Si el punto corresponde con el inferior
@@ -1033,7 +1029,7 @@ public class Auxiliares {
     }
     
     //Función que devuelve el ángulo máximo en radianes que forma la recta micro aero con las diferentes curvas de nivel (en caso de que haya intersección)
-    public static Double getAnguloMaxConMallado(LineString rectaMicroAero, Double[][] mallado) {
+    public static Double getAnguloMaxConMallado(LineString rectaMicroAero, Double[][] mallado, ArrayList<PosicionRA> puntoAngMax) {
         Double res = 0.0, resAux = null;
         
         if (rectaMicroAero != null && rectaMicroAero.getCoordinates().length != 0 && mallado != null) {
@@ -1053,8 +1049,12 @@ public class Auxiliares {
                 puntoCorte = new Coordinate(puntosCorte[i][0], puntosCorte[i][1], puntosCorte[i][2]);
                 resAux = getAnguloMaxMicroPuntoCorte(posMicro, puntoCorte);
 
-                if (resAux != null && resAux > res)
+                if (resAux != null && resAux > res) {
                     res = resAux;
+
+					puntoAngMax.clear();
+					puntoAngMax.add(new PosicionRA(null, puntosCorte[i][0], puntosCorte[i][1], puntosCorte[i][2]));
+				}
             }
         }
         

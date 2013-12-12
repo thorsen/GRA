@@ -1,5 +1,6 @@
 package calculos;
 
+import RA.AerogeneradorRA;
 import RA.AsuntoIncert;
 import RA.AsuntoRA;
 import RA.DatosRA2;
@@ -13,8 +14,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.WindowEvent;
+import java.awt.font.TextAttribute;
 import java.awt.geom.Rectangle2D;
 import java.sql.SQLException;
+import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -28,6 +31,7 @@ import org.jfree.chart.LegendItemCollection;
 import org.jfree.chart.LegendItemSource;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
@@ -62,7 +66,10 @@ public class DatosResultadosSPLGUI extends JDialog {
     private HashMap<String, HashMap<Integer, Double[]>> coeficientesBin;
     private HashMap<String, HashMap<Integer, Double[]>> coeficientesModosFunc;
     private Integer idNorma;
+    private Boolean esMiniAero;
     private ArrayList<AsuntoIncert> incertidumbres;
+
+    private ArrayList<Double> resIncert_IEC_3_0;
     
     private ArrayList<Integer> modoSalida;
     
@@ -94,9 +101,9 @@ public class DatosResultadosSPLGUI extends JDialog {
     private final Double RESOLUCION_DIST_DEF = 0.1;
 
     
-    private Double valorApDec;
+    private ArrayList<Double> valorApModos;
     
-    public DatosResultadosSPLGUI(java.awt.Frame parent, String tipoTabla, Integer idAsunto, Integer idSite, Integer valBinMin, Integer valBinMax, ArrayList<Integer[]> modosFunc, HashMap<String, double[]> coeficientesPol, HashMap<String, HashMap<Integer, Double[]>> coeficientesBin, Integer tipoCalculoAG, Integer tipoCalculoRF, HashMap<String, HashMap<Integer, Double[]>> coeficientesModosFunc, ArrayList<Integer> modoSalida, Integer idNorma, ArrayList<AsuntoIncert> incertidumbres) {
+    public DatosResultadosSPLGUI(java.awt.Frame parent, String tipoTabla, Integer idAsunto, Integer idSite, Integer valBinMin, Integer valBinMax, ArrayList<Integer[]> modosFunc, HashMap<String, double[]> coeficientesPol, HashMap<String, HashMap<Integer, Double[]>> coeficientesBin, Integer tipoCalculoAG, Integer tipoCalculoRF, HashMap<String, HashMap<Integer, Double[]>> coeficientesModosFunc, ArrayList<Integer> modoSalida, Integer idNorma, Boolean esMiniAero, ArrayList<AsuntoIncert> incertidumbres) {
         super(parent, true);
 
         initComponents();
@@ -118,7 +125,10 @@ public class DatosResultadosSPLGUI extends JDialog {
         this.modoSalida = modoSalida; //variable para control de llamadas entre diálogos
         
         this.idNorma = idNorma;
+        this.esMiniAero = esMiniAero;
         this.incertidumbres = incertidumbres;
+
+		this.resIncert_IEC_3_0 = null;
         
         try {
             this.jtfAsunto.setText(AsuntoRA.getAsuntoPorId(idAsunto).getNombreCompleto());
@@ -169,6 +179,10 @@ public class DatosResultadosSPLGUI extends JDialog {
         jtfResBin = new javax.swing.JTextField();
         jpContGraficaMapa = new javax.swing.JPanel();
         jpGraficaMapa = new javax.swing.JPanel();
+        jpMapaInmision = new javax.swing.JPanel();
+        jlTitMapaInmision = new javax.swing.JLabel();
+        jpContGraficaMapaInmision = new javax.swing.JPanel();
+        jpGraficaMapaInmision = new javax.swing.JPanel();
         jbAnt = new javax.swing.JButton();
         jbSig = new javax.swing.JButton();
 
@@ -188,11 +202,11 @@ public class DatosResultadosSPLGUI extends JDialog {
         jpClave.setBackground(new java.awt.Color(255, 255, 255));
         jpClave.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlAsunto.setText("  Asunto: ");
 
-        jtfAsunto.setBackground(new java.awt.Color(204, 204, 204));
         jtfAsunto.setEditable(false);
+        jtfAsunto.setBackground(new java.awt.Color(204, 204, 204));
         jtfAsunto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout jpClaveLayout = new javax.swing.GroupLayout(jpClave);
@@ -202,7 +216,7 @@ public class DatosResultadosSPLGUI extends JDialog {
             .addGroup(jpClaveLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jlAsunto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 337, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jtfAsunto, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -219,7 +233,7 @@ public class DatosResultadosSPLGUI extends JDialog {
         jpDatos.setBackground(new java.awt.Color(255, 255, 255));
         jpDatos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlTitDatos.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlTitDatos.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlTitDatos.setText("NIVEL DE PRESIÓN SONORA ");
 
         jlSep.setText("___________________________________________________________________________________________________________________________");
@@ -239,7 +253,7 @@ public class DatosResultadosSPLGUI extends JDialog {
 
         jpCorregidaRF.setBackground(new java.awt.Color(255, 255, 255));
 
-        jlTitCoRF.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jlTitCoRF.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jlTitCoRF.setForeground(new java.awt.Color(102, 102, 102));
         jlTitCoRF.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitCoRF.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -254,20 +268,20 @@ public class DatosResultadosSPLGUI extends JDialog {
         );
         jpGraficaCoRFLayout.setVerticalGroup(
             jpGraficaCoRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 435, Short.MAX_VALUE)
+            .addGap(0, 431, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jpContGraficaCoRFLayout = new javax.swing.GroupLayout(jpContGraficaCoRF);
         jpContGraficaCoRF.setLayout(jpContGraficaCoRFLayout);
         jpContGraficaCoRFLayout.setHorizontalGroup(
             jpContGraficaCoRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 732, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
             .addGroup(jpContGraficaCoRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jpGraficaCoRF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpContGraficaCoRFLayout.setVerticalGroup(
             jpContGraficaCoRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 435, Short.MAX_VALUE)
+            .addGap(0, 431, Short.MAX_VALUE)
             .addGroup(jpContGraficaCoRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jpGraficaCoRF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -276,11 +290,11 @@ public class DatosResultadosSPLGUI extends JDialog {
         jpCorregidaRF.setLayout(jpCorregidaRFLayout);
         jpCorregidaRFLayout.setHorizontalGroup(
             jpCorregidaRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpCorregidaRFLayout.createSequentialGroup()
+            .addGroup(jpCorregidaRFLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpCorregidaRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jpContGraficaCoRF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jlTitCoRF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE))
+                .addGroup(jpCorregidaRFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jpContGraficaCoRF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jlTitCoRF, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jpCorregidaRFLayout.setVerticalGroup(
@@ -296,7 +310,7 @@ public class DatosResultadosSPLGUI extends JDialog {
 
         jpAparente.setBackground(new java.awt.Color(255, 255, 255));
 
-        jlTitAp.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jlTitAp.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jlTitAp.setForeground(new java.awt.Color(102, 102, 102));
         jlTitAp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitAp.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -307,11 +321,11 @@ public class DatosResultadosSPLGUI extends JDialog {
         jpGraficaAp.setLayout(jpGraficaApLayout);
         jpGraficaApLayout.setHorizontalGroup(
             jpGraficaApLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 732, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jpGraficaApLayout.setVerticalGroup(
             jpGraficaApLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 435, Short.MAX_VALUE)
+            .addGap(0, 431, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jpContGraficaApLayout = new javax.swing.GroupLayout(jpContGraficaAp);
@@ -329,11 +343,11 @@ public class DatosResultadosSPLGUI extends JDialog {
         jpAparente.setLayout(jpAparenteLayout);
         jpAparenteLayout.setHorizontalGroup(
             jpAparenteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpAparenteLayout.createSequentialGroup()
+            .addGroup(jpAparenteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpAparenteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jpContGraficaAp, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jlTitAp, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE))
+                .addGroup(jpAparenteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jpContGraficaAp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jlTitAp, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jpAparenteLayout.setVerticalGroup(
@@ -349,7 +363,7 @@ public class DatosResultadosSPLGUI extends JDialog {
 
         jpMapaRuido.setBackground(new java.awt.Color(255, 255, 255));
 
-        jlTitMapa.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jlTitMapa.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jlTitMapa.setForeground(new java.awt.Color(102, 102, 102));
         jlTitMapa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitMapa.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -381,7 +395,9 @@ public class DatosResultadosSPLGUI extends JDialog {
         jtModosFunc.getTableHeader().setReorderingAllowed(false);
         jspModosFunc.setViewportView(jtModosFunc);
         jtModosFunc.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        jtModosFunc.getColumnModel().getColumn(2).setHeaderValue(HAY_TONO);
+        if (jtModosFunc.getColumnModel().getColumnCount() > 0) {
+            jtModosFunc.getColumnModel().getColumn(2).setHeaderValue(HAY_TONO);
+        }
 
         jButton1.setText("REDIBUJAR");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -408,7 +424,7 @@ public class DatosResultadosSPLGUI extends JDialog {
         jpGraficaMapa.setLayout(jpGraficaMapaLayout);
         jpGraficaMapaLayout.setHorizontalGroup(
             jpGraficaMapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 732, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jpGraficaMapaLayout.setVerticalGroup(
             jpGraficaMapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -465,7 +481,7 @@ public class DatosResultadosSPLGUI extends JDialog {
                                     .addComponent(jtfResBin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jtfResDist, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(63, 63, 63))
-                    .addComponent(jlTitMapa, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE)
+                    .addComponent(jlTitMapa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jpContGraficaMapa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -477,7 +493,6 @@ public class DatosResultadosSPLGUI extends JDialog {
                 .addGroup(jpMapaRuidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jpMapaRuidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(jpMapaRuidoLayout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(jpMapaRuidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jspModosFunc, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jpMapaRuidoLayout.createSequentialGroup()
@@ -492,7 +507,6 @@ public class DatosResultadosSPLGUI extends JDialog {
                                         .addComponent(jtfDesdeBin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpMapaRuidoLayout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jpMapaRuidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jlHastaDist)
                                 .addComponent(jtfHastaDist, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -516,6 +530,59 @@ public class DatosResultadosSPLGUI extends JDialog {
 
         jtpDatos.addTab("", jpMapaRuido);
 
+        jpMapaInmision.setBackground(new java.awt.Color(255, 255, 255));
+
+        jlTitMapaInmision.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jlTitMapaInmision.setForeground(new java.awt.Color(102, 102, 102));
+        jlTitMapaInmision.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlTitMapaInmision.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jpContGraficaMapaInmision.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout jpGraficaMapaInmisionLayout = new javax.swing.GroupLayout(jpGraficaMapaInmision);
+        jpGraficaMapaInmision.setLayout(jpGraficaMapaInmisionLayout);
+        jpGraficaMapaInmisionLayout.setHorizontalGroup(
+            jpGraficaMapaInmisionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jpGraficaMapaInmisionLayout.setVerticalGroup(
+            jpGraficaMapaInmisionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 431, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jpContGraficaMapaInmisionLayout = new javax.swing.GroupLayout(jpContGraficaMapaInmision);
+        jpContGraficaMapaInmision.setLayout(jpContGraficaMapaInmisionLayout);
+        jpContGraficaMapaInmisionLayout.setHorizontalGroup(
+            jpContGraficaMapaInmisionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jpGraficaMapaInmision, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jpContGraficaMapaInmisionLayout.setVerticalGroup(
+            jpContGraficaMapaInmisionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jpGraficaMapaInmision, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jpMapaInmisionLayout = new javax.swing.GroupLayout(jpMapaInmision);
+        jpMapaInmision.setLayout(jpMapaInmisionLayout);
+        jpMapaInmisionLayout.setHorizontalGroup(
+            jpMapaInmisionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpMapaInmisionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpMapaInmisionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jpContGraficaMapaInmision, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jlTitMapaInmision, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jpMapaInmisionLayout.setVerticalGroup(
+            jpMapaInmisionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpMapaInmisionLayout.createSequentialGroup()
+                .addComponent(jlTitMapaInmision, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jpContGraficaMapaInmision, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jtpDatos.addTab("", jpMapaInmision);
+
         javax.swing.GroupLayout jpDatosLayout = new javax.swing.GroupLayout(jpDatos);
         jpDatos.setLayout(jpDatosLayout);
         jpDatosLayout.setHorizontalGroup(
@@ -523,12 +590,12 @@ public class DatosResultadosSPLGUI extends JDialog {
             .addGroup(jpDatosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jspNivelesBin, javax.swing.GroupLayout.DEFAULT_SIZE, 721, Short.MAX_VALUE)
+                    .addComponent(jspNivelesBin)
                     .addComponent(jlTitDatos))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.CENTER, jpDatosLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(jtpDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
+                .addComponent(jtpDatos)
                 .addGap(10, 10, 10))
             .addGroup(javax.swing.GroupLayout.Alignment.CENTER, jpDatosLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
@@ -548,7 +615,7 @@ public class DatosResultadosSPLGUI extends JDialog {
                         .addGap(20, 20, 20)
                         .addComponent(jlSep, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtpDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+                .addComponent(jtpDatos)
                 .addContainerGap())
         );
 
@@ -582,7 +649,7 @@ public class DatosResultadosSPLGUI extends JDialog {
                     .addComponent(jpClave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
                         .addComponent(jbAnt, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 581, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbSig, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -611,433 +678,613 @@ public class DatosResultadosSPLGUI extends JDialog {
             .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-804)/2, (screenSize.height-749)/2, 804, 749);
+        setSize(new java.awt.Dimension(817, 749));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void rellenarDatos(JProgressBar jpb) throws SQLException, NoSuchFieldException, NumberFormatException {
-        ArrayList<ArrayList<Object>> filas = new ArrayList<ArrayList<Object>>();
-        ArrayList<Object> filaAG = new ArrayList<Object>();
-        ArrayList<Object> filaRF = new ArrayList<Object>();
-        ArrayList<Object> filaCoRF = new ArrayList<Object>();
-        ArrayList<Object> filaAp = new ArrayList<Object>();
-        ArrayList<Object> filaApDec = null, filaInm60 = null, filaInm25 = null, filaSdb = null;
-        int valModoIni = -1, valModoFin = -2;
-        
-        if (this.idNorma.equals(NormaRA.ID_NORMA_BWEA)) {
-            //Aparente declarada
-            filaApDec = new ArrayList<Object>();
-            //Inmisión a 60m
-            filaInm60 = new ArrayList<Object>();
-            //Inmisión a 25m
-            filaInm25 = new ArrayList<Object>();
-            //Pendiente de ruido
-            filaSdb = new ArrayList<Object>();
-            
-            filaApDec.add(HTML_NIVEL_APARENTE_DEC);
-            filaInm60.add(HTML_NIVEL_INM_60);
-            filaInm25.add(HTML_NIVEL_INM_25);
-            filaSdb.add(HTML_PEND_RUIDO);
-        }
-        
-        ArrayList<Entry<Double, Integer>> datosCorregidos;
-                
-        if (!this.idNorma.equals(NormaRA.ID_NORMA_BWEA))
-            datosCorregidos = DatosRA2.getResultadosSPLCorregidoAparente(this.idAsunto, this.tipoCalculoAG, this.tipoCalculoRF, this.coeficientesPol, this.coeficientesBin, this.valBinMin, this.valBinMax);
-        else {
-            HashMap<String, HashMap<Integer, Double[]>> coeficientes = new HashMap<String, HashMap<Integer, Double[]>>();
-            HashMap<Integer, Double[]> coefAG = new HashMap<Integer, Double[]>();
-            HashMap<Integer, Double[]> coefRF = new HashMap<Integer, Double[]>();
-            
-            int nModosFunc = this.modosFunc.size();
-                    
-            for (int i = 0; i < nModosFunc; i++) {
-                valModoIni = this.modosFunc.get(i)[0];
-                valModoFin = this.modosFunc.get(i)[1];
-                if (valModoIni > this.valBinMin || valModoFin < this.valBinMax)
-                    continue;
-                
-                coefAG.put(this.valBinMin, this.coeficientesModosFunc.get(Auxiliares.PREF_DATOS_AG).get(valModoIni));
-                coeficientes.put(Auxiliares.PREF_DATOS_AG, coefAG);
-                coefRF.put(this.valBinMin, this.coeficientesModosFunc.get(Auxiliares.PREF_DATOS_RF).get(valModoIni));
-                coeficientes.put(Auxiliares.PREF_DATOS_RF, coefRF);
-                
-                break;
-            }
-            
-            datosCorregidos = DatosRA2.getResultadosSPLCorregidoAparente(this.idAsunto, this.tipoCalculoAG, this.tipoCalculoRF, this.coeficientesPol, coeficientes, this.valBinMin, this.valBinMax);
-        }
-        Auxiliares.incPorcentajeProgress(jpb, 0.4);
+private void rellenarDatos(JProgressBar jpb) throws SQLException, NoSuchFieldException, NumberFormatException {
+	ArrayList<ArrayList<Object>> filas = new ArrayList<ArrayList<Object>>();
+	ArrayList<Object> filaAG = new ArrayList<Object>();
+	ArrayList<Object> filaRF = new ArrayList<Object>();
+	ArrayList<Object> filaCoRF = new ArrayList<Object>();
+	ArrayList<Object> filaAp = new ArrayList<Object>();
+	ArrayList<Object> filaApDec = null, filaInm60 = null, filaInm25 = null, filaSdb = null;
+	int valModoIni = -1, valModoFin = -2;
+	
+	if (this.idNorma.equals(NormaRA.ID_NORMA_BWEA)) {
+		//Aparente declarada
+		filaApDec = new ArrayList<Object>();
+		//Inmisión a 60m
+		filaInm60 = new ArrayList<Object>();
+		//Inmisión a 25m
+		filaInm25 = new ArrayList<Object>();
+		//Pendiente de ruido
+		filaSdb = new ArrayList<Object>();
+		
+		filaApDec.add(HTML_NIVEL_APARENTE_DEC);
+		filaInm60.add(HTML_NIVEL_INM_60);
+		filaInm25.add(HTML_NIVEL_INM_25);
+		filaSdb.add(HTML_PEND_RUIDO);
+	}
+	
+	ArrayList<ArrayList<Entry<Double, Integer>>> datosCorregidos;
+	ArrayList<Entry<Double, Integer>> datosCorregidosBin;
+			
+	if (this.idNorma.equals(NormaRA.ID_NORMA_BWEA)) {
+		HashMap<String, HashMap<Integer, Double[]>> coeficientes = new HashMap<String, HashMap<Integer, Double[]>>();
+		HashMap<Integer, Double[]> coefAG = new HashMap<Integer, Double[]>();
+		HashMap<Integer, Double[]> coefRF = new HashMap<Integer, Double[]>();
+		
+		int nModosFunc = this.modosFunc.size();
+		Double velMedia;
+		Integer velMediaInf, velMediaSup;
+		//Resultados para oberener el valos aparente de cada modo
+		this.valorApModos = new ArrayList<Double>();
 
-        //Establecemos el modelo de la tabla
-        this.jtNivelesBin.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+		for (int i = 0; i < nModosFunc; i++) {
+			valModoIni = this.modosFunc.get(i)[0];
+			valModoFin = this.modosFunc.get(i)[1];
 
-            },
-            new String [] {
-                "Presión"
-            }) {
-        
-            @Override
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return false;
-            }
-        });
-        
-        DefaultTableModel dtm = (DefaultTableModel) this.jtNivelesBin.getModel();
+			coeficientes = new HashMap<String, HashMap<Integer, Double[]>>();
+			coefAG = new HashMap<Integer, Double[]>();
+			coefRF = new HashMap<Integer, Double[]>();
 
-        filaAG.add(HTML_NIVEL_EQ_AG);
-        filaRF.add(HTML_NIVEL_EQ_RF);
-        filaCoRF.add(HTML_NIVEL_EQ_CO_RF);
-        filaAp.add(HTML_NIVEL_APARENTE);
-        
-        Entry<Double, Integer> entry;
-        Double valor, valorAp;
-        Integer tipo;
+			if (valModoIni <= 8.0 && valModoFin >= 8.0) {
+				velMediaInf = 8;
+				velMediaSup = 8;
+			} else {
+				velMedia = (valModoIni + valModoFin) / 2.0;
+				velMediaInf = ((Double) Math.floor(velMedia)).intValue();
+				velMediaSup = ((Double) Math.ceil(velMedia)).intValue();
+			}
+				
+			coefAG.put(velMediaInf, this.coeficientesModosFunc.get(Auxiliares.PREF_DATOS_AG).get(valModoIni));
+			coefRF.put(velMediaInf, this.coeficientesModosFunc.get(Auxiliares.PREF_DATOS_RF).get(valModoIni));
 
-        for (int i = 0; i < (this.valBinMax - this.valBinMin + 1); i++) {
-            dtm.addColumn(i + this.valBinMin);
-            
-            //Nivel Aero
-            entry = datosCorregidos.get(4*i);
-            if (entry != null && entry.getKey() != null) {
-                valor = TratDecimales.round(entry.getKey(), TratDecimales.DEC_VARIABLE_RA);
-                
-                filaAG.add(valor);
-            } else
-                filaAG.add(null);
-            
-            //Nivel RF
-            entry = datosCorregidos.get(4*i + 1);
-            if (entry != null && entry.getKey() != null) {
-                valor = TratDecimales.round(entry.getKey(), TratDecimales.DEC_VARIABLE_RA);
-                
-                filaRF.add(valor);
-            } else
-                filaRF.add(null);
+			if (!velMediaInf.equals(velMediaSup)) {
+				coefAG.put(velMediaSup, this.coeficientesModosFunc.get(Auxiliares.PREF_DATOS_AG).get(valModoIni));
+				coefRF.put(velMediaSup, this.coeficientesModosFunc.get(Auxiliares.PREF_DATOS_RF).get(valModoIni));
+			}
 
-            //SPL Corregido
-            entry = datosCorregidos.get(4*i + 2);
-            if (entry != null && entry.getKey() != null) {
-                valor = TratDecimales.round(entry.getKey(), TratDecimales.DEC_VARIABLE_RA);
-                tipo = entry.getValue();
-                
-                switch (tipo) {
-                    case DatosRA2.CORREGIDO_RF_OK:
-                        filaCoRF.add(valor);
-                        break;
-                    case DatosRA2.CORREGIDO_RF_AVISO:
-                        filaCoRF.add(valor + DatosRA2.MARCA_ASTERISCO);
-                        break;
-                    case DatosRA2.CORREGIDO_RF_ERROR:
-                        filaCoRF.add(DatosRA2.TXT_CORREGIDO_RF_ERROR);
-                        break;
-                }
-            } else
-                filaCoRF.add(null);
-            
-            //SPL Aparente
-            entry = datosCorregidos.get(4*i + 3);
-            valorAp = null;
-            
-            if (entry != null) {
-                valor = entry.getKey();
-                tipo = entry.getValue();
-                
-                switch (tipo) {
-                    case DatosRA2.CORREGIDO_RF_OK:
-                        valorAp = valor;
-                        break;
-                    case DatosRA2.CORREGIDO_RF_AVISO:
-                    case DatosRA2.CORREGIDO_RF_ERROR:
-                        valorAp = null;
-                        break;
-                }
-            }
-            if (valorAp != null)
-                filaAp.add(valorAp);
-            else
-                filaAp.add(DatosRA2.TXT_CORREGIDO_RF_ERROR);
-            
-            if (this.idNorma.equals(NormaRA.ID_NORMA_BWEA)) {
-                if (valorAp != null) {
-                    //Pendiente ruido
-                    filaSdb.add(DatosRA2.getPendienteMapaRuido(this.idAsunto, this.tipoCalculoAG, this.tipoCalculoRF, this.coeficientesPol, this.coeficientesModosFunc, valModoIni, valModoFin));
-                    
-                    //Aparente declarada
-                    this.valorApDec = DatosRA2.getNivelAparenteDeclarado(this.tipoTabla, this.idAsunto, this.idSite, valModoIni, valModoFin, valorAp);
-                  
-                    filaApDec.add(this.valorApDec);
-                    //Sacamos los niveles de inmsión sin penalty pero añadimo marca
-                    filaInm60.add(DatosRA2.getNivelInmision60(this.valorApDec, 0.0) + DatosRA2.MARCA_PENALIZACION);
-                    filaInm25.add(DatosRA2.getNivelInmision25(this.valorApDec, 0.0) + DatosRA2.MARCA_PENALIZACION);
-                } else {
-                    filaSdb.add(null);
-                    filaApDec.add(null);
-                    filaInm60.add(null);
-                    filaInm25.add(null);
-                }
-            }
+			coeficientes.put(Auxiliares.PREF_DATOS_AG, coefAG);
+			coeficientes.put(Auxiliares.PREF_DATOS_RF, coefRF);
 
-            Auxiliares.incPorcentajeProgress(jpb, 0.1/(this.valBinMax - this.valBinMin + 1));
-        }
+			datosCorregidos = DatosRA2.getResultadosSPLCorregidoAparente(this.idAsunto, this.tipoCalculoAG, this.tipoCalculoRF, this.coeficientesPol, coeficientes, velMediaInf, velMediaSup);
 
-        filas.add(filaAG);
-        filas.add(filaRF);
-        filas.add(filaCoRF);
-        filas.add(filaAp);
-        if (this.idNorma.equals(NormaRA.ID_NORMA_BWEA)) {
-            filas.add(filaApDec);
-            filas.add(filaInm60);
-            filas.add(filaInm25);
-            filas.add(filaSdb);
-        }
+			if (datosCorregidos.size() > 1) {
+				if (datosCorregidos.get(0).get(3).getValue().equals(DatosRA2.CORREGIDO_RF_OK) && datosCorregidos.get(1).get(3).getValue().equals(DatosRA2.CORREGIDO_RF_OK))
+					this.valorApModos.add((datosCorregidos.get(0).get(3).getKey() + datosCorregidos.get(1).get(3).getKey()) / 2.0);
+			} else {
+				if (datosCorregidos.get(0).get(3).getValue().equals(DatosRA2.CORREGIDO_RF_OK))
+					this.valorApModos.add(datosCorregidos.get(0).get(3).getKey());
+			}
+		}
+				
+		//Resultados para el bin seleccionado
+		for (int i = 0; i < nModosFunc; i++) {
+			valModoIni = this.modosFunc.get(i)[0];
+			valModoFin = this.modosFunc.get(i)[1];
+			if (valModoIni > this.valBinMin || valModoFin < this.valBinMax)
+				continue;
+			
+			coefAG.put(this.valBinMin, this.coeficientesModosFunc.get(Auxiliares.PREF_DATOS_AG).get(valModoIni));
+			coeficientes.put(Auxiliares.PREF_DATOS_AG, coefAG);
+			coefRF.put(this.valBinMin, this.coeficientesModosFunc.get(Auxiliares.PREF_DATOS_RF).get(valModoIni));
+			coeficientes.put(Auxiliares.PREF_DATOS_RF, coefRF);
+			
+			break;
+		}
+	
+		datosCorregidos = DatosRA2.getResultadosSPLCorregidoAparente(this.idAsunto, this.tipoCalculoAG, this.tipoCalculoRF, this.coeficientesPol, coeficientes, this.valBinMin, this.valBinMax);
+	} else if (this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) {
+		this.resIncert_IEC_3_0 = new ArrayList<Double>();
+			datosCorregidos = DatosRA2.getResultadosSPLCorregidoAparente_IEC3(this.tipoTabla, this.idAsunto, this.idSite, this.valBinMin, this.valBinMax, this.incertidumbres, this.resIncert_IEC_3_0);
+	} else
+		datosCorregidos = DatosRA2.getResultadosSPLCorregidoAparente(this.idAsunto, this.tipoCalculoAG, this.tipoCalculoRF, this.coeficientesPol, this.coeficientesBin, this.valBinMin, this.valBinMax);
 
-        //Añadimos las filas a la tabla
-        int nDatos = filas.size();
-        for (int i = 0; i < nDatos; i++) {
-            dtm.addRow(filas.get(i).toArray());
-        }
-        
-        //Seleccionamos la fila de corregida por RF para posicionar el scroll
-        Auxiliares.muestraFila(this.jtNivelesBin, 2);
-        
-        Auxiliares.centrarTabla(this.jtNivelesBin);
-        
-        //Creamos las gráficas
+
+	Auxiliares.incPorcentajeProgress(jpb, 0.4);
+
+	//Establecemos el modelo de la tabla
+	this.jtNivelesBin.setModel(new javax.swing.table.DefaultTableModel(
+		new Object [][] {
+
+		},
+		new String [] {
+			"Presión"
+		}) {
+	
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return false;
+		}
+	});
+	
+	DefaultTableModel dtm = (DefaultTableModel) this.jtNivelesBin.getModel();
+
+	filaAG.add(HTML_NIVEL_EQ_AG);
+	filaRF.add(HTML_NIVEL_EQ_RF);
+	filaCoRF.add(HTML_NIVEL_EQ_CO_RF);
+	filaAp.add(HTML_NIVEL_APARENTE);
+	
+	Entry<Double, Integer> entry;
+	Double valor, valorAp, valorApDec;
+	Integer tipo;
+
+	for (int i = 0; i < (this.valBinMax - this.valBinMin + 1); i++) {
+		datosCorregidosBin = datosCorregidos.get(i);
+	
+		dtm.addColumn(i + this.valBinMin);
+		
+		//Nivel Aero
+		entry = datosCorregidosBin.get(0);
+		if (entry != null && entry.getKey() != null) {
+			valor = TratDecimales.round(entry.getKey(), TratDecimales.DEC_VARIABLE_RA);
+			
+			filaAG.add(valor);
+		} else
+			filaAG.add(null);
+		
+		//Nivel RF
+		entry = datosCorregidosBin.get(1);
+		if (entry != null && entry.getKey() != null) {
+			valor = TratDecimales.round(entry.getKey(), TratDecimales.DEC_VARIABLE_RA);
+			
+			filaRF.add(valor);
+		} else
+			filaRF.add(null);
+
+		//SPL Corregido
+		entry = datosCorregidosBin.get(2);
+		if (entry != null && entry.getKey() != null) {
+			valor = TratDecimales.round(entry.getKey(), TratDecimales.DEC_VARIABLE_RA);
+			tipo = entry.getValue();
+			
+			switch (tipo) {
+				case DatosRA2.CORREGIDO_RF_OK:
+					filaCoRF.add(valor);
+					break;
+				case DatosRA2.CORREGIDO_RF_AVISO:
+					filaCoRF.add(valor + DatosRA2.MARCA_ASTERISCO);
+					break;
+				case DatosRA2.CORREGIDO_RF_AVISO_IEC3:
+					filaCoRF.add(DatosRA2.MARCA_INI_BRACKETS + valor + DatosRA2.MARCA_FIN_BRACKETS);
+					break;
+				case DatosRA2.CORREGIDO_RF_ERROR:
+					filaCoRF.add(DatosRA2.TXT_CORREGIDO_RF_ERROR);
+					break;
+			}
+		} else
+			filaCoRF.add(null);
+		
+		//SPL Aparente
+		entry = datosCorregidosBin.get(3);
+		valorAp = null;
+		
+		if (entry != null) {
+			valor = entry.getKey();
+			tipo = entry.getValue();
+			
+			switch (tipo) {
+				case DatosRA2.CORREGIDO_RF_OK:
+					valorAp = valor;
+					break;
+				case DatosRA2.CORREGIDO_RF_AVISO:
+				case DatosRA2.CORREGIDO_RF_ERROR:
+					valorAp = null;
+					break;
+			}
+		}
+		if (valorAp != null)
+			filaAp.add(valorAp);
+		else
+			filaAp.add(DatosRA2.TXT_CORREGIDO_RF_ERROR);
+		
+		if (this.idNorma.equals(NormaRA.ID_NORMA_BWEA)) {
+			if (valorAp != null) {
+				//Pendiente ruido
+				filaSdb.add(DatosRA2.getPendienteMapaRuido(this.idAsunto, this.tipoCalculoAG, this.tipoCalculoRF, this.coeficientesPol, this.coeficientesModosFunc, valModoIni, valModoFin));
+				
+				//Aparente declarada
+				valorApDec = DatosRA2.getNivelAparenteDeclarado(this.tipoTabla, this.idAsunto, this.idSite, valModoIni, valModoFin, valorAp);
+			  
+				filaApDec.add(valorApDec);
+				//Sacamos los niveles de inmsión sin penalty pero añadimo marca
+				filaInm60.add(DatosRA2.getNivelInmision60(valorApDec, 0.0) + DatosRA2.MARCA_PENALIZACION);
+				filaInm25.add(DatosRA2.getNivelInmision25(valorApDec, 0.0) + DatosRA2.MARCA_PENALIZACION);
+			} else {
+				filaSdb.add(null);
+				filaApDec.add(null);
+				filaInm60.add(null);
+				filaInm25.add(null);
+			}
+		}
+
+		Auxiliares.incPorcentajeProgress(jpb, 0.1/(this.valBinMax - this.valBinMin + 1));
+	}
+
+	filas.add(filaAG);
+	filas.add(filaRF);
+	filas.add(filaCoRF);
+	filas.add(filaAp);
+	if (this.idNorma.equals(NormaRA.ID_NORMA_BWEA)) {
+		filas.add(filaApDec);
+		filas.add(filaInm60);
+		filas.add(filaInm25);
+		filas.add(filaSdb);
+	}
+
+	//Añadimos las filas a la tabla
+	int nDatos = filas.size();
+	for (int i = 0; i < nDatos; i++) {
+		dtm.addRow(filas.get(i).toArray());
+	}
+	
+	//Seleccionamos la fila de corregida por RF para posicionar el scroll
+	Auxiliares.muestraFila(this.jtNivelesBin, 2);
+	
+	Auxiliares.centrarTabla(this.jtNivelesBin);
+	
+	//Creamos las gráficas
 //            asignaPanelGrafica(this.jpGraficaCoRF, crearGraficaBarras(NIVEL_EQ_CO_RF, crearDatasetBarras(NIVEL_EQ_CO_RF)));
 //            asignaPanelGrafica(this.jpGraficaAp, crearGraficaBarras(NIVEL_APARENTE, crearDatasetBarras(NIVEL_APARENTE)));
-        Auxiliares.asignaPanelGrafica(this, this.jpGraficaCoRF, crearGrafica(NIVEL_EQ_CO_RF, crearDataset(HTML_NIVEL_EQ_CO_RF)), false, null);
-        Auxiliares.asignaPanelGrafica(this, this.jpGraficaAp, crearGrafica(NIVEL_APARENTE, crearDataset(HTML_NIVEL_APARENTE)), false, null);
+	Auxiliares.asignaPanelGrafica(this, this.jpGraficaCoRF, crearGrafica(NIVEL_EQ_CO_RF, crearDataset(HTML_NIVEL_EQ_CO_RF)), false, null);
+	Auxiliares.asignaPanelGrafica(this, this.jpGraficaAp, crearGrafica(NIVEL_APARENTE, crearDataset(HTML_NIVEL_APARENTE)), false, null);
 
-        //Una vez renderizados los gráficos, hacemos los ajustes
-        this.jtpDatos.setSelectedComponent(this.jpContGraficaAp.getParent());
-        Auxiliares.escalarGrafica(this, this.jpGraficaAp, 2.0);
-        this.jtpDatos.setSelectedComponent(this.jpContGraficaCoRF.getParent());
-        Auxiliares.escalarGrafica(this, this.jpGraficaCoRF, 2.0);
-        
-        //Mapa de ruido
-        if (this.idNorma.equals(NormaRA.ID_NORMA_BWEA)) {
-            DefaultTableModel dtmModos = (DefaultTableModel) this.jtModosFunc.getModel();
-            int nModosFunc = this.modosFunc.size();
+	//Una vez renderizados los gráficos, hacemos los ajustes
+	this.jtpDatos.setSelectedComponent(this.jpContGraficaAp.getParent());
+	Auxiliares.escalarGrafica(this, this.jpGraficaAp, 2.0);
+	this.jtpDatos.setSelectedComponent(this.jpContGraficaCoRF.getParent());
+	Auxiliares.escalarGrafica(this, this.jpGraficaCoRF, 2.0);
+	
+	//Mapa de ruido
+	if (this.idNorma.equals(NormaRA.ID_NORMA_BWEA)) {
+		DefaultTableModel dtmModos = (DefaultTableModel) this.jtModosFunc.getModel();
+		int nModosFunc = this.modosFunc != null ? this.modosFunc.size() : 0;
 
-            for (int i = 0; i < nModosFunc; i++) {
-                dtmModos.addRow(new Object[]{this.modosFunc.get(i)[0], this.modosFunc.get(i)[1], false});
-            }
-            
-            this.jtfDesdeBin.setText(DESDE_BIN_DEF.toString());
-            this.jtfHastaBin.setText(HASTA_BIN_DEF.toString());
-            this.jtfResBin.setText(RESOLUCION_BIN_DEF.toString());
-            this.jtfDesdeDist.setText(DESDE_DIST_DEF.toString());
-            this.jtfHastaDist.setText(HASTA_DIST_DEF.toString());
-            this.jtfResDist.setText(RESOLUCION_DIST_DEF.toString());
+		for (int i = 0; i < nModosFunc; i++) {
+			dtmModos.addRow(new Object[]{this.modosFunc.get(i)[0], this.modosFunc.get(i)[1], false});
+		}
+		
+		this.jtfDesdeBin.setText(DESDE_BIN_DEF.toString());
+		this.jtfHastaBin.setText(HASTA_BIN_DEF.toString());
+		this.jtfResBin.setText(RESOLUCION_BIN_DEF.toString());
+		this.jtfDesdeDist.setText(DESDE_DIST_DEF.toString());
+		this.jtfHastaDist.setText(HASTA_DIST_DEF.toString());
+		this.jtfResDist.setText(RESOLUCION_DIST_DEF.toString());
 
-            redibujarMapaRuido(null);
-        }
-    }
+		redibujarMapaRuido(null);
+	}
+
+//Mapa de inmisión
+	if (this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) && this.esMiniAero) {
+		Auxiliares.asignaPanelGrafica(this, this.jpGraficaMapaInmision, crearMapaInmision(datosCorregidos), false, null);
+	}
+}
     
-    private JFreeChart crearMapaRuido() throws NumberFormatException, SQLException, NoSuchFieldException {
-        DefaultTableModel dtmModos = (DefaultTableModel) this.jtModosFunc.getModel();
-        int nModosFunc = dtmModos.getRowCount();
-        ArrayList<Boolean> tonosModosFunc = new ArrayList<Boolean>();
-        Integer desdeBin, hastaBin;
-        Double desdeDist, hastaDist, resolucionDist, resolucionBin;
-        
-        int colTonos = dtmModos.findColumn(HAY_TONO);
+private JFreeChart crearMapaRuido() throws NumberFormatException, SQLException, NoSuchFieldException {
+	DefaultTableModel dtmModos = (DefaultTableModel) this.jtModosFunc.getModel();
+	int nModosFunc = dtmModos.getRowCount();
+	ArrayList<Boolean> tonosModosFunc = new ArrayList<Boolean>();
+	Integer desdeBin, hastaBin;
+	Double desdeDist, hastaDist, resolucionDist, resolucionBin;
+	
+	int colTonos = dtmModos.findColumn(HAY_TONO);
 
-        for (int i = 0; i < nModosFunc; i++) {
-            tonosModosFunc.add((Boolean) dtmModos.getValueAt(i, colTonos));
-        }
-        
-        desdeBin = Integer.parseInt(this.jtfDesdeBin.getText());
-        hastaBin = Integer.parseInt(this.jtfHastaBin.getText());
-        resolucionBin = Double.parseDouble(this.jtfResBin.getText());
-        desdeDist = Double.parseDouble(this.jtfDesdeDist.getText());
-        hastaDist = Double.parseDouble(this.jtfHastaDist.getText());
-        resolucionDist = Double.parseDouble(this.jtfResDist.getText());
-              
-        YIntervalSeriesCollection dataset = DatosRA2.getDatasetMapaRuido(this.idAsunto, this.tipoCalculoAG, this.tipoCalculoRF, this.coeficientesPol, this.coeficientesModosFunc, desdeBin, hastaBin, resolucionBin, desdeDist, hastaDist, resolucionDist, this.valorApDec, this.modosFunc, tonosModosFunc);
-        
-        //Creamos la gráfica
-        JFreeChart chart = ChartFactory.createScatterPlot(
-                "",
-                "Velocidad de viento en el buje (m/s)",
-                "Distancia al buje (m)",
-                dataset,
-                PlotOrientation.HORIZONTAL,
-                true,
-                true,
-                false);
-                
-        TextTitle texto = chart.getTitle();
-        texto.setFont(new Font("Arial", Font.BOLD, 13));
-        chart.setBackgroundPaint(Color.WHITE);
-        XYPlot plot = (XYPlot) chart.getPlot();
-        
-        XYItemRenderer rendLeyenda = new XYLineAndShapeRenderer(false, true);
-        Rectangle2D.Double r = new Rectangle2D.Double(-2, -2, 4, 4);
-        rendLeyenda.setSeriesShape(0, r);
-        DeviationRenderer renderer = new DeviationRenderer(true, false);
-        renderer.setAlpha(1.0F);
-        
-        int nSeries = dataset.getSeriesCount();
-        String seriesKey;
-        
-        Color color = null;
-        
-        for (int i = 0; i < nSeries; i++) {
-            seriesKey = (String) dataset.getSeriesKey(i);
-            
-            if (seriesKey.contains("> 45 dB(A)")) {
-                color = Color.RED;
-            } else if (seriesKey.contains("40 - 45 dB(A)")) {
-                color = Color.YELLOW;
-            } else if (seriesKey.contains("< 40 dB(A)")) {
-                color = Color.GREEN;
-            } else if (seriesKey.contains("Modo no declarado")) {
-                color = Color.GRAY;
-            }
-            
-            renderer.setSeriesPaint(i, color);
-            renderer.setSeriesFillPaint(i, color);
-            renderer.setSeriesStroke(i, new BasicStroke(0F, 1, 1));
-        }
-        plot.setRenderer(renderer);
-        
-        LegendTitle lt = chart.getLegend();
-        LegendItemCollection lic = lt.getSources()[0].getLegendItems();
-        final LegendItemCollection licNuevo = new LegendItemCollection();
-        LegendItem li;
-        int nItems = lic.getItemCount();
-        
-        for (int i = 0; i < nItems; i++) {
-            li = lic.get(i);
-            
-            li.setLineVisible(false);
-            li.setShapeVisible(true);
-            li.setShape(r);
-            li.setOutlineStroke(new BasicStroke(2F, 1, 1));
-            
-            licNuevo.add(li);
-        }
-        
-        LegendItemSource lis = new LegendItemSource() {
+	for (int i = 0; i < nModosFunc; i++) {
+		tonosModosFunc.add((Boolean) dtmModos.getValueAt(i, colTonos));
+	}
+	
+	desdeBin = Integer.parseInt(this.jtfDesdeBin.getText());
+	hastaBin = Integer.parseInt(this.jtfHastaBin.getText());
+	resolucionBin = Double.parseDouble(this.jtfResBin.getText());
+	desdeDist = Double.parseDouble(this.jtfDesdeDist.getText());
+	hastaDist = Double.parseDouble(this.jtfHastaDist.getText());
+	resolucionDist = Double.parseDouble(this.jtfResDist.getText());
+		  
+	YIntervalSeriesCollection dataset = DatosRA2.getDatasetMapaRuido(this.tipoTabla, this.idAsunto, this.idSite, this.tipoCalculoAG, this.tipoCalculoRF, this.coeficientesPol, this.coeficientesModosFunc, desdeBin, hastaBin, resolucionBin, desdeDist, hastaDist, resolucionDist, this.valorApModos, this.modosFunc, tonosModosFunc);
 
-            public LegendItemCollection getLegendItems() {
-                return licNuevo;
-            }
-        };
-        
-        lt.setSources(new LegendItemSource[]{lis});
-        
-        return chart;
-    }
+	//Creamos la gráfica
+	JFreeChart chart = ChartFactory.createScatterPlot(
+			"",
+			"Velocidad de viento en el buje (m/s)",
+			"Distancia al buje (m)",
+			dataset,
+			PlotOrientation.HORIZONTAL,
+			true,
+			true,
+			false);
+			
+	TextTitle texto = chart.getTitle();
+	texto.setFont(new Font("Arial", Font.BOLD, 13));
+	chart.setBackgroundPaint(Color.WHITE);
+	XYPlot plot = (XYPlot) chart.getPlot();
+	
+	XYItemRenderer rendLeyenda = new XYLineAndShapeRenderer(false, true);
+	Rectangle2D.Double r = new Rectangle2D.Double(-2, -2, 4, 4);
+	rendLeyenda.setSeriesShape(0, r);
+	DeviationRenderer renderer = new DeviationRenderer(true, false);
+	renderer.setAlpha(1.0F);
+	
+	int nSeries = dataset.getSeriesCount();
+	String seriesKey;
+	
+	Color color = null;
+	
+	for (int i = 0; i < nSeries; i++) {
+		seriesKey = (String) dataset.getSeriesKey(i);
+		
+		if (seriesKey.contains("> 45 dB(A)")) {
+			color = Color.RED;
+		} else if (seriesKey.contains("40 - 45 dB(A)")) {
+			color = Color.YELLOW;
+		} else if (seriesKey.contains("< 40 dB(A)")) {
+			color = Color.GREEN;
+		} else if (seriesKey.contains("Modo no declarado")) {
+			color = Color.GRAY;
+		}
+		
+		renderer.setSeriesPaint(i, color);
+		renderer.setSeriesFillPaint(i, color);
+		renderer.setSeriesStroke(i, new BasicStroke(0F, 1, 1));
+	}
+	plot.setRenderer(renderer);
+	
+	LegendTitle lt = chart.getLegend();
+	LegendItemCollection lic = lt.getSources()[0].getLegendItems();
+	final LegendItemCollection licNuevo = new LegendItemCollection();
+	LegendItem li;
+	int nItems = lic.getItemCount();
+	
+	for (int i = 0; i < nItems; i++) {
+		li = lic.get(i);
+		
+		li.setLineVisible(false);
+		li.setShapeVisible(true);
+		li.setShape(r);
+		li.setOutlineStroke(new BasicStroke(2F, 1, 1));
+		
+		licNuevo.add(li);
+	}
+	
+	LegendItemSource lis = new LegendItemSource() {
 
-    private JFreeChart crearGrafica(String tipoNivel, XYDataset dataset) {
-        JFreeChart chart = ChartFactory.createScatterPlot(
-                "",
-                "Velocidad de referencia Vs (m/s)",
-                "Presión sonora equivalente (dBA)",
-                dataset,
-                PlotOrientation.VERTICAL,
-                true,
-                true,
-                false);
-                
-        TextTitle texto = chart.getTitle();
-        texto.setFont(new Font("Arial", Font.BOLD, 13));
-        chart.setBackgroundPaint(Color.WHITE);
-        XYPlot plot = (XYPlot) chart.getPlot();
-        
-        Rectangle2D.Double r = new Rectangle2D.Double(-2, -2, 4, 4);
+		public LegendItemCollection getLegendItems() {
+			return licNuevo;
+		}
+	};
+	
+	lt.setSources(new LegendItemSource[]{lis});
+	
+	return chart;
+}
 
-        XYItemRenderer rendNivel = new XYLineAndShapeRenderer(false, true);
-        rendNivel.setSeriesShape(0, r);
-        
-       if (tipoNivel.compareTo(NIVEL_EQ_CO_RF) == 0)
-            rendNivel.setSeriesPaint(0, Auxiliares.COLORES_SERIE0.get(0));
-        else
-            rendNivel.setSeriesPaint(0, Auxiliares.COLORES_SERIE1.get(0));
-        
-        rendNivel.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
-        plot.setRenderer(0, rendNivel); 
-     
-        return chart;
-    }
+private JFreeChart crearMapaInmision(ArrayList<ArrayList<Entry<Double, Integer>>> datosCorregidos) throws NumberFormatException, SQLException, NoSuchFieldException {
+ArrayList<Double> distNivelInf = new ArrayList<Double>();
+	YIntervalSeriesCollection dataset = DatosRA2.getDatasetMapaRuido_IEC3(this.idAsunto, datosCorregidos, this.valBinMin, this.valBinMax, 5, 35, distNivelInf);
+	
+	//Creamos la gráfica
+	JFreeChart chart = ChartFactory.createScatterPlot(
+			"",
+			"Distancia al buje (m)",
+			"Velocidad de viento (m/s)",
+			dataset,
+			PlotOrientation.VERTICAL,
+			true,
+			true,
+			false);
+			
+	TextTitle texto = chart.getTitle();
+	texto.setFont(new Font("Arial", Font.BOLD, 13));
+	chart.setBackgroundPaint(Color.WHITE);
+	XYPlot plot = (XYPlot) chart.getPlot();
+	
+	XYItemRenderer rendLeyenda = new XYLineAndShapeRenderer(false, true);
+	Rectangle2D.Double r = new Rectangle2D.Double(-2, -2, 4, 4);
+	rendLeyenda.setSeriesShape(0, r);
+	DeviationRenderer renderer = new DeviationRenderer(true, false);
+	renderer.setAlpha(1.0F);
+	
+	int nSeries = dataset.getSeriesCount();
+
+	for (int i = 0; i < nSeries; i++) {
+		plot.getRendererCount();
+		renderer.setSeriesPaint(i, plot.getRenderer(0).getItemPaint(i, 0));
+		renderer.setSeriesFillPaint(i, plot.getRenderer(0).getItemPaint(i, 0));
+		renderer.setSeriesStroke(i, new BasicStroke(0F, 1, 1));
+	}
+
+	plot.setRenderer(renderer);
+	
+	LegendTitle lt = chart.getLegend();
+	LegendItemCollection lic = lt.getSources()[0].getLegendItems();
+	final LegendItemCollection licNuevo = new LegendItemCollection();
+	LegendItem li;
+	int nItems = lic.getItemCount();
+	
+	for (int i = 0; i < nItems; i++) {
+		li = lic.get(i);
+		
+		li.setLineVisible(false);
+		li.setShapeVisible(true);
+		li.setShape(r);
+		li.setOutlineStroke(new BasicStroke(2F, 1, 1));
+		
+		licNuevo.add(li);
+	}
+	
+	LegendItemSource lis = new LegendItemSource() {
+
+		public LegendItemCollection getLegendItems() {
+			return licNuevo;
+		}
+	};
+	
+	lt.setSources(new LegendItemSource[]{lis});
+
+	//Solo mostramos el gráfico hasta una posición representativa de distNivelInf
+	NumberAxis domAxis = (NumberAxis) plot.getDomainAxis();
+	int nDistNivelInf = distNivelInf.size();
+
+	AsuntoRA asunto = AsuntoRA.getAsuntoPorId(this.idAsunto);
+	AerogeneradorRA aero = AerogeneradorRA.getAeroPorId(asunto.getIdAero());
+	Double hB = aero.getHB();
+	Double distNivelInfRep = nDistNivelInf != 0 ? distNivelInf.get(nDistNivelInf - 1) : domAxis.getUpperBound();
+	int pasosRep = 0;
+
+	for (int i = 0; i < nDistNivelInf; i++) {
+		if (distNivelInf.get(i) != null && distNivelInf.get(i) > hB) {
+		pasosRep++;
+		distNivelInfRep = distNivelInf.get(i);
+
+		if (pasosRep > 2)
+			break;
+		}
+	}
+
+	domAxis.setRange(hB, distNivelInfRep);
+	
+	return chart;
+}
+
+private JFreeChart crearGrafica(String tipoNivel, XYDataset dataset) {
+	JFreeChart chart = ChartFactory.createScatterPlot(
+			"",
+			"Velocidad de referencia Vs (m/s)",
+			"Presión sonora equivalente (dBA)",
+			dataset,
+			PlotOrientation.VERTICAL,
+			true,
+			true,
+			false);
+			
+	TextTitle texto = chart.getTitle();
+	texto.setFont(new Font("Arial", Font.BOLD, 13));
+	chart.setBackgroundPaint(Color.WHITE);
+	XYPlot plot = (XYPlot) chart.getPlot();
+	
+	Rectangle2D.Double r = new Rectangle2D.Double(-2, -2, 4, 4);
+
+	XYItemRenderer rendNivel = new XYLineAndShapeRenderer(false, true);
+	rendNivel.setSeriesShape(0, r);
+	
+   if (tipoNivel.compareTo(NIVEL_EQ_CO_RF) == 0)
+		rendNivel.setSeriesPaint(0, Auxiliares.COLORES_SERIE0.get(0));
+	else
+		rendNivel.setSeriesPaint(0, Auxiliares.COLORES_SERIE1.get(0));
+	
+	rendNivel.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
+	plot.setRenderer(0, rendNivel); 
+
+/* Código de prueba para cadenas con atributos en leyendas
+	AttributedString serieKey = new AttributedString("ASDJLASDQWE");
+serieKey.addAttribute(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUB, 3, 4);
+
+LegendItemCollection lic = plot.getLegendItems();
+LegendItemCollection licN = new LegendItemCollection();
+Iterator it = lic.iterator();
+LegendItem li, liN;
+while (it.hasNext()) {
+	li = (LegendItem) it.next();
+	liN = new LegendItem((AttributedString) serieKey, li.getDescription(), li.getToolTipText(), li.getURLText(), li.isShapeVisible(), li.getShape(), li.isShapeFilled(), li.getFillPaint(), li.isShapeOutlineVisible(), li.getOutlinePaint(), li.getOutlineStroke(), li.isLineVisible(), li.getLine(), li.getLineStroke(), li.getLinePaint());
+
+	licN.add(liN);
+}
+
+plot.setFixedLegendItems(licN);
+*/
+
+	AttributedString as = new AttributedString(tipoNivel + " (dBA)");
+
+	as.addAttribute(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUB, 1, tipoNivel.length());
+	as.addAttribute(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUB, tipoNivel.length() + 4, tipoNivel.length() + 5);
+
+	ValueAxis ranAxis = plot.getRangeAxis();
+
+	Font f = ranAxis.getLabelFont();
+
+	as.addAttribute(TextAttribute.SIZE, f.getSize());
+	as.addAttribute(TextAttribute.FAMILY, f.getFamily());
+	if (f.isBold())
+		as.addAttribute(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+
+	ranAxis.setAttributedLabel(as);
+ 
+	return chart;
+}
     
-    private XYDataset crearDataset(String tipoNivel) {
-        XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries serie = new XYSeries("Nivel " + tipoNivel.replaceAll("<[^>]*>", ""), false);
-        
-        Object objeto;
-        Double valor;
+private XYDataset crearDataset(String tipoNivel) {
+	XYSeriesCollection dataset = new XYSeriesCollection();
+	XYSeries serie = new XYSeries("Nivel " + tipoNivel.replaceAll("<[^>]*>", ""), false);
+	Object objeto;
+	Double valor;
 
-        int nDatos = this.jtNivelesBin.getRowCount();
-        int nCols = this.jtNivelesBin.getColumnCount();
+	int nDatos = this.jtNivelesBin.getRowCount();
+	int nCols = this.jtNivelesBin.getColumnCount();
 
-        for (int i = 0; i < nDatos; i++) {
-            if (tipoNivel.compareTo((String) this.jtNivelesBin.getValueAt(i, 0)) == 0) { //Es la fila correcta
-                for (int j = 1; j < nCols; j++) {
-                    objeto = this.jtNivelesBin.getValueAt(i, j);
-                    
-                    if (objeto == null)
-                        continue;
-                    
-                    if (objeto instanceof Number)
-                        valor = (Double) objeto;
-                    else {
-                        if (((String) objeto).contentEquals(DatosRA2.TXT_CORREGIDO_RF_ERROR))
-                            continue;
-                        
-                        valor = Double.valueOf(((String) objeto).replace(DatosRA2.MARCA_ASTERISCO, ""));
-                        //Qué habría que hacer??
-                        //continue;
-                        //valor = null;
-                    }
-                        
-                    serie.add(j + this.valBinMin - 1, valor);
-                }
-                break; //No necesitamos seguir mirando filas
-            }
-        }
-        
-        dataset.addSeries(serie);
+	for (int i = 0; i < nDatos; i++) {
+		if (tipoNivel.compareTo((String) this.jtNivelesBin.getValueAt(i, 0)) == 0) { //Es la fila correcta
+			for (int j = 1; j < nCols; j++) {
+				objeto = this.jtNivelesBin.getValueAt(i, j);
+				
+				if (objeto == null)
+					continue;
+				
+				if (objeto instanceof Number)
+					valor = (Double) objeto;
+				else {
+					if (((String) objeto).contentEquals(DatosRA2.TXT_CORREGIDO_RF_ERROR))
+						continue;
+					
+					valor = Double.valueOf(((String) objeto).replaceAll("[^0-9.]+", ""));
+					//Qué habría que hacer??
+					//continue;
+					//valor = null;
+				}
+					
+				serie.add(j + this.valBinMin - 1, valor);
+			}
+			break; //No necesitamos seguir mirando filas
+		}
+	}
+	
+	dataset.addSeries(serie);
 
-        return dataset;
-    }
+	return dataset;
+}
     
-    private JFreeChart crearGraficaBarras(String tipoNivel, CategoryDataset dataset) {
-        JFreeChart chart = ChartFactory.createBarChart(
-        "",
-        "Velocidad de referencia Vs (m/s)",
-        "Presión sonora equivalente (dBA)",
-        dataset,
-        PlotOrientation.HORIZONTAL,
-        true,
-        true,
-        false);
+private JFreeChart crearGraficaBarras(String tipoNivel, CategoryDataset dataset) {
+	JFreeChart chart = ChartFactory.createBarChart(
+	"",
+	"Velocidad de referencia Vs (m/s)",
+	"Presión sonora equivalente (dBA)",
+	dataset,
+	PlotOrientation.HORIZONTAL,
+	true,
+	true,
+	false);
 
-        TextTitle texto = chart.getTitle();
-        texto.setFont(new Font("Arial", Font.BOLD, 13));
-        chart.setBackgroundPaint(Color.WHITE);
-        CategoryPlot plot = (CategoryPlot) chart.getPlot();
+	TextTitle texto = chart.getTitle();
+	texto.setFont(new Font("Arial", Font.BOLD, 13));
+	chart.setBackgroundPaint(Color.WHITE);
+	CategoryPlot plot = (CategoryPlot) chart.getPlot();
 
-        final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-        configureRangeAxis(rangeAxis);
-        
-        CategoryItemRenderer rendNivel = new BarRenderer(); 
-        if (tipoNivel.compareTo(NIVEL_EQ_CO_RF) == 0)
-            rendNivel.setSeriesPaint(0, Auxiliares.COLORES_SERIE0.get(0));
-        else
-            rendNivel.setSeriesPaint(0, Auxiliares.COLORES_SERIE1.get(0));
+	final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+	configureRangeAxis(rangeAxis);
+	
+	CategoryItemRenderer rendNivel = new BarRenderer(); 
+	if (tipoNivel.compareTo(NIVEL_EQ_CO_RF) == 0)
+		rendNivel.setSeriesPaint(0, Auxiliares.COLORES_SERIE0.get(0));
+	else
+		rendNivel.setSeriesPaint(0, Auxiliares.COLORES_SERIE1.get(0));
 
-        rendNivel.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
-        plot.setRenderer(0, rendNivel); 
-     
-        return chart;
-    }
+	rendNivel.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
+	plot.setRenderer(0, rendNivel); 
+ 
+	return chart;
+}
     
-    // configuramos el eje y de la gráfica (números enteros de dos en dos y rango entre 120 y 135)
+// configuramos el eje y de la gráfica (números enteros de dos en dos y rango entre 120 y 135)
 private static void configureRangeAxis (NumberAxis rangeAxis) {
     rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
     rangeAxis.setTickUnit(new NumberTickUnit(10));
@@ -1051,23 +1298,23 @@ private static void configureDomainAxis (NumberAxis domainAxis) {
 //    domainAxis.setRange(0, 10);
 }
 
-    private CategoryDataset crearDatasetBarras(String tipoNivel) {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+private CategoryDataset crearDatasetBarras(String tipoNivel) {
+	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-        int nDatos = this.jtNivelesBin.getRowCount();
-        int nCols = this.jtNivelesBin.getColumnCount();
+	int nDatos = this.jtNivelesBin.getRowCount();
+	int nCols = this.jtNivelesBin.getColumnCount();
 
-        for (int i = 0; i < nDatos; i++) {
-            if (tipoNivel.compareTo((String) this.jtNivelesBin.getValueAt(i, 0)) == 0) { //Es la fila correcta
-                for (int j = 1; j < nCols; j++) {
-                    dataset.addValue(((Double) this.jtNivelesBin.getValueAt(i, j)).doubleValue(), "Nivel " + tipoNivel, String.valueOf(j + this.valBinMin - 1));
-                }
-                break; //No necesitamos seguir mirando filas
-            }
-        }
+	for (int i = 0; i < nDatos; i++) {
+		if (tipoNivel.compareTo((String) this.jtNivelesBin.getValueAt(i, 0)) == 0) { //Es la fila correcta
+			for (int j = 1; j < nCols; j++) {
+				dataset.addValue(((Double) this.jtNivelesBin.getValueAt(i, j)).doubleValue(), "Nivel " + tipoNivel, String.valueOf(j + this.valBinMin - 1));
+			}
+			break; //No necesitamos seguir mirando filas
+		}
+	}
 
-        return dataset;
-    }
+	return dataset;
+}
 
 private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
     boolean error = false;
@@ -1078,11 +1325,14 @@ private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
         this.setTitle("SEGUIMIENTO / " + this.tipoTabla.toUpperCase() + " - RESULTADOS");
 
         //Establecemos las pestañas de JTabbedPane
-        Auxiliares.setTitulosJTabbedPane(this.jtpDatos, new String[]{"CORREGIDA POR RUIDO DE FONDO", "APARENTE", "MAPA DE RUIDO"});
+        Auxiliares.setTitulosJTabbedPane(this.jtpDatos, new String[]{"CORREGIDA POR RUIDO DE FONDO", "APARENTE", "MAPA DE RUIDO", "MAPA DE INMISIÓN"});
         
         //Eliminamos las pestañas que no se corresponden con el tipo de análisis a realizar
         if (!this.idNorma.equals(NormaRA.ID_NORMA_BWEA))
             this.jtpDatos.remove(this.jpMapaRuido);
+
+	 if (!this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) || !this.esMiniAero)
+            this.jtpDatos.remove(this.jpMapaInmision);
         
         //Maximizamos las pestañas
         Auxiliares.maximizaTitulosJTabbedPane(this.jtpDatos);
@@ -1138,17 +1388,28 @@ private void siguiente(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguie
     DatosIncertidumbre datoIncertidumbre;
     
     try {
-        for (int i = this.valBinMin; i <= this.valBinMax; i++) {
-            datoBinIncertidumbre = new LinkedHashMap<Object, DatosIncertidumbre>();
+		if (this.resIncert_IEC_3_0 != null) {
+			for (int i = this.valBinMin; i <= this.valBinMax; i++) {
+				datoBinIncertidumbre = new LinkedHashMap<Object, DatosIncertidumbre>();
 
-            datoIncertidumbre = DatosRA2.getIncertidumbreSPL(this.idNorma, this.incertidumbres, this.tipoTabla, this.idAsunto, this.idSite, i, this.tipoCalculoAG, this.coeficientesPol, this.coeficientesBin);
+				datoIncertidumbre = new DatosIncertidumbre(this.resIncert_IEC_3_0.get(i - this.valBinMin));
 
-            datoBinIncertidumbre.put("Incertidumbre", datoIncertidumbre);
-            datosIncertidumbre.put(i, datoBinIncertidumbre);
-        }
+				datoBinIncertidumbre.put("Incertidumbre", datoIncertidumbre);
+				datosIncertidumbre.put(i, datoBinIncertidumbre);
+			}
+		} else {
+			for (int i = this.valBinMin; i <= this.valBinMax; i++) {
+				datoBinIncertidumbre = new LinkedHashMap<Object, DatosIncertidumbre>();
+
+				datoIncertidumbre = DatosRA2.getIncertidumbreSPL(this.idNorma, this.incertidumbres, this.tipoTabla, this.idAsunto, this.idSite, i, this.tipoCalculoAG, this.coeficientesPol, this.coeficientesBin);
+
+				datoBinIncertidumbre.put("Incertidumbre", datoIncertidumbre);
+				datosIncertidumbre.put(i, datoBinIncertidumbre);
+			}
+		}
 
         this.setVisible(false);
-        DatosIncertidumbreGUI dI = new DatosIncertidumbreGUI((Frame) this.getParent(), this.tipoTabla, this.idAsunto, datosIncertidumbre, this.modoSalida);
+        DatosIncertidumbreGUI dI = new DatosIncertidumbreGUI((Frame) this.getParent(), this.tipoTabla, this.idAsunto, datosIncertidumbre, this.idNorma, this.modoSalida);
         dI.setVisible(true);
 
         //Si volvemos para una modificación (atrás), mostramos de nuevo el diálogo
@@ -1195,16 +1456,20 @@ private void redibujarMapaRuido(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     private javax.swing.JLabel jlTitCoRF;
     private javax.swing.JLabel jlTitDatos;
     private javax.swing.JLabel jlTitMapa;
+    private javax.swing.JLabel jlTitMapaInmision;
     private javax.swing.JPanel jpAparente;
     private javax.swing.JPanel jpClave;
     private javax.swing.JPanel jpContGraficaAp;
     private javax.swing.JPanel jpContGraficaCoRF;
     private javax.swing.JPanel jpContGraficaMapa;
+    private javax.swing.JPanel jpContGraficaMapaInmision;
     private javax.swing.JPanel jpCorregidaRF;
     private javax.swing.JPanel jpDatos;
     private javax.swing.JPanel jpGraficaAp;
     private javax.swing.JPanel jpGraficaCoRF;
     private javax.swing.JPanel jpGraficaMapa;
+    private javax.swing.JPanel jpGraficaMapaInmision;
+    private javax.swing.JPanel jpMapaInmision;
     private javax.swing.JPanel jpMapaRuido;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JScrollPane jspModosFunc;

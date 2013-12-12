@@ -18,10 +18,17 @@ public class DatosIncertidumbre {
     private ArrayList<AsuntoIncert> incertidumbresB;
     private Double uA;
     private Double uC;
-    
+    private Double uCorreccionRF; //Solo para IEC 3
     
     public DatosIncertidumbre(ArrayList<AsuntoIncert> incertidumbres) {
         this.incertidumbresB = (ArrayList<AsuntoIncert>) incertidumbres.clone();
+    }
+
+    public DatosIncertidumbre(Double uCorrecionRF) {
+	this.incertidumbresB = null;
+	this.uA = null;
+	this.uC = null;
+	this.uCorreccionRF = uCorrecionRF;
     }
     
     public Double getUA() {
@@ -82,6 +89,14 @@ public class DatosIncertidumbre {
     public void setUC(Double uC) {
         this.uC = uC;
     }
+
+    public Double getUCorreccionRF() {
+	return uCorreccionRF;
+    }
+
+    public void setUCorreccionRF(Double uCorreccionRF) {
+	this.uCorreccionRF = uCorreccionRF;
+    }
     
     public Double calculaUGenerico(String tipoTabla, ArrayList<Double> datosMedidos, ArrayList<Double> datosEstimados, Boolean fftEnMismaFrecuencia) {
         Double res = null;
@@ -89,7 +104,7 @@ public class DatosIncertidumbre {
         Double numerador = 0.0;
         Integer denominador;
         
-        if (nDatos > 0) {
+        if (nDatos > 0 && !datosMedidos.contains(null) && !datosEstimados.contains(null)) {
             for (int i = 0; i < nDatos; i++) {
                 numerador = numerador + Math.pow(datosMedidos.get(i) - datosEstimados.get(i), 2);
             }

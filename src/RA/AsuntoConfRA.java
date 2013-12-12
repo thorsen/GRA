@@ -18,6 +18,7 @@ public class AsuntoConfRA {
     private Character velDerMed;
     private Character medidaPot;
     private Character tipoK;
+    private Character tipoKRF;
     private Character tipoCalculoVel;
     private Integer desdeVel;
     private Integer hastaVel;
@@ -35,6 +36,7 @@ public class AsuntoConfRA {
     public static final String CAMPO_VEL_DER_MED = "VelDerMed";
     public static final String CAMPO_MEDIDA_POT = "MedidaPot";
     public static final String CAMPO_TIPO_K = "TipoK";
+    public static final String CAMPO_TIPO_K_RF = "TipoKRF";
     public static final String CAMPO_TIPO_CALCULO_VEL = "TipoCalculoVel";
     public static final String CAMPO_DESDE_VEL = "DesdeVel";
     public static final String CAMPO_HASTA_VEL = "HastaVel";
@@ -50,7 +52,7 @@ public class AsuntoConfRA {
     public static final Character CALC_PROMEDIO = 'A';
     public static final Character CALC_PENDIENTE = 'S';
     
-    public AsuntoConfRA(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, Double amplitud, Character velDerMed, Character medidaPot, Character tipoK, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel) {
+    public AsuntoConfRA(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, Double amplitud, Character velDerMed, Character medidaPot, Character tipoK, Character tipoKRF, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel) {
         this.idAsunto = idAsunto;
         this.perMedidoOtro = perMedidoOtro;
         this.desdeFecha = desdeFecha;
@@ -63,6 +65,7 @@ public class AsuntoConfRA {
         this.medidaPot = medidaPot;
         this.velDerMed = velDerMed;
         this.tipoK = tipoK;
+        this.tipoKRF = tipoKRF;
         this.tipoCalculoVel = tipoCalculoVel;
         this.desdeVel = desdeVel;
         this.hastaVel = hastaVel;
@@ -178,6 +181,14 @@ public class AsuntoConfRA {
         this.tipoK = tipoK;
     }
 
+    public Character getTipoKRF() {
+        return tipoKRF;
+    }
+
+    public void setTipoKRF(Character tipoKRF) {
+        this.tipoKRF = tipoKRF;
+    }
+
     public Character getVelDerMed() {
         return velDerMed;
     }
@@ -236,6 +247,8 @@ public class AsuntoConfRA {
             this.medidaPot = ((String) valor).charAt(0);
         } else if (campo.compareTo(CAMPO_TIPO_K) == 0) {
             this.tipoK = ((String) valor).charAt(0);
+        } else if (campo.compareTo(CAMPO_TIPO_K_RF) == 0) {
+            this.tipoKRF = ((String) valor).charAt(0);
         } else if (campo.compareTo(CAMPO_TIPO_CALCULO_VEL) == 0) {
             this.tipoCalculoVel = ((String) valor).charAt(0);
         } else if (campo.compareTo(CAMPO_DESDE_VEL) == 0) {
@@ -247,7 +260,7 @@ public class AsuntoConfRA {
         }
     }
     
-    private static String getCondicion(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, Double amplitud, Character velDerMed, Character medidaPot, Character tipoK, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel, ArrayList<Object[]> paramsPS) {
+    private static String getCondicion(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, Double amplitud, Character velDerMed, Character medidaPot, Character tipoK, Character tipoKRF, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel, ArrayList<Object[]> paramsPS) {
         String condicion = "";
         
         if (idAsunto != null) {
@@ -286,6 +299,9 @@ public class AsuntoConfRA {
         if (tipoK != null) {
             condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CAMPO_TIPO_K, "=", tipoK);
         }
+        if (tipoKRF != null) {
+            condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CAMPO_TIPO_K_RF, "=", tipoKRF);
+        }
         if (tipoCalculoVel != null) {
             condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CAMPO_TIPO_CALCULO_VEL, "=", tipoCalculoVel);
         }
@@ -300,15 +316,14 @@ public class AsuntoConfRA {
     }
 
     //Función para obtener la colección de AsuntoConfs que se ajustan a los limites pasados
-    public static ArrayList<AsuntoConfRA> getAsuntoConfs(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, 
-            Double amplitud, Character velDerMed, Character medidaPot, Character tipoK, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel, ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
+    public static ArrayList<AsuntoConfRA> getAsuntoConfs(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, Double amplitud, Character velDerMed, Character medidaPot, Character tipoK, Character tipoKRF, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel, ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
         InteraccionBD interBD = new InteraccionBD();
         
         ArrayList<AsuntoConfRA> res = null;
         String condicion = "";
         ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
 
-        condicion = getCondicion(idAsunto, perMedidoOtro, desdeFecha, hastaFecha, zRef, z0Ref, z0, dirEnsayo, amplitud, velDerMed, medidaPot, tipoK, tipoCalculoVel, desdeVel, hastaVel, paramsPS);
+        condicion = getCondicion(idAsunto, perMedidoOtro, desdeFecha, hastaFecha, zRef, z0Ref, z0, dirEnsayo, amplitud, velDerMed, medidaPot, tipoK, tipoKRF, tipoCalculoVel, desdeVel, hastaVel, paramsPS);
     
     //Por defecto lo devolvemos ordenado por asuntoConf
         if (sqlExtra == null || sqlExtra.trim().length() == 0) {
@@ -333,7 +348,7 @@ public class AsuntoConfRA {
     //Función para obtener la colección de AsuntoConf.que se ajustan a los limites pasados (clave)
     public static AsuntoConfRA getAsuntoConfPorIdAsunto(Integer idAsunto) throws SQLException, NoSuchFieldException {
         AsuntoConfRA res = null;
-        ArrayList<AsuntoConfRA> resAux = getAsuntoConfs(idAsunto, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        ArrayList<AsuntoConfRA> resAux = getAsuntoConfs(idAsunto, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         
         if (resAux != null) {
             res = resAux.get(0);
@@ -343,8 +358,7 @@ public class AsuntoConfRA {
     }
 
     //Función para añadir un AsuntoConfRA a la BD
-    public static int insertAsuntoConf(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, Double amplitud, 
-            Character velDerMed, Character medidaPot, Character tipoK, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel, String sqlExtra) throws SQLException {
+    public static int insertAsuntoConf(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, Double amplitud, Character velDerMed, Character medidaPot, Character tipoK, Character tipoKRF, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         
         String valores = "";
@@ -408,6 +422,10 @@ public class AsuntoConfRA {
             valores = InteraccionBD.anadeCampoValor(valores, paramsPS, tipoK);
             campos.add(CAMPO_TIPO_K);
         }
+        if (tipoKRF != null) {
+            valores = InteraccionBD.anadeCampoValor(valores, paramsPS, tipoKRF);
+            campos.add(CAMPO_TIPO_K_RF);
+        }
         if (tipoCalculoVel != null) {
             valores = InteraccionBD.anadeCampoValor(valores, paramsPS, tipoCalculoVel);
             campos.add(CAMPO_TIPO_CALCULO_VEL);
@@ -429,15 +447,11 @@ public class AsuntoConfRA {
     }
     
     public static int insertAsuntoConf(AsuntoConfRA conf, String sqlExtra) throws SQLException {
-        return insertAsuntoConf(conf.idAsunto, conf.perMedidoOtro, conf.desdeFecha, conf.hastaFecha, conf.zRef, conf.z0Ref, conf.z0, conf.dirEnsayo, 
-                conf.amplitud, conf.velDerMed, conf.medidaPot, conf.tipoK, conf.tipoCalculoVel, conf.desdeVel, conf.hastaVel, sqlExtra);
+        return insertAsuntoConf(conf.idAsunto, conf.perMedidoOtro, conf.desdeFecha, conf.hastaFecha, conf.zRef, conf.z0Ref, conf.z0, conf.dirEnsayo, conf.amplitud, conf.velDerMed, conf.medidaPot, conf.tipoK, conf.tipoKRF, conf.tipoCalculoVel, conf.desdeVel, conf.hastaVel, sqlExtra);
     }
     
     //Función para añadir un AsuntoConfRA a la BD
-    public static int updateAsuntoConf(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, Double amplitud, 
-            Character velDerMed, Character medidaPot, Character tipoK, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel, 
-            Integer idAsuntoVal, Character perMedidoOtroVal, Long desdeFechaVal, Long hastaFechaVal, Double zRefVal, Double z0RefVal, Double z0Val, Double dirEnsayoVal, Double amplitudVal, Character velDerMedVal, 
-            Character medidaPotVal, Character tipoKVal, Character tipoCalculoVelVal, Integer desdeVelVal, Integer hastaVelVal, String sqlExtra) throws SQLException {
+    public static int updateAsuntoConf(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, Double amplitud, Character velDerMed, Character medidaPot, Character tipoK, Character tipoKRF, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel, Integer idAsuntoVal, Character perMedidoOtroVal, Long desdeFechaVal, Long hastaFechaVal, Double zRefVal, Double z0RefVal, Double z0Val, Double dirEnsayoVal, Double amplitudVal, Character velDerMedVal, Character medidaPotVal, Character tipoKVal, Character tipoKRFVal, Character tipoCalculoVelVal, Integer desdeVelVal, Integer hastaVelVal, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         
         String condicion = "";
@@ -493,6 +507,10 @@ public class AsuntoConfRA {
             InteraccionBD.anadeCampoValor(null, paramsPS, tipoKVal);
             campos.add(CAMPO_TIPO_K);
         }
+        if (tipoKRFVal != null && !tipoKRFVal.equals(tipoKRF)) {
+            InteraccionBD.anadeCampoValor(null, paramsPS, tipoKRFVal);
+            campos.add(CAMPO_TIPO_K_RF);
+        }
         if (tipoCalculoVelVal != null && !tipoCalculoVelVal.equals(tipoCalculoVel)) {
             InteraccionBD.anadeCampoValor(null, paramsPS, tipoCalculoVelVal);
             campos.add(CAMPO_TIPO_CALCULO_VEL);
@@ -507,7 +525,7 @@ public class AsuntoConfRA {
         }
         
         //Condiciones de actualización
-        condicion = getCondicion(idAsunto, perMedidoOtro, desdeFecha, hastaFecha, zRef, z0Ref, z0, dirEnsayo, amplitud, velDerMed, medidaPot, tipoK, tipoCalculoVel, desdeVel, hastaVel, paramsPS);
+        condicion = getCondicion(idAsunto, perMedidoOtro, desdeFecha, hastaFecha, zRef, z0Ref, z0, dirEnsayo, amplitud, velDerMed, medidaPot, tipoK, tipoKRF, tipoCalculoVel, desdeVel, hastaVel, paramsPS);
                 
         interBD.inicioTransaccion();
         res = interBD.updateDatosTabla(TABLA, campos, condicion, paramsPS, sqlExtra);
@@ -517,24 +535,17 @@ public class AsuntoConfRA {
     }
     
     public static int updateAsuntoConf(AsuntoConfRA confVieja, AsuntoConfRA confNueva, String sqlExtra) throws SQLException {
-        return updateAsuntoConf(confVieja.idAsunto, confVieja.perMedidoOtro, confVieja.desdeFecha, confVieja.hastaFecha, confVieja.zRef, confVieja.z0Ref, confVieja.z0, confVieja.dirEnsayo, 
-                confVieja.amplitud, confVieja.velDerMed, confVieja.medidaPot, confVieja.tipoK, confVieja.tipoCalculoVel, confVieja.desdeVel, confVieja.hastaVel, confNueva.idAsunto, confNueva.perMedidoOtro, 
-                confNueva.desdeFecha, confNueva.hastaFecha, confNueva.zRef, confNueva.z0Ref, confNueva.z0, confNueva.dirEnsayo, confNueva.amplitud, confNueva.velDerMed, confNueva.medidaPot, confNueva.tipoK, 
-                confNueva.tipoCalculoVel, confNueva.desdeVel, confNueva.hastaVel, sqlExtra);
+        return updateAsuntoConf(confVieja.idAsunto, confVieja.perMedidoOtro, confVieja.desdeFecha, confVieja.hastaFecha, confVieja.zRef, confVieja.z0Ref, confVieja.z0, confVieja.dirEnsayo, confVieja.amplitud, confVieja.velDerMed, confVieja.medidaPot, confVieja.tipoK, confVieja.tipoKRF, confVieja.tipoCalculoVel, confVieja.desdeVel, confVieja.hastaVel, confNueva.idAsunto, confNueva.perMedidoOtro, confNueva.desdeFecha, confNueva.hastaFecha, confNueva.zRef, confNueva.z0Ref, confNueva.z0, confNueva.dirEnsayo, confNueva.amplitud, confNueva.velDerMed, confNueva.medidaPot, confNueva.tipoK, confNueva.tipoKRF, confNueva.tipoCalculoVel, confNueva.desdeVel, confNueva.hastaVel, sqlExtra);
     }
     
     //Función para añadir/modificar un AsuntoConfRA a la BD
-    public static int insertOrUpdateAsuntoConf(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, Double amplitud, 
-            Character velDerMed, Character medidaPot, Character tipoK, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel,
-            Integer idAsuntoVal, Character perMedidoOtroVal, Long desdeFechaVal, Long hastaFechaVal, Double zRefVal, Double z0RefVal, Double z0Val, Double dirEnsayoVal, Double amplitudVal, Character velDerMedVal, 
-            Character medidaPotVal, Character tipoKVal, Character tipoCalculoVelVal, Integer desdeVelVal, Integer hastaVelVal, String sqlExtra) throws SQLException {
+    public static int insertOrUpdateAsuntoConf(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, Double amplitud, Character velDerMed, Character medidaPot, Character tipoK, Character tipoKRF, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel, Integer idAsuntoVal, Character perMedidoOtroVal, Long desdeFechaVal, Long hastaFechaVal, Double zRefVal, Double z0RefVal, Double z0Val, Double dirEnsayoVal, Double amplitudVal, Character velDerMedVal, Character medidaPotVal, Character tipoKVal, Character tipoKRFVal, Character tipoCalculoVelVal, Integer desdeVelVal, Integer hastaVelVal, String sqlExtra) throws SQLException {
         int res;
         
-        res = updateAsuntoConf(idAsunto, perMedidoOtro, desdeFecha, hastaFecha, zRef, z0Ref, z0, dirEnsayo, amplitud, velDerMed, medidaPot, tipoK, tipoCalculoVel, desdeVel, hastaVel, 
-                idAsuntoVal, perMedidoOtroVal, desdeFechaVal, hastaFechaVal, zRefVal, z0RefVal, z0Val, dirEnsayoVal, amplitudVal, velDerMedVal, medidaPotVal, tipoKVal, tipoCalculoVelVal, desdeVelVal, hastaVelVal, sqlExtra);
+        res = updateAsuntoConf(idAsunto, perMedidoOtro, desdeFecha, hastaFecha, zRef, z0Ref, z0, dirEnsayo, amplitud, velDerMed, medidaPot, tipoK, tipoKRF, tipoCalculoVel, desdeVel, hastaVel, idAsuntoVal, perMedidoOtroVal, desdeFechaVal, hastaFechaVal, zRefVal, z0RefVal, z0Val, dirEnsayoVal, amplitudVal, velDerMedVal, medidaPotVal, tipoKVal, tipoKRFVal, tipoCalculoVelVal, desdeVelVal, hastaVelVal, sqlExtra);
         
         if (res < 0)
-            res = insertAsuntoConf(idAsuntoVal, perMedidoOtroVal, desdeFechaVal, hastaFechaVal, zRefVal, z0RefVal, z0Val, dirEnsayoVal, amplitudVal, velDerMedVal, medidaPotVal, tipoKVal, tipoCalculoVelVal, desdeVelVal, hastaVelVal, sqlExtra);
+            res = insertAsuntoConf(idAsuntoVal, perMedidoOtroVal, desdeFechaVal, hastaFechaVal, zRefVal, z0RefVal, z0Val, dirEnsayoVal, amplitudVal, velDerMedVal, medidaPotVal, tipoKVal, tipoKRFVal, tipoCalculoVelVal, desdeVelVal, hastaVelVal, sqlExtra);
 
         return res;
     }
@@ -545,24 +556,21 @@ public class AsuntoConfRA {
         if (confVieja == null)
             res =  insertAsuntoConf(confNueva, sqlExtra);
         else
-            res = insertOrUpdateAsuntoConf(confVieja.idAsunto, confVieja.perMedidoOtro, confVieja.desdeFecha, confVieja.hastaFecha, confVieja.zRef, confVieja.z0Ref, confVieja.z0, confVieja.dirEnsayo, 
-                confVieja.amplitud, confVieja.velDerMed, confVieja.medidaPot, confVieja.tipoK, confVieja.tipoCalculoVel, confVieja.desdeVel, confVieja.hastaVel, confNueva.idAsunto, confNueva.perMedidoOtro, 
-                confNueva.desdeFecha, confNueva.hastaFecha, confNueva.zRef, confNueva.z0Ref, confNueva.z0, confNueva.dirEnsayo, confNueva.amplitud, confNueva.velDerMed, confNueva.medidaPot, confNueva.tipoK, 
-                confNueva.tipoCalculoVel, confNueva.desdeVel, confNueva.hastaVel, sqlExtra);
+            res = insertOrUpdateAsuntoConf(confVieja.idAsunto, confVieja.perMedidoOtro, confVieja.desdeFecha, confVieja.hastaFecha, confVieja.zRef, confVieja.z0Ref, confVieja.z0, confVieja.dirEnsayo, confVieja.amplitud, confVieja.velDerMed, confVieja.medidaPot, confVieja.tipoK, confVieja.tipoKRF, confVieja.tipoCalculoVel, confVieja.desdeVel, confVieja.hastaVel, confNueva.idAsunto, confNueva.perMedidoOtro, confNueva.desdeFecha, confNueva.hastaFecha, confNueva.zRef, confNueva.z0Ref, confNueva.z0, confNueva.dirEnsayo, confNueva.amplitud, confNueva.velDerMed, confNueva.medidaPot, confNueva.tipoK, confNueva.tipoKRF, confNueva.tipoCalculoVel, confNueva.desdeVel, confNueva.hastaVel, sqlExtra);
         
         return res;
     }
     
     //Función para eliminar AsuntoConfs que se ajustan a los limites pasados
     public static int deleteAsuntoConfs(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, Double amplitud, 
-            Character velDerMed, Character medidaPot, Character tipoK, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel, String sqlExtra) throws SQLException {
+            Character velDerMed, Character medidaPot, Character tipoK, Character tipoKRF, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         
         String condicion = "";
         ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
         int res = 0;
 
-        condicion = getCondicion(idAsunto, perMedidoOtro, desdeFecha, hastaFecha, zRef, z0Ref, z0, dirEnsayo, amplitud, velDerMed, medidaPot, tipoK, tipoCalculoVel, desdeVel, hastaVel, paramsPS);
+        condicion = getCondicion(idAsunto, perMedidoOtro, desdeFecha, hastaFecha, zRef, z0Ref, z0, dirEnsayo, amplitud, velDerMed, medidaPot, tipoK, tipoKRF, tipoCalculoVel, desdeVel, hastaVel, paramsPS);
         
         interBD.inicioTransaccion();
         res  = interBD.deleteDatosTabla(TABLA, condicion, paramsPS, sqlExtra);
@@ -572,13 +580,11 @@ public class AsuntoConfRA {
     }
     
     public static int deleteAsuntoConfs(AsuntoConfRA asuntoConf, String sqlExtra) throws SQLException {
-        return deleteAsuntoConfs(asuntoConf.idAsunto, asuntoConf.perMedidoOtro, asuntoConf.desdeFecha, asuntoConf.hastaFecha, asuntoConf.zRef, asuntoConf.z0Ref, asuntoConf.z0, asuntoConf.dirEnsayo, asuntoConf.amplitud, 
-                asuntoConf.velDerMed, asuntoConf.medidaPot, asuntoConf.tipoK, asuntoConf.tipoCalculoVel, asuntoConf.desdeVel, asuntoConf.hastaVel, sqlExtra);
+        return deleteAsuntoConfs(asuntoConf.idAsunto, asuntoConf.perMedidoOtro, asuntoConf.desdeFecha, asuntoConf.hastaFecha, asuntoConf.zRef, asuntoConf.z0Ref, asuntoConf.z0, asuntoConf.dirEnsayo, asuntoConf.amplitud, asuntoConf.velDerMed, asuntoConf.medidaPot, asuntoConf.tipoK, asuntoConf.tipoKRF, asuntoConf.tipoCalculoVel, asuntoConf.desdeVel, asuntoConf.hastaVel, sqlExtra);
     }
     
     public Object[] toObject() {
-        return new Object[]{this.idAsunto, this.perMedidoOtro, this.desdeFecha, this.hastaFecha, this.zRef, this.z0Ref, this.z0, this.dirEnsayo, this.amplitud, this.velDerMed, 
-        this.medidaPot, this.tipoK, this.tipoCalculoVel, this.desdeVel, this.hastaVel};
+        return new Object[]{this.idAsunto, this.perMedidoOtro, this.desdeFecha, this.hastaFecha, this.zRef, this.z0Ref, this.z0, this.dirEnsayo, this.amplitud, this.velDerMed, this.medidaPot, this.tipoK, this.tipoKRF, this.tipoCalculoVel, this.desdeVel, this.hastaVel};
     }
   
     public static Object[] getCamposTabla() throws SQLException {

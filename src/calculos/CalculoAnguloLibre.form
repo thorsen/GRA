@@ -7,7 +7,7 @@
     <Property name="locationByPlatform" type="boolean" value="true"/>
   </Properties>
   <SyntheticProperties>
-    <SyntheticProperty name="formSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-20,0,0,1,-103"/>
+    <SyntheticProperty name="formSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,95,0,0,1,-103"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="0"/>
     <SyntheticProperty name="generateSize" type="boolean" value="true"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
@@ -18,6 +18,7 @@
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
@@ -53,7 +54,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jpClave" alignment="0" max="32767" attributes="3"/>
-                      <Component id="jbCalcular" alignment="0" pref="381" max="32767" attributes="1"/>
+                      <Component id="jbCalcular" alignment="0" max="32767" attributes="1"/>
                       <Component id="jpCalculos" alignment="0" max="32767" attributes="3"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -100,7 +101,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jlAsunto" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jcbAsunto" pref="282" max="32767" attributes="1"/>
+                              <Component id="jcbAsunto" max="32767" attributes="1"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jlNorma" min="-2" max="-2" attributes="0"/>
@@ -108,28 +109,36 @@
                               <Component id="jtfNorma" pref="207" max="32767" attributes="1"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jlPosAero" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlPosMicro1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlPosMicro2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlPosMicro3" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlPosMicro4" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="jlPosAero" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jtfPosMicro4" alignment="0" pref="207" max="32767" attributes="1"/>
-                                  <Component id="jtfPosMicro3" alignment="0" pref="207" max="32767" attributes="1"/>
-                                  <Component id="jtfPosMicro2" alignment="0" pref="207" max="32767" attributes="1"/>
-                                  <Component id="jtfPosMicro1" alignment="0" pref="207" max="32767" attributes="1"/>
-                                  <Component id="jtfPosAero" alignment="0" pref="207" max="32767" attributes="1"/>
-                              </Group>
+                              <Component id="jtfPosAero" max="32767" attributes="1"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jlPosBuje" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
+                              <Component id="jtfPosBuje" max="32767" attributes="1"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jlRutaMallado" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jtfRutaMallado" pref="231" max="32767" attributes="1"/>
+                              <Component id="jtfRutaMallado" max="32767" attributes="1"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jbSelRuta" min="-2" pref="30" max="-2" attributes="1"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jlPosMicro2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlPosMicro3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlPosMicro4" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlPosMicro1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jtfPosMicro3" alignment="1" max="32767" attributes="1"/>
+                                  <Component id="jtfPosMicro2" alignment="1" max="32767" attributes="1"/>
+                                  <Component id="jtfPosMicro1" max="32767" attributes="1"/>
+                                  <Component id="jtfPosMicro4" max="32767" attributes="1"/>
+                              </Group>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -139,11 +148,12 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jlAsunto" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jcbAsunto" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jlNorma" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jtfNorma" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -155,8 +165,13 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jlPosMicro1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jtfPosBuje" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jlPosBuje" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jtfPosMicro1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jlPosMicro1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -218,10 +233,10 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jtfNorma">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="cc" green="cc" red="cc" type="rgb"/>
                 </Property>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="focusable" type="boolean" value="false"/>
               </Properties>
@@ -236,12 +251,31 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jtfPosAero">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="cc" green="cc" red="cc" type="rgb"/>
                 </Property>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="focusable" type="boolean" value="false"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jlPosBuje">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="11" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Posici&#xf3;n Buje:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jtfPosBuje">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="cc" green="cc" red="cc" type="rgb"/>
+                </Property>
+                <Property name="horizontalAlignment" type="int" value="0"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -257,12 +291,11 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jtfPosMicro1">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="cc" green="cc" red="cc" type="rgb"/>
                 </Property>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -278,12 +311,11 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jtfPosMicro2">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="cc" green="cc" red="cc" type="rgb"/>
                 </Property>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -299,12 +331,11 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jtfPosMicro3">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="cc" green="cc" red="cc" type="rgb"/>
                 </Property>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -320,12 +351,11 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jtfPosMicro4">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="cc" green="cc" red="cc" type="rgb"/>
                 </Property>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -402,37 +432,40 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
+                              <Component id="jlAngMicro1Aero" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jtfAngMicro1Aero" min="-2" pref="40" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jlAngMicro1AeroSufijo" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jlfAngLibreMicro1Aero" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jtfAngLibreMicro1Aero" min="-2" pref="40" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jlfAngLibreMicro1AeroSufijo" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jlResMicro1Aero" pref="63" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jlAngMicro1Aero" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jtfAngMicro1Aero" min="-2" pref="40" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jlAngMicro2Aero" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jtfAngMicro2Aero" min="-2" pref="40" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                      <Component id="jlAngMicro2Aero" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jlAngMicro2AeroSufijo" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jlAngMicro1AeroSufijo" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="jtfAngMicro2Aero" min="-2" pref="40" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jlAngMicro2AeroSufijo" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jlAngMicro3Aero" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jtfAngMicro4Aero" min="-2" pref="40" max="-2" attributes="0"/>
+                                      <Component id="jtfAngMicro3Aero" min="-2" pref="40" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jlAngMicro3AeroSufijo" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jlAngMicro4Aero" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jtfAngMicro3Aero" min="-2" pref="40" max="-2" attributes="0"/>
+                                      <Component id="jtfAngMicro4Aero" min="-2" pref="40" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jlAngMicro4AeroSufijo" min="-2" max="-2" attributes="0"/>
                                   </Group>
@@ -440,23 +473,11 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jlfAngLibreMicro1Aero" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jtfAngLibreMicro1Aero" min="-2" pref="40" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jlfAngLibreMicro2Aero" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jtfAngLibreMicro2Aero" min="-2" pref="40" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                      <Component id="jlfAngLibreMicro2Aero" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jlfAngLibreMicro2AeroSufijo" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jlfAngLibreMicro1AeroSufijo" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="jtfAngLibreMicro2Aero" min="-2" pref="40" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jlfAngLibreMicro2AeroSufijo" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jlfAngLibreMicro3Aero" min="-2" max="-2" attributes="0"/>
@@ -475,16 +496,35 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jlResMicro1Aero" alignment="1" pref="71" max="32767" attributes="0"/>
-                                  <Component id="jlResMicro2Aero" alignment="1" pref="71" max="32767" attributes="0"/>
-                                  <Component id="jlResMicro3Aero" alignment="1" pref="71" max="32767" attributes="0"/>
-                                  <Component id="jlResMicro4Aero" alignment="1" pref="71" max="32767" attributes="0"/>
+                                  <Component id="jlResMicro2Aero" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="jlResMicro3Aero" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="jlResMicro4Aero" alignment="1" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
-                              <Component id="jlPosBuje" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jtfPosBuje" pref="276" max="32767" attributes="1"/>
+                              <EmptySpace min="44" pref="44" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jlPosLibre1" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jtfPosLibre1" max="32767" attributes="1"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="jlPosLibre2" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jlPosLibre3" alignment="1" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="jlPosLibre4" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jtfPosLibre4" alignment="0" max="32767" attributes="1"/>
+                                          <Component id="jtfPosLibre3" alignment="0" max="32767" attributes="1"/>
+                                          <Component id="jtfPosLibre2" alignment="0" max="32767" attributes="1"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -495,66 +535,80 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jlPosBuje" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jtfPosBuje" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="jlAngMicro1Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfAngMicro1Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlAngMicro1AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="jlfAngLibreMicro1Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfAngLibreMicro1Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlfAngLibreMicro1AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlResMicro1Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jtfPosLibre1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jlPosLibre1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jlAngMicro1Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jtfAngMicro1Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlAngMicro1AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jlAngMicro2Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jtfAngMicro2Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlAngMicro2AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jlAngMicro3Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jtfAngMicro4Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlAngMicro3AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jlAngMicro4Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jtfAngMicro3Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlAngMicro4AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="jlAngMicro2Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfAngMicro2Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlAngMicro2AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jlfAngLibreMicro1Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jtfAngLibreMicro1Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlfAngLibreMicro1AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlResMicro1Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jlfAngLibreMicro2Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jtfAngLibreMicro2Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlfAngLibreMicro2AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlResMicro2Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jlfAngLibreMicro3Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jtfAngLibreMicro3Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlfAngLibreMicro3AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlResMicro3Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jlfAngLibreMicro4Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jtfAngLibreMicro4Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlfAngLibreMicro4AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlResMicro4Aero" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="jtfAngLibreMicro2Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlfAngLibreMicro2AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlResMicro2Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlfAngLibreMicro2Aero" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jtfPosLibre2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jlPosLibre2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                              <Component id="jlAngMicro3Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlAngMicro3AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfAngMicro3Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                              <Component id="jlfAngLibreMicro3Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfAngLibreMicro3Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlfAngLibreMicro3AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlResMicro3Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jtfPosLibre3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jlPosLibre3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                              <Component id="jlAngMicro4Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlAngMicro4AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfAngMicro4Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                              <Component id="jlfAngLibreMicro4Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfAngLibreMicro4Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlfAngLibreMicro4AeroSufijo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlResMicro4Aero" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jtfPosLibre4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jlPosLibre4" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -562,27 +616,6 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="jlPosBuje">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tahoma" size="11" style="1"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Posici&#xf3;n Buje:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="jtfPosBuje">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="cc" green="cc" red="cc" type="rgb"/>
-                </Property>
-                <Property name="editable" type="boolean" value="false"/>
-                <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="focusable" type="boolean" value="false"/>
-              </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-              </AuxValues>
-            </Component>
             <Component class="javax.swing.JLabel" name="jlAngMicro1Aero">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&lt;html&gt;&#x3c6;&lt;sub&gt;Micro1-Aero&lt;/sub&gt;&lt;/html&gt;"/>
@@ -725,7 +758,7 @@
                   <Font name="Tahoma" size="11" style="1"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="OK - ERROR"/>
+                <Property name="text" type="java.lang.String" value="OK - NO OK"/>
                 <Property name="opaque" type="boolean" value="true"/>
               </Properties>
             </Component>
@@ -735,7 +768,7 @@
                   <Font name="Tahoma" size="11" style="1"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="OK - ERROR"/>
+                <Property name="text" type="java.lang.String" value="OK - NO OK"/>
                 <Property name="opaque" type="boolean" value="true"/>
               </Properties>
             </Component>
@@ -745,7 +778,7 @@
                   <Font name="Tahoma" size="11" style="1"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="OK - ERROR"/>
+                <Property name="text" type="java.lang.String" value="OK - NO OK"/>
                 <Property name="opaque" type="boolean" value="true"/>
               </Properties>
             </Component>
@@ -755,9 +788,89 @@
                   <Font name="Tahoma" size="11" style="1"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="OK - ERROR"/>
+                <Property name="text" type="java.lang.String" value="OK - NO OK"/>
                 <Property name="opaque" type="boolean" value="true"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jlPosLibre1">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="11" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Posici&#xf3;n Obst. 1:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jtfPosLibre1">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="cc" green="cc" red="cc" type="rgb"/>
+                </Property>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jlPosLibre2">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="11" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Posici&#xf3;n Obst. 2:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jtfPosLibre2">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="cc" green="cc" red="cc" type="rgb"/>
+                </Property>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jlPosLibre3">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="11" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Posici&#xf3;n Obst. 3:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jtfPosLibre3">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="cc" green="cc" red="cc" type="rgb"/>
+                </Property>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jlPosLibre4">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="11" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Posici&#xf3;n Obst. 4:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jtfPosLibre4">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="cc" green="cc" red="cc" type="rgb"/>
+                </Property>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

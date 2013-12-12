@@ -65,7 +65,7 @@ public UsuarioRAGUI(java.awt.Frame parent) {
             }
         });
 
-        jLabel37.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel37.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel37.setForeground(new java.awt.Color(51, 51, 255));
         jLabel37.setText("*");
 
@@ -79,7 +79,7 @@ public UsuarioRAGUI(java.awt.Frame parent) {
             }
         });
 
-        jLabel38.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel38.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel38.setForeground(new java.awt.Color(51, 51, 255));
         jLabel38.setText("*");
 
@@ -172,11 +172,11 @@ public UsuarioRAGUI(java.awt.Frame parent) {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jpEntrada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-334)/2, (screenSize.height-163)/2, 334, 163);
+        setSize(new java.awt.Dimension(334, 167));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 private void validarEntrada() {

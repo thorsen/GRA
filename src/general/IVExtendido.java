@@ -6,6 +6,7 @@
 package general;
 
 import java.awt.Color;
+import java.awt.Component;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -58,12 +59,37 @@ public class IVExtendido extends InputVerifier {
         jtf.setBackground(cf);
     }
 
+    private void actualizaColor(boolean valido, Component component) {
+        Color cf;
+
+        if (!valido) {
+	    cf = FONDO_EDIT_ERROR;
+        } else {
+	    cf = FONDO_EDIT;
+        }
+
+        component.setBackground(cf);
+    }
+
+    
     @Override
     public boolean verify(JComponent input) {
             boolean res = true;
-            JTextField jtf = (JTextField) input;
 
-            String valorText = jtf.getText();
+	    String valorText = null;
+	    String nomCampo = null;
+	    JTextField jtf = null;
+	    JSpinnerDate jsp = null;
+
+	    if (input instanceof JTextField) {
+		jtf = (JTextField) input;
+		valorText = jtf.getText();
+		nomCampo = jtf.getName();
+	    } else if (input instanceof JSpinnerDate) {
+		jsp = (JSpinnerDate) input;
+		valorText = jsp.getText();
+		nomCampo = jsp.getName();
+	    }
 
             if (valorText.length() != 0) {
                 if (tipo.contentEquals(TIPO_DOUBLE)) { //Tipo double
@@ -71,14 +97,14 @@ public class IVExtendido extends InputVerifier {
                         Double.parseDouble(valorText);
                     } catch (NumberFormatException e) {
                         res = false;
-                        MensajeApp.muestraWarning(jd, "El valor del campo " + jtf.getName() + " debe ser un número");
+                        MensajeApp.muestraWarning(jd, "El valor del campo " + nomCampo + " debe ser un número");
                     }
                 } else if (tipo.contentEquals(TIPO_INT)) { //Tipo int
                     try {
                         Integer.parseInt(valorText);
                     } catch (NumberFormatException e) {
                         res = false;
-                        MensajeApp.muestraWarning(jd, "El valor del campo " + jtf.getName() + " debe ser un número");
+                        MensajeApp.muestraWarning(jd, "El valor del campo " + nomCampo + " debe ser un número");
                     }
                 } else if (tipo.contentEquals(TIPO_FECHA)) { //Tipo fecha
                     if (TratFechas.millisFecha(valorText) == -1) //Es un error en parseo, TratFechas dará la excepción
@@ -87,16 +113,19 @@ public class IVExtendido extends InputVerifier {
                     //En principio, no hay que validar nada
                 } else {
                     res = false;
-                    MensajeApp.muestraWarning(jd, "Tipo de validación del campo " + jtf.getName() + " no soportado");
+                    MensajeApp.muestraWarning(jd, "Tipo de validación del campo " + nomCampo + " no soportado");
                 }
             } else {
                 if (!permiteVacio) {
                     res = false;
-                    MensajeApp.muestraWarning(jd, "El campo " + jtf.getName() + " debe contener un valor");
+                    MensajeApp.muestraWarning(jd, "El campo " + nomCampo + " debe contener un valor");
                 }
             }
 
-            actualizaColor(res, jtf);
+	    if (jtf != null)
+		actualizaColor(res, jtf);
+	    else if (jsp != null)
+		actualizaColor(res, jsp);
 
             if (!res && !verifDura)
                 res = true;

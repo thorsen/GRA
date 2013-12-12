@@ -175,6 +175,7 @@ public class InteraccionBD {
         if (distinct != null && distinct) {
             sql += "DISTINCT ";        //Añadimos los campos
         }
+		
         if (campos != null && !campos.isEmpty()) {
             Iterator i = campos.iterator();
 
@@ -385,8 +386,7 @@ public class InteraccionBD {
                     xmlVal.setString((String) fila[1]);
                     
                     ps.setSQLXML(pos, xmlVal);
-                } else //Opción por defecto
-                {
+                } else { //Opción por defecto
                     ps.setObject(pos, fila[1]);////////////////////////////////////////////////////////////////////////////////
 /////////////////////////FUNCIONES POR AÑADIR///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////                
@@ -475,27 +475,32 @@ public class InteraccionBD {
             PreparedStatement ps = con.prepareStatement(sql);
             cargaParamsPS(ps, paramsPS, con);
             
-            ResultSet rs = ps.executeQuery();
+			if (!sql.contains("INTO")) {
+				ResultSet rs = ps.executeQuery();
 
-            res = new ArrayList<Object[]>();
+				res = new ArrayList<Object[]>();
 
-            if (rs != null) {
-                while (rs.next()) {
-                    fila = new Object[numCols];
+				if (rs != null) {
+					while (rs.next()) {
+					fila = new Object[numCols];
 
-                    for (int i = 0; i < numCols; i++) {
-                        fila[i] = rs.getObject(i + 1);
-                    }
-                    res.add(fila);
-                }
-            }
+					for (int i = 0; i < numCols; i++) {
+						fila[i] = rs.getObject(i + 1);
+					}
+					res.add(fila);
+					}
+				}
 
-            if (res.size() == 0) {
-                res = null;
-            }
-            rs.close();
-            ps.close();
-            cierraConexionLocal(con);
+				if (res.isEmpty()) {
+					res = null;
+				}
+				rs.close();
+			} else { //Es un SELECT...INTO, no devuelve resultados
+				ps.executeUpdate();
+			}
+			
+			ps.close();
+			cierraConexionLocal(con);
         } catch (SQLException e) {
             if (con != null)
                     rollbackGlobal(con);
@@ -648,7 +653,7 @@ public class InteraccionBD {
             condicion += " " + clausula + " " + campo;
         } else {
             condicion += " " + clausula + " " + campo + " " + operacion + " ?";
-            paramsPS.add(paramsPS.size(), new Object[]{valor.getClass().getSimpleName(), valor});
+            paramsPS.add(paramsPS.size(), new Object[]{valor == null ? null : valor.getClass().getSimpleName(), valor});
         }
 
         return condicion;
@@ -894,7 +899,9 @@ public class InteraccionBD {
 
                     while (i.hasNext()) {
                         param = (Object[]) i.next();
-                        if (((String) param[0]).compareToIgnoreCase("String") == 0)
+						if (param[0] == null)
+                            sql = sql.replaceFirst("\\?", "NULL");
+						else if(((String) param[0]).compareToIgnoreCase("String") == 0)
                             sql = sql.replaceFirst("\\?", "'" + param[1].toString() + "'");
                         else
                             sql = sql.replaceFirst("\\?", param[1].toString());

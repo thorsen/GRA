@@ -15,6 +15,7 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
@@ -41,6 +42,8 @@ public class CalculoAnguloLibre extends javax.swing.JDialog {
         jtfNorma = new javax.swing.JTextField();
         jlPosAero = new javax.swing.JLabel();
         jtfPosAero = new javax.swing.JTextField();
+        jlPosBuje = new javax.swing.JLabel();
+        jtfPosBuje = new javax.swing.JTextField();
         jlPosMicro1 = new javax.swing.JLabel();
         jtfPosMicro1 = new javax.swing.JTextField();
         jlPosMicro2 = new javax.swing.JLabel();
@@ -54,8 +57,6 @@ public class CalculoAnguloLibre extends javax.swing.JDialog {
         jbSelRuta = new javax.swing.JButton();
         jbCalcular = new javax.swing.JButton();
         jpCalculos = new javax.swing.JPanel();
-        jlPosBuje = new javax.swing.JLabel();
-        jtfPosBuje = new javax.swing.JTextField();
         jlAngMicro1Aero = new javax.swing.JLabel();
         jtfAngMicro1Aero = new javax.swing.JTextField();
         jlAngMicro1AeroSufijo = new javax.swing.JLabel();
@@ -84,6 +85,14 @@ public class CalculoAnguloLibre extends javax.swing.JDialog {
         jlResMicro2Aero = new javax.swing.JLabel();
         jlResMicro3Aero = new javax.swing.JLabel();
         jlResMicro4Aero = new javax.swing.JLabel();
+        jlPosLibre1 = new javax.swing.JLabel();
+        jtfPosLibre1 = new javax.swing.JTextField();
+        jlPosLibre2 = new javax.swing.JLabel();
+        jtfPosLibre2 = new javax.swing.JTextField();
+        jlPosLibre3 = new javax.swing.JLabel();
+        jtfPosLibre3 = new javax.swing.JTextField();
+        jlPosLibre4 = new javax.swing.JLabel();
+        jtfPosLibre4 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CÁLCULO DE ÁNGULOS DE RECTAS");
@@ -99,7 +108,7 @@ public class CalculoAnguloLibre extends javax.swing.JDialog {
         jpClave.setBackground(new java.awt.Color(255, 255, 255));
         jpClave.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder()));
 
-        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlAsunto.setText("Asunto:");
 
         jcbAsunto.addActionListener(new java.awt.event.ActionListener() {
@@ -108,55 +117,57 @@ public class CalculoAnguloLibre extends javax.swing.JDialog {
             }
         });
 
-        jlNorma.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlNorma.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlNorma.setText("Norma de Aplicación:");
 
-        jtfNorma.setBackground(new java.awt.Color(204, 204, 204));
         jtfNorma.setEditable(false);
+        jtfNorma.setBackground(new java.awt.Color(204, 204, 204));
         jtfNorma.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jtfNorma.setFocusable(false);
 
-        jlPosAero.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlPosAero.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlPosAero.setText("Posición Aerogenerador:");
 
-        jtfPosAero.setBackground(new java.awt.Color(204, 204, 204));
         jtfPosAero.setEditable(false);
+        jtfPosAero.setBackground(new java.awt.Color(204, 204, 204));
         jtfPosAero.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jtfPosAero.setFocusable(false);
 
-        jlPosMicro1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlPosBuje.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jlPosBuje.setText("Posición Buje:");
+
+        jtfPosBuje.setEditable(false);
+        jtfPosBuje.setBackground(new java.awt.Color(204, 204, 204));
+        jtfPosBuje.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jlPosMicro1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlPosMicro1.setText("Posición Micrófono 1:");
 
-        jtfPosMicro1.setBackground(new java.awt.Color(204, 204, 204));
         jtfPosMicro1.setEditable(false);
+        jtfPosMicro1.setBackground(new java.awt.Color(204, 204, 204));
         jtfPosMicro1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jtfPosMicro1.setFocusable(false);
 
-        jlPosMicro2.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlPosMicro2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlPosMicro2.setText("Posición Micrófono 2:");
 
-        jtfPosMicro2.setBackground(new java.awt.Color(204, 204, 204));
         jtfPosMicro2.setEditable(false);
+        jtfPosMicro2.setBackground(new java.awt.Color(204, 204, 204));
         jtfPosMicro2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jtfPosMicro2.setFocusable(false);
 
-        jlPosMicro3.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlPosMicro3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlPosMicro3.setText("Posición Micrófono 3:");
 
-        jtfPosMicro3.setBackground(new java.awt.Color(204, 204, 204));
         jtfPosMicro3.setEditable(false);
+        jtfPosMicro3.setBackground(new java.awt.Color(204, 204, 204));
         jtfPosMicro3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jtfPosMicro3.setFocusable(false);
 
-        jlPosMicro4.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlPosMicro4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlPosMicro4.setText("Posición Micrófono 4:");
 
-        jtfPosMicro4.setBackground(new java.awt.Color(204, 204, 204));
         jtfPosMicro4.setEditable(false);
+        jtfPosMicro4.setBackground(new java.awt.Color(204, 204, 204));
         jtfPosMicro4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jtfPosMicro4.setFocusable(false);
 
-        jlRutaMallado.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlRutaMallado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlRutaMallado.setText("Ruta mallado:");
 
         jtfRutaMallado.setEnabled(false);
@@ -184,40 +195,47 @@ public class CalculoAnguloLibre extends javax.swing.JDialog {
                     .addGroup(jpClaveLayout.createSequentialGroup()
                         .addComponent(jlAsunto)
                         .addGap(18, 18, 18)
-                        .addComponent(jcbAsunto, 0, 282, Short.MAX_VALUE))
+                        .addComponent(jcbAsunto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jpClaveLayout.createSequentialGroup()
                         .addComponent(jlNorma)
                         .addGap(25, 25, 25)
                         .addComponent(jtfNorma, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE))
                     .addGroup(jpClaveLayout.createSequentialGroup()
-                        .addGroup(jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlPosAero)
-                            .addComponent(jlPosMicro1)
-                            .addComponent(jlPosMicro2)
-                            .addComponent(jlPosMicro3)
-                            .addComponent(jlPosMicro4))
+                        .addComponent(jlPosAero)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfPosMicro4, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
-                            .addComponent(jtfPosMicro3, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
-                            .addComponent(jtfPosMicro2, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
-                            .addComponent(jtfPosMicro1, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
-                            .addComponent(jtfPosAero, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)))
+                        .addComponent(jtfPosAero))
+                    .addGroup(jpClaveLayout.createSequentialGroup()
+                        .addComponent(jlPosBuje)
+                        .addGap(65, 65, 65)
+                        .addComponent(jtfPosBuje))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpClaveLayout.createSequentialGroup()
                         .addComponent(jlRutaMallado)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtfRutaMallado, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                        .addComponent(jtfRutaMallado)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jbSelRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jbSelRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpClaveLayout.createSequentialGroup()
+                        .addGroup(jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlPosMicro2)
+                            .addComponent(jlPosMicro3)
+                            .addComponent(jlPosMicro4)
+                            .addComponent(jlPosMicro1))
+                        .addGap(24, 24, 24)
+                        .addGroup(jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfPosMicro3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jtfPosMicro2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jtfPosMicro1)
+                            .addComponent(jtfPosMicro4))))
                 .addContainerGap())
         );
         jpClaveLayout.setVerticalGroup(
             jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpClaveLayout.createSequentialGroup()
+                .addGap(7, 7, 7)
                 .addGroup(jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlAsunto)
                     .addComponent(jcbAsunto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlNorma)
                     .addComponent(jtfNorma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -227,8 +245,12 @@ public class CalculoAnguloLibre extends javax.swing.JDialog {
                     .addComponent(jtfPosAero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlPosMicro1)
-                    .addComponent(jtfPosMicro1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfPosBuje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlPosBuje))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfPosMicro1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlPosMicro1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlPosMicro2)
@@ -260,14 +282,6 @@ public class CalculoAnguloLibre extends javax.swing.JDialog {
 
         jpCalculos.setBackground(new java.awt.Color(255, 255, 255));
         jpCalculos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jlPosBuje.setFont(new java.awt.Font("Tahoma", 1, 11));
-        jlPosBuje.setText("Posición Buje:");
-
-        jtfPosBuje.setBackground(new java.awt.Color(204, 204, 204));
-        jtfPosBuje.setEditable(false);
-        jtfPosBuje.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jtfPosBuje.setFocusable(false);
 
         jlAngMicro1Aero.setText("<html>φ<sub>Micro1-Aero</sub></html>");
 
@@ -333,25 +347,53 @@ public class CalculoAnguloLibre extends javax.swing.JDialog {
 
         jlfAngLibreMicro4AeroSufijo.setText("º");
 
-        jlResMicro1Aero.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlResMicro1Aero.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlResMicro1Aero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlResMicro1Aero.setText("OK - ERROR");
+        jlResMicro1Aero.setText("OK - NO OK");
         jlResMicro1Aero.setOpaque(true);
 
-        jlResMicro2Aero.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlResMicro2Aero.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlResMicro2Aero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlResMicro2Aero.setText("OK - ERROR");
+        jlResMicro2Aero.setText("OK - NO OK");
         jlResMicro2Aero.setOpaque(true);
 
-        jlResMicro3Aero.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlResMicro3Aero.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlResMicro3Aero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlResMicro3Aero.setText("OK - ERROR");
+        jlResMicro3Aero.setText("OK - NO OK");
         jlResMicro3Aero.setOpaque(true);
 
-        jlResMicro4Aero.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlResMicro4Aero.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlResMicro4Aero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlResMicro4Aero.setText("OK - ERROR");
+        jlResMicro4Aero.setText("OK - NO OK");
         jlResMicro4Aero.setOpaque(true);
+
+        jlPosLibre1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jlPosLibre1.setText("Posición Obst. 1:");
+
+        jtfPosLibre1.setEditable(false);
+        jtfPosLibre1.setBackground(new java.awt.Color(204, 204, 204));
+        jtfPosLibre1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jlPosLibre2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jlPosLibre2.setText("Posición Obst. 2:");
+
+        jtfPosLibre2.setEditable(false);
+        jtfPosLibre2.setBackground(new java.awt.Color(204, 204, 204));
+        jtfPosLibre2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jlPosLibre3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jlPosLibre3.setText("Posición Obst. 3:");
+
+        jtfPosLibre3.setEditable(false);
+        jtfPosLibre3.setBackground(new java.awt.Color(204, 204, 204));
+        jtfPosLibre3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jlPosLibre4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jlPosLibre4.setText("Posición Obst. 4:");
+
+        jtfPosLibre4.setEditable(false);
+        jtfPosLibre4.setBackground(new java.awt.Color(204, 204, 204));
+        jtfPosLibre4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout jpCalculosLayout = new javax.swing.GroupLayout(jpCalculos);
         jpCalculos.setLayout(jpCalculosLayout);
@@ -361,126 +403,147 @@ public class CalculoAnguloLibre extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpCalculosLayout.createSequentialGroup()
+                        .addComponent(jlAngMicro1Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfAngMicro1Aero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlAngMicro1AeroSufijo)
+                        .addGap(18, 18, 18)
+                        .addComponent(jlfAngLibreMicro1Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfAngLibreMicro1Aero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlfAngLibreMicro1AeroSufijo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlResMicro1Aero, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
+                    .addGroup(jpCalculosLayout.createSequentialGroup()
                         .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jpCalculosLayout.createSequentialGroup()
-                                .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jpCalculosLayout.createSequentialGroup()
-                                        .addComponent(jlAngMicro1Aero)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jtfAngMicro1Aero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jpCalculosLayout.createSequentialGroup()
-                                        .addComponent(jlAngMicro2Aero)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jtfAngMicro2Aero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jlAngMicro2Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jlAngMicro2AeroSufijo)
-                                    .addComponent(jlAngMicro1AeroSufijo)))
+                                .addComponent(jtfAngMicro2Aero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jlAngMicro2AeroSufijo))
                             .addGroup(jpCalculosLayout.createSequentialGroup()
-                                .addComponent(jlAngMicro3Aero)
+                                .addComponent(jlAngMicro3Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtfAngMicro4Aero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jtfAngMicro3Aero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jlAngMicro3AeroSufijo))
                             .addGroup(jpCalculosLayout.createSequentialGroup()
-                                .addComponent(jlAngMicro4Aero)
+                                .addComponent(jlAngMicro4Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtfAngMicro3Aero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jtfAngMicro4Aero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jlAngMicro4AeroSufijo)))
                         .addGap(18, 18, 18)
                         .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jpCalculosLayout.createSequentialGroup()
-                                .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jpCalculosLayout.createSequentialGroup()
-                                        .addComponent(jlfAngLibreMicro1Aero)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jtfAngLibreMicro1Aero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jpCalculosLayout.createSequentialGroup()
-                                        .addComponent(jlfAngLibreMicro2Aero)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jtfAngLibreMicro2Aero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jlfAngLibreMicro2Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jlfAngLibreMicro2AeroSufijo)
-                                    .addComponent(jlfAngLibreMicro1AeroSufijo)))
+                                .addComponent(jtfAngLibreMicro2Aero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jlfAngLibreMicro2AeroSufijo))
                             .addGroup(jpCalculosLayout.createSequentialGroup()
-                                .addComponent(jlfAngLibreMicro3Aero)
+                                .addComponent(jlfAngLibreMicro3Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jtfAngLibreMicro3Aero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jlfAngLibreMicro3AeroSufijo))
                             .addGroup(jpCalculosLayout.createSequentialGroup()
-                                .addComponent(jlfAngLibreMicro4Aero)
+                                .addComponent(jlfAngLibreMicro4Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jtfAngLibreMicro4Aero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jlfAngLibreMicro4AeroSufijo)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlResMicro1Aero, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
-                            .addComponent(jlResMicro2Aero, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
-                            .addComponent(jlResMicro3Aero, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
-                            .addComponent(jlResMicro4Aero, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)))
+                            .addComponent(jlResMicro2Aero, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jlResMicro3Aero, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jlResMicro4Aero, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jpCalculosLayout.createSequentialGroup()
-                        .addComponent(jlPosBuje)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtfPosBuje, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)))
+                        .addGap(44, 44, 44)
+                        .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jpCalculosLayout.createSequentialGroup()
+                                .addComponent(jlPosLibre1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtfPosLibre1))
+                            .addGroup(jpCalculosLayout.createSequentialGroup()
+                                .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jlPosLibre2)
+                                        .addComponent(jlPosLibre3, javax.swing.GroupLayout.Alignment.TRAILING))
+                                    .addComponent(jlPosLibre4, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtfPosLibre4)
+                                    .addComponent(jtfPosLibre3)
+                                    .addComponent(jtfPosLibre2))))))
                 .addContainerGap())
         );
         jpCalculosLayout.setVerticalGroup(
             jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpCalculosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlPosBuje)
-                    .addComponent(jtfPosBuje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpCalculosLayout.createSequentialGroup()
-                        .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlAngMicro1Aero)
-                            .addComponent(jtfAngMicro1Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlAngMicro1AeroSufijo))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlAngMicro2Aero)
-                            .addComponent(jtfAngMicro2Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlAngMicro2AeroSufijo))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlAngMicro3Aero)
-                            .addComponent(jtfAngMicro4Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlAngMicro3AeroSufijo))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlAngMicro4Aero)
-                            .addComponent(jtfAngMicro3Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlAngMicro4AeroSufijo)))
-                    .addGroup(jpCalculosLayout.createSequentialGroup()
-                        .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlfAngLibreMicro1Aero)
-                            .addComponent(jtfAngLibreMicro1Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlfAngLibreMicro1AeroSufijo)
-                            .addComponent(jlResMicro1Aero))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlfAngLibreMicro2Aero)
-                            .addComponent(jtfAngLibreMicro2Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlfAngLibreMicro2AeroSufijo)
-                            .addComponent(jlResMicro2Aero))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlfAngLibreMicro3Aero)
-                            .addComponent(jtfAngLibreMicro3Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlfAngLibreMicro3AeroSufijo)
-                            .addComponent(jlResMicro3Aero))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlfAngLibreMicro4Aero)
-                            .addComponent(jtfAngLibreMicro4Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlfAngLibreMicro4AeroSufijo)
-                            .addComponent(jlResMicro4Aero))))
+                    .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jlAngMicro1Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtfAngMicro1Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlAngMicro1AeroSufijo))
+                    .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jlfAngLibreMicro1Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtfAngLibreMicro1Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlfAngLibreMicro1AeroSufijo)
+                        .addComponent(jlResMicro1Aero)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfPosLibre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlPosLibre1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jlAngMicro2Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtfAngMicro2Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlAngMicro2AeroSufijo))
+                    .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jtfAngLibreMicro2Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlfAngLibreMicro2AeroSufijo)
+                        .addComponent(jlResMicro2Aero)
+                        .addComponent(jlfAngLibreMicro2Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfPosLibre2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlPosLibre2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jlAngMicro3Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlAngMicro3AeroSufijo)
+                        .addComponent(jtfAngMicro3Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jlfAngLibreMicro3Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtfAngLibreMicro3Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlfAngLibreMicro3AeroSufijo)
+                        .addComponent(jlResMicro3Aero)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfPosLibre3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlPosLibre3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jlAngMicro4Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlAngMicro4AeroSufijo)
+                        .addComponent(jtfAngMicro4Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jlfAngLibreMicro4Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtfAngLibreMicro4Aero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlfAngLibreMicro4AeroSufijo)
+                        .addComponent(jlResMicro4Aero)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpCalculosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfPosLibre4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlPosLibre4))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -492,7 +555,7 @@ public class CalculoAnguloLibre extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jpClave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jbCalcular, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+                    .addComponent(jbCalcular, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jpCalculos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -519,8 +582,8 @@ public class CalculoAnguloLibre extends javax.swing.JDialog {
             .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-409)/2, (screenSize.height-492)/2, 409, 492);
+        setSize(new java.awt.Dimension(409, 607));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 private void cambioAsunto(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambioAsunto
@@ -555,7 +618,14 @@ private void cambioAsunto(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cam
                 
                 PosicionRA posMicro4 = asuntoPos.getIdPosMicro4() != null ? PosicionRA.getPosicion(asuntoPos.getIdPosMicro4()) : null;
                 this.jtfPosMicro4.setText(posMicro4 != null ? posMicro4.toString() : null);
-            }
+
+				Double hB = aero != null && aero.getHB() != null ? aero.getHB() : 0.0;
+				Double longBuje = aero != null && aero.getLongBuje() != null ? aero.getLongBuje() : 0.0;
+					
+				PosicionRA posBuje = DatosRA2.getPosicionBuje(posAero, posMicro1, hB, longBuje);
+				
+				this.jtfPosBuje.setText(posBuje != null ? posBuje.toString() : null);
+			}
             
             this.jtfRutaMallado.setEnabled(true);
             this.jbSelRuta.setEnabled(true);
@@ -589,24 +659,26 @@ private void calcularAngulos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
             Double angMicroAero, angMinLibre, angLibre;
             if (posAero != null) {
                 PosicionRA posBuje = posAero;
+				ArrayList<PosicionRA> posCorte = new ArrayList<PosicionRA>();
                 
                 if (posAero != null && posMicro1 != null) {
                     AsuntoRA asunto = AsuntoRA.getAsuntoPorId(idAsunto);
                     AerogeneradorRA aero = asunto.getIdAero() != null ? AerogeneradorRA.getAeroPorId(asunto.getIdAero()) : null;
+					Double hB = aero != null && aero.getHB() != null ? aero.getHB() : 0.0;
                     Double longBuje = aero != null && aero.getLongBuje() != null ? aero.getLongBuje() : 0.0;
                     
-                    posBuje = DatosRA2.getPosicionBuje(posAero, posMicro1, longBuje);
+                    posBuje = DatosRA2.getPosicionBuje(posAero, posMicro1, hB, longBuje);
                 }
                 
-                this.jtfPosBuje.setText(posBuje != null ? posBuje.toString() : null);
-                    
                 if (posMicro1 != null) {
                      rectaMicroAero = Auxiliares.getRecta3D(posMicro1.getPosX(), posMicro1.getPosY(), posMicro1.getPosZ(), posBuje.getPosX(), posBuje.getPosY(), posBuje.getPosZ());
                      angMicroAero = Auxiliares.getAnguloRectaPlano(rectaMicroAero);
-                     angMinLibre = Auxiliares.getAnguloMaxConMallado(rectaMicroAero, mallado);
+                     angMinLibre = Auxiliares.getAnguloMaxConMallado(rectaMicroAero, mallado, posCorte);
 
                      this.jtfAngMicro1Aero.setText(angMicroAero != null ? Auxiliares.getAnguloDecimal(angMicroAero).toString() : null);
                      this.jtfAngLibreMicro1Aero.setText(angMinLibre != null ? Auxiliares.getAnguloDecimal(angMinLibre).toString() : null);
+
+					 this.jtfPosLibre1.setText(posCorte.get(0).toString());
 
                      if (angMicroAero != null && angMinLibre != null) {
                          angLibre = Auxiliares.getAnguloDecimal(angMicroAero - angMinLibre);
@@ -615,7 +687,7 @@ private void calcularAngulos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
                              this.jlResMicro1Aero.setText("OK");
                              this.jlResMicro1Aero.setBackground(Color.GREEN);
                          } else {
-                             this.jlResMicro1Aero.setText("ERROR");
+                             this.jlResMicro1Aero.setText("NO OK");
                              this.jlResMicro1Aero.setBackground(Color.RED);
                          }
                      }
@@ -624,10 +696,12 @@ private void calcularAngulos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
                 if (posMicro2 != null) {
                      rectaMicroAero = Auxiliares.getRecta3D(posMicro2.getPosX(), posMicro2.getPosY(), posMicro2.getPosZ(), posBuje.getPosX(), posBuje.getPosY(), posBuje.getPosZ());
                      angMicroAero = Auxiliares.getAnguloRectaPlano(rectaMicroAero);
-                     angMinLibre = Auxiliares.getAnguloMaxConMallado(rectaMicroAero, mallado);
+                     angMinLibre = Auxiliares.getAnguloMaxConMallado(rectaMicroAero, mallado, posCorte);
 
                      this.jtfAngMicro2Aero.setText(angMicroAero != null ? Auxiliares.getAnguloDecimal(angMicroAero).toString() : null);
                      this.jtfAngLibreMicro2Aero.setText(angMinLibre != null ? Auxiliares.getAnguloDecimal(angMinLibre).toString() : null);
+
+					 this.jtfPosLibre2.setText(posCorte.get(0).toString());
 
                      if (angMicroAero != null && angMinLibre != null) {
                          angLibre = Auxiliares.getAnguloDecimal(angMicroAero - angMinLibre);
@@ -636,7 +710,7 @@ private void calcularAngulos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
                              this.jlResMicro2Aero.setText("OK");
                              this.jlResMicro2Aero.setBackground(Color.GREEN);
                          } else {
-                             this.jlResMicro2Aero.setText("ERROR");
+                             this.jlResMicro2Aero.setText("NO OK");
                              this.jlResMicro2Aero.setBackground(Color.RED);
                          }
                      }
@@ -645,10 +719,12 @@ private void calcularAngulos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
                 if (posMicro3 != null) {
                      rectaMicroAero = Auxiliares.getRecta3D(posMicro3.getPosX(), posMicro3.getPosY(), posMicro3.getPosZ(), posBuje.getPosX(), posBuje.getPosY(), posBuje.getPosZ());
                      angMicroAero = Auxiliares.getAnguloRectaPlano(rectaMicroAero);
-                     angMinLibre = Auxiliares.getAnguloMaxConMallado(rectaMicroAero, mallado);
+                     angMinLibre = Auxiliares.getAnguloMaxConMallado(rectaMicroAero, mallado, posCorte);
 
                      this.jtfAngMicro3Aero.setText(angMicroAero != null ? Auxiliares.getAnguloDecimal(angMicroAero).toString() : null);
                      this.jtfAngLibreMicro3Aero.setText(angMinLibre != null ? Auxiliares.getAnguloDecimal(angMinLibre).toString() : null);
+
+					 this.jtfPosLibre3.setText(posCorte.get(0).toString());
 
                      if (angMicroAero != null && angMinLibre != null) {
                          angLibre = Auxiliares.getAnguloDecimal(angMicroAero - angMinLibre);
@@ -657,7 +733,7 @@ private void calcularAngulos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
                              this.jlResMicro3Aero.setText("OK");
                              this.jlResMicro3Aero.setBackground(Color.GREEN);
                          } else {
-                             this.jlResMicro3Aero.setText("ERROR");
+                             this.jlResMicro3Aero.setText("NO OK");
                              this.jlResMicro3Aero.setBackground(Color.RED);
                          }
                      }
@@ -666,10 +742,12 @@ private void calcularAngulos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
                 if (posMicro4 != null) {
                      rectaMicroAero = Auxiliares.getRecta3D(posMicro4.getPosX(), posMicro4.getPosY(), posMicro4.getPosZ(), posBuje.getPosX(), posBuje.getPosY(), posBuje.getPosZ());
                      angMicroAero = Auxiliares.getAnguloRectaPlano(rectaMicroAero);
-                     angMinLibre = Auxiliares.getAnguloMaxConMallado(rectaMicroAero, mallado);
+                     angMinLibre = Auxiliares.getAnguloMaxConMallado(rectaMicroAero, mallado, posCorte);
 
                      this.jtfAngMicro4Aero.setText(angMicroAero != null ? Auxiliares.getAnguloDecimal(angMicroAero).toString() : null);
                      this.jtfAngLibreMicro4Aero.setText(angMinLibre != null ? Auxiliares.getAnguloDecimal(angMinLibre).toString() : null);
+
+					 this.jtfPosLibre4.setText(posCorte.get(0).toString());
 
                      if (angMicroAero != null && angMinLibre != null) {
                          angLibre = Auxiliares.getAnguloDecimal(angMicroAero - angMinLibre);
@@ -678,7 +756,7 @@ private void calcularAngulos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
                              this.jlResMicro4Aero.setText("OK");
                              this.jlResMicro4Aero.setBackground(Color.GREEN);
                          } else {
-                             this.jlResMicro4Aero.setText("ERROR");
+                             this.jlResMicro4Aero.setText("NO OK");
                              this.jlResMicro4Aero.setBackground(Color.RED);
                          }
                      }
@@ -727,6 +805,7 @@ private void limpiarCampos() {
     //Campos de cabecera
     this.jtfNorma.setText(null);
     this.jtfPosAero.setText(null);
+    this.jtfPosBuje.setText(null);
     this.jtfPosMicro1.setText(null);
     this.jtfPosMicro2.setText(null);
     this.jtfPosMicro4.setText(null);
@@ -742,8 +821,6 @@ private void limpiarCampos() {
 }
 
 private void limpiarCalculos() {
-    this.jtfPosBuje.setText(null);
-    
     this.jtfAngMicro1Aero.setText(null);
     this.jtfAngMicro2Aero.setText(null);
     this.jtfAngMicro3Aero.setText(null);
@@ -762,6 +839,11 @@ private void limpiarCalculos() {
     this.jlResMicro2Aero.setText(null);
     this.jlResMicro3Aero.setText(null);
     this.jlResMicro4Aero.setText(null);
+
+    this.jtfPosLibre1.setText(null);
+    this.jtfPosLibre2.setText(null);
+    this.jtfPosLibre3.setText(null);
+    this.jtfPosLibre4.setText(null);
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -780,6 +862,10 @@ private void limpiarCalculos() {
     private javax.swing.JLabel jlNorma;
     private javax.swing.JLabel jlPosAero;
     private javax.swing.JLabel jlPosBuje;
+    private javax.swing.JLabel jlPosLibre1;
+    private javax.swing.JLabel jlPosLibre2;
+    private javax.swing.JLabel jlPosLibre3;
+    private javax.swing.JLabel jlPosLibre4;
     private javax.swing.JLabel jlPosMicro1;
     private javax.swing.JLabel jlPosMicro2;
     private javax.swing.JLabel jlPosMicro3;
@@ -811,6 +897,10 @@ private void limpiarCalculos() {
     private javax.swing.JTextField jtfNorma;
     public javax.swing.JTextField jtfPosAero;
     public javax.swing.JTextField jtfPosBuje;
+    public javax.swing.JTextField jtfPosLibre1;
+    public javax.swing.JTextField jtfPosLibre2;
+    public javax.swing.JTextField jtfPosLibre3;
+    public javax.swing.JTextField jtfPosLibre4;
     public javax.swing.JTextField jtfPosMicro1;
     public javax.swing.JTextField jtfPosMicro2;
     public javax.swing.JTextField jtfPosMicro3;

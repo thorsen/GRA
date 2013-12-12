@@ -8,11 +8,9 @@ import RA.AsuntoPosicionRA;
 import RA.AsuntoRA;
 import RA.ConfiguracionRA2;
 import RA.DatosRA2;
-import RA.Descripcion;
 import RA.DireccionRA;
 import RA.NormaRA;
 import RA.PosicionRA;
-import RA.SerieRA2;
 import RA.SiteRA;
 import RA.TipoRA;
 import general.ComboBoxObject;
@@ -34,11 +32,11 @@ public class DatosLimitesGUI extends JDialog {
     }
 
     //Valores por defecto
-    private final String AMPLITUD = ((Double)Double.parseDouble("15")).toString();
-    private final String Z_REF = "10";
-    private final String Z0_REF = "0.05";
-    private final String DESDE_VELOCIDAD = "6";
-    private final String HASTA_VELOCIDAD = "10";
+    private final Double AMPLITUD = 15.0;
+    private final Double Z_REF = 10.0;
+    private final Double Z0_REF = 0.05;
+    private final Integer DESDE_VELOCIDAD = 6;
+    private final Integer HASTA_VELOCIDAD = 10;
     
     private final int ID_SERIE_DEF = 1;
     private final double DENSIDAD_DEF = 1.225;
@@ -49,6 +47,7 @@ public class DatosLimitesGUI extends JDialog {
 
         bgMedidaPot = new javax.swing.ButtonGroup();
         bgOpVelK = new javax.swing.ButtonGroup();
+        bgOpVelKRF = new javax.swing.ButtonGroup();
         bgOpVel = new javax.swing.ButtonGroup();
         bgPer = new javax.swing.ButtonGroup();
         bgOpVelDerTipo = new javax.swing.ButtonGroup();
@@ -60,6 +59,7 @@ public class DatosLimitesGUI extends JDialog {
         jpTipoCalculoOCTModoFunc = new javax.swing.JPanel();
         jlBinEstudio = new javax.swing.JLabel();
         jtfBinEstudio = new javax.swing.JTextField();
+        bgResAltura = new javax.swing.ButtonGroup();
         jpGeneral = new javax.swing.JPanel();
         jpTipoAnalisis = new javax.swing.JPanel();
         jTitTipoAnalisis = new javax.swing.JLabel();
@@ -112,11 +112,18 @@ public class DatosLimitesGUI extends JDialog {
         jlTipoCalculo = new javax.swing.JLabel();
         jrbPromedio = new javax.swing.JRadioButton();
         jrbPendiente = new javax.swing.JRadioButton();
+        jlTipoKRF = new javax.swing.JLabel();
+        jrbKRFTorre = new javax.swing.JRadioButton();
+        jrbKRFNac = new javax.swing.JRadioButton();
         jrbVZ = new javax.swing.JRadioButton();
         jlMedPot = new javax.swing.JLabel();
         jrbTensionInt = new javax.swing.JRadioButton();
         jrbPotencia = new javax.swing.JRadioButton();
         jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        jlResAltura = new javax.swing.JLabel();
+        jrbResAlturaZref = new javax.swing.JRadioButton();
+        jrbResAlturaBuje = new javax.swing.JRadioButton();
         jbPrevisualizar = new javax.swing.JButton();
         jpVelocidad = new javax.swing.JPanel();
         jlTitVelocidad = new javax.swing.JLabel();
@@ -237,11 +244,12 @@ public class DatosLimitesGUI extends JDialog {
         });
 
         jpGeneral.setBackground(new java.awt.Color(255, 255, 255));
+        jpGeneral.setPreferredSize(new java.awt.Dimension(706, 613));
 
         jpTipoAnalisis.setBackground(new java.awt.Color(255, 255, 255));
         jpTipoAnalisis.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder()));
 
-        jTitTipoAnalisis.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jTitTipoAnalisis.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jTitTipoAnalisis.setText("Tipo Análisis:");
 
         jcbSPL.setBackground(new java.awt.Color(255, 255, 255));
@@ -284,7 +292,7 @@ public class DatosLimitesGUI extends JDialog {
                 .addComponent(jcbOCT)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jcbFFT)
-                .addContainerGap(235, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpTipoAnalisisLayout.setVerticalGroup(
             jpTipoAnalisisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,7 +306,7 @@ public class DatosLimitesGUI extends JDialog {
         jpClave.setBackground(new java.awt.Color(255, 255, 255));
         jpClave.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder()));
 
-        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlAsunto.setText("Asunto:");
 
         jcbAsunto.addActionListener(new java.awt.event.ActionListener() {
@@ -307,7 +315,7 @@ public class DatosLimitesGUI extends JDialog {
             }
         });
 
-        jlNorma.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlNorma.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlNorma.setText("Norma de Aplicación:");
 
         jcbNorma.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
@@ -322,45 +330,45 @@ public class DatosLimitesGUI extends JDialog {
         jcbMiniAero.setText("¿Mini Aero?");
         jcbMiniAero.setEnabled(false);
 
-        jlTitPerMed.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlTitPerMed.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlTitPerMed.setText("Periodo Medido:");
 
         jlFechaD.setText("Fecha de Inicio:");
 
-        jtfFechaD.setBackground(new java.awt.Color(204, 204, 204));
         jtfFechaD.setEditable(false);
+        jtfFechaD.setBackground(new java.awt.Color(204, 204, 204));
         jtfFechaD.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jtfFechaD.setFocusable(false);
 
         jlFechaH.setText("Fecha de Fin:");
 
-        jtfFechaH.setBackground(new java.awt.Color(204, 204, 204));
         jtfFechaH.setEditable(false);
+        jtfFechaH.setBackground(new java.awt.Color(204, 204, 204));
         jtfFechaH.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jtfFechaH.setFocusable(false);
 
-        jlTitPosiciones.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlTitPosiciones.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlTitPosiciones.setText("Posiciones:");
 
         jlPosAero.setText("Aerogenerador:");
 
-        jtfPosAero.setBackground(new java.awt.Color(204, 204, 204));
         jtfPosAero.setEditable(false);
+        jtfPosAero.setBackground(new java.awt.Color(204, 204, 204));
         jtfPosAero.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jtfPosAero.setFocusable(false);
 
         jlPosMicro.setText("Micrófono:");
 
-        jtfPosMicro.setBackground(new java.awt.Color(204, 204, 204));
         jtfPosMicro.setEditable(false);
+        jtfPosMicro.setBackground(new java.awt.Color(204, 204, 204));
         jtfPosMicro.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jtfPosMicro.setFocusable(false);
 
-        jlPotNominal.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlPotNominal.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlPotNominal.setText("Potencia Nominal:");
 
-        jtfPotNominal.setBackground(new java.awt.Color(204, 204, 204));
         jtfPotNominal.setEditable(false);
+        jtfPotNominal.setBackground(new java.awt.Color(204, 204, 204));
         jtfPotNominal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jtfPotNominal.setName("Potencia Nominal"); // NOI18N
         jtfPotNominal.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -396,16 +404,15 @@ public class DatosLimitesGUI extends JDialog {
                                     .addComponent(jcbNorma, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jcbMiniAero)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jlTitPerMed))
                             .addGroup(jpClaveLayout.createSequentialGroup()
                                 .addComponent(jlAsunto)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jcbAsunto, 0, 273, Short.MAX_VALUE)))
+                                .addComponent(jcbAsunto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jpClaveLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jlFechaD)
                                     .addComponent(jtfFechaD, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -418,7 +425,7 @@ public class DatosLimitesGUI extends JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jtfPotNominal, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jlPotNominalEdit)))))
+                                .addComponent(jlPotNominalEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jpClaveLayout.setVerticalGroup(
@@ -429,7 +436,7 @@ public class DatosLimitesGUI extends JDialog {
                     .addComponent(jcbAsunto, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlPotNominal)
                     .addComponent(jtfPotNominal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlPotNominalEdit))
+                    .addComponent(jlPotNominalEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpClaveLayout.createSequentialGroup()
@@ -471,7 +478,7 @@ public class DatosLimitesGUI extends JDialog {
         jpPeriodo.setBackground(new java.awt.Color(255, 255, 255));
         jpPeriodo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlTitPeriodo.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlTitPeriodo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlTitPeriodo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitPeriodo.setText("PERIODO");
         jlTitPeriodo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -512,14 +519,13 @@ public class DatosLimitesGUI extends JDialog {
             .addGroup(jpPeriodoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpPeriodoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlTitPeriodo, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
+                    .addComponent(jlTitPeriodo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jrbPerMed)
                     .addComponent(jrbPerOtr)
                     .addGroup(jpPeriodoLayout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addGroup(jpPeriodoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jpPeriodoLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jlPerDes)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jsPerDes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -552,26 +558,26 @@ public class DatosLimitesGUI extends JDialog {
         jpAlturaRug.setBackground(new java.awt.Color(255, 255, 255));
         jpAlturaRug.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlTitAlturaRug.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlTitAlturaRug.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlTitAlturaRug.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitAlturaRug.setText("ALTURA / RUGOSIDAD");
         jlTitAlturaRug.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlZref.setText("Zref");
+        jlZref.setText("<html>z<sub>ref</sub></html>");
 
         jtfZref.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jtfZref.setName("Zref"); // NOI18N
 
         jlmZred.setText("m");
 
-        jlZ0ref.setText("Z0_ref");
+        jlZ0ref.setText("<html>z<sub>0<sub>ref</sub></sub></html>");
 
         jtfZ0ref.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jtfZ0ref.setName("Z0_ref"); // NOI18N
 
         jlmZ0ref.setText("m");
 
-        jlZ0.setText("Z0");
+        jlZ0.setText("<html>z<sub>0</sub></html>");
 
         jtfZ0.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jtfZ0.setName("Z0"); // NOI18N
@@ -584,13 +590,13 @@ public class DatosLimitesGUI extends JDialog {
                 .addGroup(jpAlturaRugLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpAlturaRugLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jlTitAlturaRug, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE))
+                        .addComponent(jlTitAlturaRug, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jpAlturaRugLayout.createSequentialGroup()
                         .addGap(68, 68, 68)
                         .addGroup(jpAlturaRugLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlZ0)
+                            .addComponent(jlZ0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jpAlturaRugLayout.createSequentialGroup()
-                                .addComponent(jlZ0ref)
+                                .addComponent(jlZ0ref, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(23, 23, 23)
                                 .addGroup(jpAlturaRugLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jtfZ0, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -601,7 +607,7 @@ public class DatosLimitesGUI extends JDialog {
                                             .addComponent(jtfZ0ref, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(12, 12, 12))
                                         .addComponent(jlmZ0ref))))
-                            .addComponent(jlZref))))
+                            .addComponent(jlZref, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jpAlturaRugLayout.setVerticalGroup(
@@ -611,19 +617,19 @@ public class DatosLimitesGUI extends JDialog {
                 .addComponent(jlTitAlturaRug)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpAlturaRugLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlZref)
+                    .addComponent(jlZref, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfZref, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlmZred))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpAlturaRugLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlZ0ref)
+                    .addComponent(jlZ0ref, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfZ0ref, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlmZ0ref))
                 .addGap(8, 8, 8)
                 .addGroup(jpAlturaRugLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfZ0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlZ0))
-                .addContainerGap(28, Short.MAX_VALUE))
+                    .addComponent(jlZ0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jpOpciones.setBackground(new java.awt.Color(255, 255, 255));
@@ -637,14 +643,14 @@ public class DatosLimitesGUI extends JDialog {
         jrbVD.setBackground(new java.awt.Color(204, 204, 204));
         bgOpVel.add(jrbVD);
         jrbVD.setSelected(true);
-        jrbVD.setText("VD =  Velocidad derivada de CP");
+        jrbVD.setText("<html>V<sub>D</sub> =  Velocidad derivada de CP</html>");
         jrbVD.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cambioOpVel(evt);
             }
         });
 
-        jlTipoK.setText("Tipo k:");
+        jlTipoK.setText("<html>Tipo k<sub>AG</sub></html>:");
 
         jrbKTorre.setBackground(new java.awt.Color(204, 204, 204));
         bgOpVelK.add(jrbKTorre);
@@ -655,7 +661,7 @@ public class DatosLimitesGUI extends JDialog {
         bgOpVelK.add(jrbKNac);
         jrbKNac.setText("k - nacelle");
 
-        jlTipoCalculo.setText("Tipo cálculo:");
+        jlTipoCalculo.setText("<html>Tipo cálculo<sub>AG</sub><html>");
 
         jrbPromedio.setBackground(new java.awt.Color(204, 204, 204));
         bgOpVelDerTipo.add(jrbPromedio);
@@ -666,16 +672,27 @@ public class DatosLimitesGUI extends JDialog {
         bgOpVelDerTipo.add(jrbPendiente);
         jrbPendiente.setText("Pendiente");
 
+        jlTipoKRF.setText("<html>Tipo k<sub>RF</sub></html>");
+
+        jrbKRFTorre.setBackground(new java.awt.Color(204, 204, 204));
+        bgOpVelKRF.add(jrbKRFTorre);
+        jrbKRFTorre.setSelected(true);
+        jrbKRFTorre.setText("k - torre");
+
+        jrbKRFNac.setBackground(new java.awt.Color(204, 204, 204));
+        bgOpVelKRF.add(jrbKRFNac);
+        jrbKRFNac.setText("k - nacelle");
+
         jrbVZ.setBackground(new java.awt.Color(204, 204, 204));
         bgOpVel.add(jrbVZ);
-        jrbVZ.setText("VZ =  Velocidad medida en Z");
+        jrbVZ.setText("<html>V<sub>Z</sub> =  Velocidad medida en Z</html>");
         jrbVZ.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cambioOpVel(evt);
             }
         });
 
-        jlMedPot.setText("Medida Pot:");
+        jlMedPot.setText("Medida Pot");
 
         jrbTensionInt.setBackground(new java.awt.Color(204, 204, 204));
         bgMedidaPot.add(jrbTensionInt);
@@ -686,6 +703,19 @@ public class DatosLimitesGUI extends JDialog {
         bgMedidaPot.add(jrbPotencia);
         jrbPotencia.setText("Potencia");
 
+        jlResAltura.setText("Altura resultados");
+
+        jrbResAlturaZref.setBackground(new java.awt.Color(204, 204, 204));
+        bgResAltura.add(jrbResAlturaZref);
+        jrbResAlturaZref.setSelected(true);
+        jrbResAlturaZref.setText("<html>z<sub>ref</sub></html>");
+        jrbResAlturaZref.setEnabled(false);
+
+        jrbResAlturaBuje.setBackground(new java.awt.Color(204, 204, 204));
+        bgResAltura.add(jrbResAlturaBuje);
+        jrbResAlturaBuje.setText("<html>H<sub>B</sub></html>");
+        jrbResAlturaBuje.setEnabled(false);
+
         javax.swing.GroupLayout jpOpcionesLayout = new javax.swing.GroupLayout(jpOpciones);
         jpOpciones.setLayout(jpOpcionesLayout);
         jpOpcionesLayout.setHorizontalGroup(
@@ -694,35 +724,50 @@ public class DatosLimitesGUI extends JDialog {
                 .addContainerGap()
                 .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpOpcionesLayout.createSequentialGroup()
-                        .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jrbVZ, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpOpcionesLayout.createSequentialGroup()
-                                    .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jlTipoK)
-                                        .addComponent(jlTipoCalculo))
-                                    .addGap(0, 0, 0)
-                                    .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jrbKTorre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jrbPromedio))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jrbPendiente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jrbKNac))))
-                            .addComponent(jrbVD, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                            .addComponent(jlTitOpciones, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE))
+                        .addComponent(jSeparator1)
                         .addContainerGap())
                     .addGroup(jpOpcionesLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jlMedPot)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jrbTensionInt, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jrbPotencia, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                        .addComponent(jlTitOpciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jpOpcionesLayout.createSequentialGroup()
+                        .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jpOpcionesLayout.createSequentialGroup()
+                                .addGap(142, 142, 142)
+                                .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jrbKRFNac, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jrbPendiente, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jrbKNac, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jrbVD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpOpcionesLayout.createSequentialGroup()
+                        .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jpOpcionesLayout.createSequentialGroup()
+                                .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jlMedPot)
+                                    .addComponent(jlResAltura))
+                                .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jrbTensionInt, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
+                                    .addComponent(jrbResAlturaZref))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jrbResAlturaBuje)
+                                    .addComponent(jrbPotencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jSeparator2)
+                            .addGroup(jpOpcionesLayout.createSequentialGroup()
+                                .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jlTipoCalculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jlTipoKRF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jlTipoK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(4, 4, 4)
+                                .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jrbKTorre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jrbPromedio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jrbKRFTorre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(73, 73, 73)))
                         .addGap(10, 10, 10))
                     .addGroup(jpOpcionesLayout.createSequentialGroup()
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addComponent(jrbVZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jpOpcionesLayout.setVerticalGroup(
             jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -730,31 +775,43 @@ public class DatosLimitesGUI extends JDialog {
                 .addContainerGap()
                 .addComponent(jlTitOpciones)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jrbVD)
+                .addComponent(jrbVD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlTipoK)
+                    .addComponent(jlTipoK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jrbKTorre)
                     .addComponent(jrbKNac))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jrbPromedio)
-                    .addComponent(jlTipoCalculo)
+                    .addComponent(jlTipoCalculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jrbPendiente))
-                .addGap(18, 18, 18)
-                .addComponent(jrbVZ)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlTipoKRF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jrbKRFTorre)
+                    .addComponent(jrbKRFNac))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jrbVZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jrbPotencia)
                     .addComponent(jrbTensionInt)
                     .addComponent(jlMedPot))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jrbResAlturaBuje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jrbResAlturaZref, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlResAltura))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jbPrevisualizar.setBackground(new java.awt.Color(102, 102, 102));
-        jbPrevisualizar.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jbPrevisualizar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jbPrevisualizar.setForeground(new java.awt.Color(255, 255, 255));
         jbPrevisualizar.setText("PREVISUALIZAR");
         jbPrevisualizar.setEnabled(false);
@@ -767,7 +824,7 @@ public class DatosLimitesGUI extends JDialog {
         jpVelocidad.setBackground(new java.awt.Color(255, 255, 255));
         jpVelocidad.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlTitVelocidad.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlTitVelocidad.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlTitVelocidad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitVelocidad.setText("VELOCIDAD");
         jlTitVelocidad.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -811,8 +868,10 @@ public class DatosLimitesGUI extends JDialog {
         jtModosFunc.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jtModosFunc);
         jtModosFunc.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jtModosFunc.getColumnModel().getColumn(0).setResizable(false);
-        jtModosFunc.getColumnModel().getColumn(1).setResizable(false);
+        if (jtModosFunc.getColumnModel().getColumnCount() > 0) {
+            jtModosFunc.getColumnModel().getColumn(0).setResizable(false);
+            jtModosFunc.getColumnModel().getColumn(1).setResizable(false);
+        }
 
         jButton1.setText("+");
         jButton1.setToolTipText("Añadir modo de funcionamiento");
@@ -874,14 +933,14 @@ public class DatosLimitesGUI extends JDialog {
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         jpDireccion.setBackground(new java.awt.Color(255, 255, 255));
         jpDireccion.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlTitDireccion.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlTitDireccion.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlTitDireccion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitDireccion.setText("DIRECCIÓN");
         jlTitDireccion.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -916,14 +975,14 @@ public class DatosLimitesGUI extends JDialog {
             }
         });
 
-        jtfDirMin.setBackground(new java.awt.Color(204, 204, 204));
         jtfDirMin.setEditable(false);
+        jtfDirMin.setBackground(new java.awt.Color(204, 204, 204));
         jtfDirMin.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jtfDirMin.setFocusable(false);
         jtfDirMin.setName("Desde Dirección"); // NOI18N
 
-        jtfDirMax.setBackground(new java.awt.Color(204, 204, 204));
         jtfDirMax.setEditable(false);
+        jtfDirMax.setBackground(new java.awt.Color(204, 204, 204));
         jtfDirMax.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jtfDirMax.setFocusable(false);
         jtfDirMax.setName("Hasta Dirección"); // NOI18N
@@ -943,7 +1002,7 @@ public class DatosLimitesGUI extends JDialog {
                         .addComponent(jlDirAmp)
                         .addGap(76, 76, 76)
                         .addComponent(jtfDirAmp, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jlTitDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE))
+                    .addComponent(jlTitDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.CENTER, jpDireccionLayout.createSequentialGroup()
                 .addGap(60, 60, 60)
@@ -969,13 +1028,13 @@ public class DatosLimitesGUI extends JDialog {
                 .addGroup(jpDireccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfDirMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfDirMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jpIncertidumbre.setBackground(new java.awt.Color(255, 255, 255));
         jpIncertidumbre.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlTitIncertidumbre.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlTitIncertidumbre.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlTitIncertidumbre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitIncertidumbre.setText("INCERTIDUMBRE");
         jlTitIncertidumbre.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -994,7 +1053,7 @@ public class DatosLimitesGUI extends JDialog {
             .addGroup(jpIncertidumbreLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpIncertidumbreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jlTitIncertidumbre, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                    .addComponent(jlTitIncertidumbre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jbIncertidumbres))
                 .addContainerGap())
         );
@@ -1017,9 +1076,9 @@ public class DatosLimitesGUI extends JDialog {
                 .addGroup(jpGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jpClave, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jpGeneralLayout.createSequentialGroup()
-                        .addGroup(jpGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jpPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jpOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jpGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jpOpciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jpPeriodo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(6, 6, 6)
                         .addGroup(jpGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jpAlturaRug, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1028,7 +1087,7 @@ public class DatosLimitesGUI extends JDialog {
                         .addGroup(jpGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jpDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jpIncertidumbre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jbPrevisualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
+                    .addComponent(jbPrevisualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jpTipoAnalisis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -1051,22 +1110,22 @@ public class DatosLimitesGUI extends JDialog {
                     .addComponent(jpVelocidad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6)
                 .addComponent(jbPrevisualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jpGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jpGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-710)/2, (screenSize.height-625)/2, 710, 625);
+        setSize(new java.awt.Dimension(735, 661));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 private void cambioPer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambioPer
@@ -1125,6 +1184,8 @@ private void actualizarSector()
 private void cambioOpVel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambioOpVel
     this.jrbKTorre.setEnabled(this.jrbVD.isSelected());
     this.jrbKNac.setEnabled(this.jrbVD.isSelected());
+    this.jrbKRFTorre.setEnabled(this.jrbVD.isSelected());
+    this.jrbKRFNac.setEnabled(this.jrbVD.isSelected());
     this.jrbPromedio.setEnabled(this.jrbVD.isSelected());
     jrbPendiente.setEnabled(jrbVD.isSelected());//GEN-LAST:event_cambioOpVel
 }                            
@@ -1220,10 +1281,11 @@ private void cargaConfiguracion(Integer idAsunto) throws SQLException, NoSuchFie
         actualizarSector();
         
         //Opciones
-        Character velDerMed, medidaPot, tipoK, tipoCalculoVel;
+        Character velDerMed, medidaPot, tipoK, tipoKRF, tipoCalculoVel;
         velDerMed = conf.getVelDerMed();
         medidaPot = conf.getMedidaPot();
         tipoK = conf.getTipoK();
+        tipoKRF = conf.getTipoKRF();
         tipoCalculoVel = conf.getTipoCalculoVel();
         
         if (velDerMed.equals(AsuntoConfRA.VEL_DER)) {
@@ -1248,6 +1310,14 @@ private void cargaConfiguracion(Integer idAsunto) throws SQLException, NoSuchFie
         } else if (tipoK.equals(AsuntoConfRA.K_NACELLE)) {
             this.jrbKTorre.setSelected(false);
             this.jrbKNac.setSelected(true);
+        }
+
+        if (tipoKRF.equals(AsuntoConfRA.K_TORRE)) {
+            this.jrbKRFTorre.setSelected(true);
+            this.jrbKRFNac.setSelected(false);
+        } else if (tipoKRF.equals(AsuntoConfRA.K_NACELLE)) {
+            this.jrbKRFTorre.setSelected(false);
+            this.jrbKRFNac.setSelected(true);
         }
         
         if (tipoCalculoVel.equals(AsuntoConfRA.CALC_PROMEDIO)) {
@@ -1352,7 +1422,7 @@ private void guardaConfiguracion(Integer idAsunto) throws SQLException, NoSuchFi
     
     confVieja = AsuntoConfRA.getAsuntoConfPorIdAsunto(idAsunto);
     
-    Character perMedidoOtro = null, velDerMed = null, medidaPot = null, tipoK = null, tipoCalculoVel = null;
+    Character perMedidoOtro = null, velDerMed = null, medidaPot = null, tipoK = null, tipoKRF = null, tipoCalculoVel = null;
     
     if (this.jrbPerMed.isSelected())
         perMedidoOtro = AsuntoConfRA.PER_MEDIDO;
@@ -1373,6 +1443,11 @@ private void guardaConfiguracion(Integer idAsunto) throws SQLException, NoSuchFi
         tipoK = AsuntoConfRA.K_NACELLE;
     else if (this.jrbKTorre.isSelected())
         tipoK = AsuntoConfRA.K_TORRE;
+        
+    if (this.jrbKRFNac.isSelected())
+        tipoKRF = AsuntoConfRA.K_NACELLE;
+    else if (this.jrbKRFTorre.isSelected())
+        tipoKRF = AsuntoConfRA.K_TORRE;
         
     if (this.jrbPendiente.isSelected())
         tipoCalculoVel = AsuntoConfRA.CALC_PENDIENTE;
@@ -1395,6 +1470,7 @@ private void guardaConfiguracion(Integer idAsunto) throws SQLException, NoSuchFi
             velDerMed,
             medidaPot,
             tipoK, 
+			tipoKRF,
             tipoCalculoVel, 
             Integer.parseInt(this.jtfVelDes.getText()), 
             Integer.parseInt(this.jtfVelHas.getText()));
@@ -1522,6 +1598,11 @@ private void previsualizar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pr
     
     try {
         if (Auxiliares.validaCampos(this)) { //Todos los campos deben de ser válidos
+			if (!this.jcbSPL.isSelected() && !this.jcbOCT.isSelected() && !this.jcbFFT.isSelected()) {
+				MensajeApp.muestraWarning(this, "Debe seleccionar al menos un tipo de análisis a realizar");
+				return;
+			}
+	    
             Integer idAsunto = (Integer) ComboBoxObject.getClaveSelCombo(this.jcbAsunto);
             
             if (idAsunto != null) {
@@ -1529,7 +1610,7 @@ private void previsualizar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pr
                 ArrayList<String> tiposTabla;
                 long fechaIniPer, fechaFinPer;
                 double zRef, z0Ref, z0, sector[], potNominal;
-                int calculoVel = -1, ajuste = -1, calculoAjuste = -1, calculoPot = -1;
+                int calculoVel = -1, ajuste = -1, ajusteRF = -1, calculoAjuste = -1, calculoPot = -1;
                 
                 //Variable para control de llamadas entre diálogos
                 ArrayList<Integer> modoSalida = new ArrayList<Integer>();
@@ -1589,14 +1670,21 @@ private void previsualizar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pr
                         ajuste = DatosRA2.AJUSTE_K_TORRE;
                     } else { //K-nacelle
                         ajuste = DatosRA2.AJUSTE_K_NACELLE;
-                        
+                        /*
                         SerieRA2 serieVelNacelle = SerieRA2.getSerieRA2PorCodigo(DatosRA2.CAMPO_V_N);
                         Integer idSerieVelNacelle = serieVelNacelle != null ? serieVelNacelle.getIdSerie() : null;
                         if (Descripcion.getDescripcion(idAsunto, idSerieVelNacelle) == null) {    //No existe la descripción para velocidad de nacelle en el asunto
-                            MensajeApp.muestraError(this, null, "No hay configrada una descripción para la velocidad de nacelle.\nNo se puede continuar");
+                            MensajeApp.muestraError(this, null, "No hay configurada una descripción para la velocidad de nacelle.\nNo se puede continuar");
                             return;
                         }
+			*/
                     }
+
+                    if (this.jrbKRFTorre.isSelected()) { //K-factor
+                        ajusteRF = DatosRA2.AJUSTE_K_TORRE;
+                    } else { //K-nacelle
+                        ajusteRF = DatosRA2.AJUSTE_K_NACELLE;
+					}
                     
                     if (this.jrbPromedio.isSelected()) { //Promedio
                         calculoAjuste = DatosRA2.CALCULO_K_PROMEDIO;
@@ -1608,7 +1696,10 @@ private void previsualizar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pr
                 } else if (this.jrbVZ.isSelected()) {  //Velocidad Medida en Z
                     calculoVel = DatosRA2.VEL_MEDIDA;
                     ajuste = -1;
+                    ajusteRF = -1;
                 }
+
+				boolean resAlturaBuje = this.jrbResAlturaBuje.isSelected();
                 
                 //Modos de funcionamiento
                 ArrayList<Integer[]> modosFunc = null;
@@ -1621,6 +1712,8 @@ private void previsualizar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pr
                         modosFunc.add(new Integer[]{(Integer) this.jtModosFunc.getValueAt(i, 0), (Integer) this.jtModosFunc.getValueAt(i, 1)});
                     }
                 }
+
+				Boolean esMiniAero = this.jcbMiniAero.isSelected();
                 
                 if (idNorma.equals(NormaRA.ID_NORMA_BWEA) && nModosFunc == 0) {
                     MensajeApp.muestraWarning(this, "No hay modos de funcionamiento declarados para realizar el análisis bajo la norma BWEA.");
@@ -1630,7 +1723,7 @@ private void previsualizar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pr
                     //Quitamos las incertidumbres por velocidad de viento que no correspondan
                     AsuntoIncert.filtrarVelocidad(incertidumbres, calculoVel);
 
-                    if (incertidumbres == null || incertidumbres.size() == 0) {
+                    if (incertidumbres == null || incertidumbres.isEmpty()) {
                         MensajeApp.muestraWarning(this, "No hay incertidumbres establecidas para el asunto, norma y fecha de análisis declarados.");
                     } else {
                         //Guardamos la configuración
@@ -1643,15 +1736,17 @@ private void previsualizar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pr
                             //tipoTabla = TipoRA.getTipoRAPorIdSite(sitesTipo.get(i)).getSufijo();
                             tipoTabla = tiposTabla.get(i);
 
+							modoSalida = new ArrayList<Integer>();
+
                             //Mostramos una progress para indicar que se está trabajando en las bases
                             Auxiliares.bloqueaDialog(this, true);
                             jpb = Auxiliares.muestraProgress(this, 100 * 1000, "Creando vistas auxiliares...");
                             
-                            valiCrea = DatosRA2.createVistaAux(idNorma, tipoTabla, idAsunto, sitesTipo.get(i), calculoVel, calculoPot, ID_SERIE_DEF, DENSIDAD_DEF, fechaIniPer, fechaFinPer, sector, zRef, z0Ref, z0);
+                            valiCrea = DatosRA2.createVistaAux(idNorma, tipoTabla, idAsunto, sitesTipo.get(i), calculoVel, calculoPot, ID_SERIE_DEF, DENSIDAD_DEF, fechaIniPer, fechaFinPer, sector, zRef, z0Ref, z0, resAlturaBuje, esMiniAero);
                             if (valiCrea.length() == 0) {
                                 Auxiliares.incPorcentajeProgress(jpb, 0.5);
                                 ArrayList<Object> ajustes = new ArrayList<Object>(); //Variable para recoger los ajustes
-                                valiCrea = DatosRA2.createVistaNeta(tipoTabla, idAsunto, sitesTipo.get(i), potNominal, calculoVel, ajuste, calculoAjuste, DENSIDAD_DEF, zRef, z0Ref, z0, ajustes);
+                                valiCrea = DatosRA2.createVistaNeta(idNorma, tipoTabla, idAsunto, sitesTipo.get(i), potNominal, calculoVel, ajuste, ajusteRF, calculoAjuste, DENSIDAD_DEF, zRef, z0Ref, ajustes);
                                 if (valiCrea.length() == 0) {
                                     Auxiliares.incPorcentajeProgress(jpb, 0.5);
                                     Auxiliares.ocultaProgress(jpb);
@@ -1662,7 +1757,7 @@ private void previsualizar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pr
                                     if (i == 0)
                                         this.setVisible(false);
 
-                                    dV = new DatosVisualizacionGUI((Frame) this.getParent(), tipoTabla, idAsunto, sitesTipo.get(i), Integer.parseInt(this.jtfVelDes.getText()), Integer.parseInt(this.jtfVelHas.getText()), (Double) ajustes.get(0), (double[]) ajustes.get(1), modosFunc, modoSalida, idNorma, incertidumbres);
+                                    dV = new DatosVisualizacionGUI((Frame) this.getParent(), tipoTabla, idAsunto, sitesTipo.get(i), Integer.parseInt(this.jtfVelDes.getText()), Integer.parseInt(this.jtfVelHas.getText()), (Double) ajustes.get(0), (Double) ajustes.get(1), (double[]) ajustes.get(2), (double[]) ajustes.get(3), modosFunc, modoSalida, idNorma, esMiniAero, incertidumbres, calculoVel, ajuste, ajusteRF);
                                     //dV = new DatosVisualizacionGUI((Frame) this.getParent(), tipoTabla, idAsunto, sitesTipo.get(i), Integer.parseInt(this.jtfVelDes.getText()), Integer.parseInt(this.jtfVelHas.getText()), modoSalida);
                                     dV.setVisible(true);
 
@@ -1690,7 +1785,7 @@ private void previsualizar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pr
         try {
             if (jpb != null) {
                 Auxiliares.ocultaProgress(jpb);
-                        Auxiliares.bloqueaDialog(this, false);
+				Auxiliares.bloqueaDialog(this, false);
             }
             
             DatosRA2.deleteVistas();
@@ -1779,7 +1874,24 @@ private void cambioNorma(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_camb
                 /*****  No marcamos como miniAero porque no es estandar su definición todavía.
                 this.jcbMiniAero.setSelected(aero != null && aero.getDN() != null && Math.PI * Math.pow(aero.getDN()/2.0, 2.0) <= 200);
                  *****/
-            }
+
+				this.jrbResAlturaBuje.setEnabled(true);
+				this.jrbResAlturaZref.setEnabled(true);
+            } else {
+				this.jrbResAlturaBuje.setEnabled(false);
+				this.jrbResAlturaZref.setEnabled(false);
+			}
+
+			if (!idNorma.equals(NormaRA.ID_NORMA_BWEA))
+				this.jtfZref.setText(Z_REF.toString());
+			else {
+                Integer idAsunto = (Integer) ComboBoxObject.getClaveSelCombo(this.jcbAsunto);
+                AsuntoRA asunto = AsuntoRA.getAsuntoPorId(idAsunto);
+                Integer idAero = asunto != null ? asunto.getIdAero() : null;
+                AerogeneradorRA aero = idAero != null ? AerogeneradorRA.getAeroPorId(idAero) : null;
+		
+				this.jtfZref.setText(aero.getHB().toString());
+			}
         }
         
         actualizaBotones();
@@ -1848,22 +1960,24 @@ private void limpiarCampos(){
     this.jtfDirMin.setText(null);
     this.jtfDirMax.setText(null);
     this.jtfDirEns.setText(null);
-    this.jtfDirAmp.setText(AMPLITUD);
+    this.jtfDirAmp.setText(AMPLITUD.toString());
     
     // Rugosidad
-    this.jtfZref.setText(Z_REF);
-    this.jtfZ0ref.setText(Z0_REF);
+    this.jtfZref.setText(Z_REF.toString());
+    this.jtfZ0ref.setText(Z0_REF.toString());
     this.jtfZ0.setText(null);
     
     // Velocidad
-    this.jtfVelDes.setText(DESDE_VELOCIDAD);
-    this.jtfVelHas.setText(HASTA_VELOCIDAD);
+    this.jtfVelDes.setText(DESDE_VELOCIDAD.toString());
+    this.jtfVelHas.setText(HASTA_VELOCIDAD.toString());
     
     // Opciones
     this.jrbVD.setSelected(true);
     this.jrbVZ.setSelected(false);
     this.jrbKTorre.setSelected(true);
     this.jrbKNac.setSelected(false);
+    this.jrbKRFTorre.setSelected(true);
+    this.jrbKRFNac.setSelected(false);
     this.jrbPromedio.setSelected(true);
     this.jrbPendiente.setSelected(false);
     cambioOpVel(null);
@@ -1872,11 +1986,11 @@ private void limpiarCampos(){
     this.jrbPotencia.setSelected(false);
     
     //Inicializamos variables por defecto
-    this.jtfZ0ref.setText(Z0_REF);
-    this.jtfZref.setText(Z_REF);
-    this.jtfDirAmp.setText(AMPLITUD);
-    this.jtfVelDes.setText(DESDE_VELOCIDAD);
-    this.jtfVelHas.setText(HASTA_VELOCIDAD);
+    this.jtfZ0ref.setText(Z0_REF.toString());
+    this.jtfZref.setText(Z_REF.toString());
+    this.jtfDirAmp.setText(AMPLITUD.toString());
+    this.jtfVelDes.setText(DESDE_VELOCIDAD.toString());
+    this.jtfVelHas.setText(HASTA_VELOCIDAD.toString());
     
     /*
     this.jtfUB1.setText("0.173205081");
@@ -1927,11 +2041,14 @@ private void actualizaBotones() {
     private javax.swing.ButtonGroup bgOpVel;
     private javax.swing.ButtonGroup bgOpVelDerTipo;
     private javax.swing.ButtonGroup bgOpVelK;
+    private javax.swing.ButtonGroup bgOpVelKRF;
     private javax.swing.ButtonGroup bgPer;
+    private javax.swing.ButtonGroup bgResAltura;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel jTitTipoAnalisis;
     private javax.swing.JButton jbIncertidumbres;
     private javax.swing.JButton jbPrevisualizar;
@@ -1955,8 +2072,10 @@ private void actualizaBotones() {
     private javax.swing.JLabel jlPosMicro;
     private javax.swing.JLabel jlPotNominal;
     private javax.swing.JLabel jlPotNominalEdit;
+    private javax.swing.JLabel jlResAltura;
     private javax.swing.JLabel jlTipoCalculo;
     private javax.swing.JLabel jlTipoK;
+    private javax.swing.JLabel jlTipoKRF;
     private javax.swing.JLabel jlTitAlturaRug;
     private javax.swing.JLabel jlTitDireccion;
     private javax.swing.JLabel jlTitIncertidumbre;
@@ -1986,12 +2105,16 @@ private void actualizaBotones() {
     private javax.swing.JPanel jpTipoCalculoOCTModoFunc;
     private javax.swing.JPanel jpVelocidad;
     private javax.swing.JRadioButton jrbKNac;
+    private javax.swing.JRadioButton jrbKRFNac;
+    private javax.swing.JRadioButton jrbKRFTorre;
     private javax.swing.JRadioButton jrbKTorre;
     private javax.swing.JRadioButton jrbPendiente;
     private javax.swing.JRadioButton jrbPerMed;
     private javax.swing.JRadioButton jrbPerOtr;
     private javax.swing.JRadioButton jrbPotencia;
     private javax.swing.JRadioButton jrbPromedio;
+    private javax.swing.JRadioButton jrbResAlturaBuje;
+    private javax.swing.JRadioButton jrbResAlturaZref;
     private javax.swing.JRadioButton jrbTensionInt;
     private javax.swing.JRadioButton jrbVD;
     private javax.swing.JRadioButton jrbVZ;
