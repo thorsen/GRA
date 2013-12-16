@@ -63,7 +63,7 @@ public class DatosRAGUI extends JDialog {
         setBackground(new java.awt.Color(175, 30, 30));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\GCPMini.jpg").getImage());
+        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -81,7 +81,7 @@ public class DatosRAGUI extends JDialog {
         jLabel3.setText("Selector de Mediciones ");
 
         jbSelRuta.setBackground(new java.awt.Color(255, 255, 255));
-        jbSelRuta.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\OpenFolder.gif" )));
+        jbSelRuta.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\OpenFolder.gif" )));
         jbSelRuta.setToolTipText("Seleccionar fichero de datos");
         jbSelRuta.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jbSelRuta.setPreferredSize(new java.awt.Dimension(65, 20));

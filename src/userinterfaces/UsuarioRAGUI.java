@@ -36,7 +36,7 @@ public UsuarioRAGUI(java.awt.Frame parent) {
         setTitle("ACCESO USUARIO");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\key.png").getImage());
+        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\key.png").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
         setResizable(false);

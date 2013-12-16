@@ -8,7 +8,6 @@ import RA.AsuntoPosicionRA;
 import RA.AsuntoRA;
 import RA.ConfiguracionRA2;
 import RA.DatosRA2;
-import RA.DireccionRA;
 import RA.NormaRA;
 import RA.PosicionRA;
 import RA.SiteRA;
@@ -235,7 +234,7 @@ public class DatosLimitesGUI extends JDialog {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setIconImage(new ImageIcon("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\GCPMini.jpg").getImage());
+        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
         setLocationByPlatform(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -1171,7 +1170,7 @@ private void actualizarSector()
         Double dir = Double.parseDouble(dirText);
         Double amp = Double.parseDouble(ampText);
         
-        Double sector[] = DireccionRA.getSector(dir, amp);
+        Double sector[] = DatosRA2.getSectorDirAmp(dir, amp);
         
         this.jtfDirMin.setText(sector[0].toString());
         this.jtfDirMax.setText(sector[1].toString());
@@ -1556,17 +1555,7 @@ private void cambioAsunto(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cam
 
         if (idAsunto != null) {
             Integer idNorma = AsuntoRA.getAsuntoPorId(idAsunto).getIdNorma();
-            DireccionRA direccion = DireccionRA.getDireccionPorIdAsunto(idAsunto);
 
-            if (direccion != null) {
-                Double dir = direccion.getDireccion();
-
-                if (dir != null) {
-                    this.jtfDirEns.setText(dir.toString());
-                    actualizarSector();
-                }
-            }
-            
             this.jcbNorma.setSelectedItem(ComboBoxObject.getItemWithKey(this.jcbNorma, idNorma));
             this.jcbNorma.setEnabled(true);
             

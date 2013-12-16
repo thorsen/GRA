@@ -232,7 +232,7 @@ public class ConfiguracionRAGUI extends JDialog {
         jlTitLineas.setText("LÍNEAS DE CONFIGURACIÓN");
         jlTitLineas.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jbAnadir.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Down.gif" )));
+        jbAnadir.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Down.gif" )));
         jbAnadir.setToolTipText("Añadir Línea de Configuración");
         jbAnadir.setAlignmentX(0.5F);
         jbAnadir.setEnabled(false);
@@ -244,7 +244,7 @@ public class ConfiguracionRAGUI extends JDialog {
             }
         });
 
-        jbEliminar.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Up.gif" )));
+        jbEliminar.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Up.gif" )));
         jbEliminar.setToolTipText("Eliminar Línea de Configuración");
         jbEliminar.setAlignmentX(0.5F);
         jbEliminar.setEnabled(false);
@@ -261,7 +261,7 @@ public class ConfiguracionRAGUI extends JDialog {
         jlSepNueva.setText("__________________________________________________");
 
         jbImprimirTabla.setBackground(new java.awt.Color(255, 255, 255));
-        jbImprimirTabla.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\printer.png" )));
+        jbImprimirTabla.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\printer.png" )));
         jbImprimirTabla.setToolTipText("Imprime la tabla de la configuracion seleccionada");
         jbImprimirTabla.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jbImprimirTabla.addActionListener(new java.awt.event.ActionListener() {
@@ -294,7 +294,7 @@ public class ConfiguracionRAGUI extends JDialog {
             }
         });
 
-        jbActualizar.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\arrow_refresh.png" )));
+        jbActualizar.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\arrow_refresh.png" )));
         jbActualizar.setToolTipText("Actualizar Línea de Configuración");
         jbActualizar.setAlignmentX(0.5F);
         jbActualizar.setEnabled(false);
@@ -454,7 +454,7 @@ public class ConfiguracionRAGUI extends JDialog {
         });
 
         jbGuardar.setBackground(new java.awt.Color(255, 255, 255));
-        jbGuardar.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Guardar.png" )));
+        jbGuardar.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Guardar.png" )));
         jbGuardar.setToolTipText("Guardar Configuración");
         jbGuardar.setEnabled(false);
         jbGuardar.setMaximumSize(new java.awt.Dimension(11, 9));

@@ -71,7 +71,7 @@ public class AsuntoRA {
   
     
     //Otras constantes
-    private static final String RUTA_ASUNTOS = "\\\\Bsolar\\DatosSolar\\Curva\\Asuntos\\";
+    private static final String RUTA_ASUNTOS = "\\\\B2solar\\Datos\\Curva\\Asuntos\\";
     private static final String SUB_INSERCION = "\\Insercion";
     private static final String SUB_EDICION = "\\Edicion";
     private static final String SUB_REVISION = "\\Revision";

@@ -2,10 +2,9 @@ package userinterfaces;
 
 
 import calculos.CalculoAnguloLibre;
-import userinterfaces.DatosRAGUI;
-import userinterfaces.VDatosGUI;
 import calculos.DatosLimitesGUI;
 import general.LoginRA;
+import general.MensajeApp;
 import java.awt.Toolkit;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -43,7 +42,7 @@ public class GRA extends JFrame {
         textField.setEditable(false);
         frame.getContentPane().add(textField);
         frame.pack();
-        frame.setIconImage(new ImageIcon("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\GCPmini.jpg").getImage());
+        frame.setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(false);
@@ -79,7 +78,9 @@ public class GRA extends JFrame {
                 try {
                     if(s != null)
                         s.close();
-                } catch(Exception ex) { }
+                } catch(IOException ex) {
+					MensajeApp.muestraError(null, ex, null);
+				}
             }
             return;
         }
@@ -100,27 +101,32 @@ public class GRA extends JFrame {
                 dos.writeUTF(HELLO_MESSAGE);
                 s.close();
             }
-        } catch(Exception e) {
-            e.printStackTrace();
+        } catch(IOException ex) {
+			MensajeApp.muestraError(null, ex, null);
         }
     }
 
     // Lanza el resto de la aplicación 
     private static void ejecutarAplicacion() {
-        try{
-            
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
 
-            java.awt.EventQueue.invokeLater(new Runnable() {
+			java.awt.EventQueue.invokeLater(new Runnable() {
                public void run() {
                     GRA pc=new GRA();
                     pc.setVisible(true);
                     pc.setExtendedState(GRA.MAXIMIZED_BOTH); 
                }
             });
-        } catch (Exception e) {
-            System.err.println("Error loading L&F: " + e.getMessage());
-        } 
+		} catch (ClassNotFoundException ex) {
+			MensajeApp.muestraError(null, ex, null);
+		} catch (InstantiationException ex) {
+			MensajeApp.muestraError(null, ex, null);
+		} catch (IllegalAccessException ex) {
+			MensajeApp.muestraError(null, ex, null);
+		} catch (UnsupportedLookAndFeelException ex) {
+			MensajeApp.muestraError(null, ex, null);
+		}
    }
 
 
@@ -175,7 +181,7 @@ public class GRA extends JFrame {
         setBackground(new java.awt.Color(51, 51, 51));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(51, 51, 51));
-        setIconImage(new ImageIcon("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\GCPmini.jpg").getImage());
+        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
         setName("Pantalla Principal"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -194,7 +200,7 @@ public class GRA extends JFrame {
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Comic Sans MS", 2, 11));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\logo gcp final.jpg" )));
+        jLabel1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\logo gcp final.jpg" )));
         jLabel1.setAlignmentX(0.5F);
 
         javax.swing.GroupLayout PanelLayout = new javax.swing.GroupLayout(Panel);
@@ -217,7 +223,7 @@ public class GRA extends JFrame {
         Nuevo.setText("Archivo ");
         Nuevo.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
 
-        Menu2.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\page_white.png")));
+        Menu2.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\page_white.png")));
         Menu2.setText("Nuevo ...           ");
         Menu2.setBorderPainted(true);
         Menu2.setContentAreaFilled(false);
@@ -300,7 +306,7 @@ public class GRA extends JFrame {
 
         Nuevo.add(Menu2);
 
-        Menu4.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\OpenFolder.gif" )));
+        Menu4.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\OpenFolder.gif" )));
         Menu4.setText("Abrir");
         Menu4.setBorderPainted(true);
         Menu4.setContentAreaFilled(false);
@@ -351,7 +357,7 @@ public class GRA extends JFrame {
 
         Nuevo.add(Menu4);
 
-        Salir.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Exit.png" )));
+        Salir.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Exit.png" )));
         Salir.setText("Salir");
         Salir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -433,7 +439,7 @@ public class GRA extends JFrame {
 
         jMenu29.setText("Web");
 
-        jMenuItem75.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\logotipo.gif")));
+        jMenuItem75.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\logotipo.gif")));
         jMenuItem75.setText("Acceso clientes");
         jMenuItem75.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -497,12 +503,12 @@ private void NContacto(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NConta
 }//GEN-LAST:event_NContacto
 
 private void Web(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Web
-String url = "http://www.barlovento-recursos.com/User/Sys/Salir.php";
-try {
-     Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
-} catch (IOException ex) {
-     ex.printStackTrace();
-}
+	String url = "http://www.barlovento-recursos.com/User/Sys/Salir.php";
+	try {
+		Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
+	} catch (IOException ex) {
+		MensajeApp.muestraError(null, ex, null);
+	}
 }//GEN-LAST:event_Web
 
 private void EVariableSCB(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EVariableSCB

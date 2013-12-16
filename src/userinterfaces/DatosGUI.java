@@ -53,7 +53,7 @@ public class DatosGUI extends JDialog {
         setBackground(new java.awt.Color(175, 30, 30));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\GCPMini.jpg").getImage());
+        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
 
@@ -66,7 +66,7 @@ public class DatosGUI extends JDialog {
         jLabel3.setText("Selector de Mediciones ");
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\OpenFolder.gif" )));
+        jButton1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\OpenFolder.gif" )));
         jButton1.setToolTipText("Seleccionar fichero de datos");
         jButton1.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton1.setPreferredSize(new java.awt.Dimension(65, 20));

@@ -96,7 +96,7 @@ public class Responsable {
         try{
             con = DriverManager.getConnection(url, user, pass);
             con.setAutoCommit(false);
-            FileWriter fw= new FileWriter("\\\\Bsolar\\DatosSolar\\Curva\\Usuarios\\update.log",true);
+            FileWriter fw= new FileWriter("\\\\B2solar\\Datos\\Curva\\Usuarios\\update.log",true);
             fw.write("--------------------------------------------------------------------------------\n");
             fw.write("\n");
             Date hoy= new Date();

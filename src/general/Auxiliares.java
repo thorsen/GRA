@@ -72,7 +72,7 @@ public class Auxiliares {
     public static final String RUTA_RAIZ = "Z:";
     public static final String RUTA_DIR = "\\PRIVADA\\CALIDAD\\ASUNTOS";
     
-    public static final String RUTA_IMAGENES = "\\\\Bsolar\\DatosSolar\\Curva\\Imagenes";
+    public static final String RUTA_IMAGENES = "\\\\B2solar\\Datos\\Curva\\Imagenes";
     public static final ImageIcon ICONO_CAPTURA = new ImageIcon(Toolkit.getDefaultToolkit().getImage(RUTA_IMAGENES + "\\camera.png"));
     public static final ImageIcon ICONO_PREV = new ImageIcon(Toolkit.getDefaultToolkit().getImage(RUTA_IMAGENES + "\\resultset_previous.png"));
     public static final ImageIcon ICONO_NEXT = new ImageIcon(Toolkit.getDefaultToolkit().getImage(RUTA_IMAGENES + "\\resultset_next.png"));

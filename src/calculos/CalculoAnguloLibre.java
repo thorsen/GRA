@@ -174,7 +174,7 @@ public class CalculoAnguloLibre extends javax.swing.JDialog {
         jtfRutaMallado.setName("Ruta mallado"); // NOI18N
 
         jbSelRuta.setBackground(new java.awt.Color(255, 255, 255));
-        jbSelRuta.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\OpenFolder.gif" )));
+        jbSelRuta.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\OpenFolder.gif" )));
         jbSelRuta.setToolTipText("Seleccionar fichero de datos");
         jbSelRuta.setEnabled(false);
         jbSelRuta.setMargin(new java.awt.Insets(2, 2, 2, 2));

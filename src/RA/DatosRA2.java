@@ -449,8 +449,7 @@ public class DatosRA2 {
     }
 
     //Función para obtener la colección de Datos que se ajustan a los limites pasados
-    public static ArrayList<DatosRA2> getDatos(String tipoTabla, Integer idAsunto, Integer idDato, Long fechaHora, Integer valido, Integer rF, Double tBuje, Double pBuje,
-            ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
+    public static ArrayList<DatosRA2> getDatos(String tipoTabla, Integer idAsunto, Integer idDato, Long fechaHora, Integer valido, Integer rF, Double tBuje, Double pBuje, ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
         InteraccionBD interBD = new InteraccionBD();
 
         ArrayList<DatosRA2> res = null;
@@ -1081,8 +1080,7 @@ public class DatosRA2 {
         return res;
     }
     //Función para añadir una dato a la BD
-    public static int updateDatoBasico(String tipoTabla, Integer idAsunto, Integer idDato, Long fechaHora, Integer valido, Integer rF, Double tBuje, Double pBuje,
-            Integer idDatoVal, Long fechaHoraVal, Integer validoVal, Integer rFVal, Double tBujeVal, Double pBujeVal, String sqlExtra) throws SQLException {
+    public static int updateDatoBasico(String tipoTabla, Integer idAsunto, Integer idDato, Long fechaHora, Integer valido, Integer rF, Double tBuje, Double pBuje, Integer idDatoVal, Long fechaHoraVal, Integer validoVal, Integer rFVal, Double tBujeVal, Double pBujeVal, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
 
         String condicion = "";
@@ -1129,24 +1127,24 @@ public class DatosRA2 {
     }
 
     public static int updateDatoBasico(String tipoTabla, Integer idAsunto, DatosRA2 datoViejo, DatosRA2 datoNuevo, String sqlExtra) throws SQLException {
-        return updateDatoBasico(tipoTabla, idAsunto, datoViejo.idDato, datoViejo.fechaHora, datoViejo.valido, datoViejo.rF, datoViejo.tBuje, datoViejo.pBuje,
-                datoNuevo.idDato, datoNuevo.fechaHora, datoNuevo.valido, datoNuevo.rF, datoNuevo.tBuje, datoNuevo.pBuje, sqlExtra);
+        return updateDatoBasico(tipoTabla, idAsunto, datoViejo.idDato, datoViejo.fechaHora, datoViejo.valido, datoViejo.rF, datoViejo.tBuje, datoViejo.pBuje, datoNuevo.idDato, datoNuevo.fechaHora, datoNuevo.valido, datoNuevo.rF, datoNuevo.tBuje, datoNuevo.pBuje, sqlExtra);
     }
 
     public static int setDatoValido(String tipoTabla, Integer idAsunto, Integer idSite, Integer idDato, Integer valido, Integer validoSys) throws SQLException {
-	if (tipoTabla != null && idAsunto != null) {
+		if (tipoTabla != null && idAsunto != null) {
             setVistaAux(tipoTabla, idAsunto, idSite);
 	
-	    InteraccionBD interBD = new InteraccionBD();
-	    ArrayList<String> campos = new ArrayList<String>();
-	    ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
+			InteraccionBD interBD = new InteraccionBD();
+			ArrayList<String> campos = new ArrayList<String>();
+			ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
 
-	    InteraccionBD.anadeCampoValor(null, paramsPS, validoSys);
-	    campos.add(CAMPO_VALIDO_SYS);
-	    String condicion = InteraccionBD.anadeCampoCondicion(null, paramsPS, CAMPO_ID_DATO_SYS, "=", idDato);
+			InteraccionBD.anadeCampoValor(null, paramsPS, validoSys);
+			campos.add(CAMPO_VALIDO_SYS);
+			String condicion = InteraccionBD.anadeCampoCondicion(null, paramsPS, CAMPO_ID_DATO_SYS, "=", idDato);
 		    
-	    interBD.updateDatosTabla(VALI_SYS_AUX + VISTA_AUX, campos, condicion, paramsPS, null);
-	}
+			interBD.updateDatosTabla(VALI_SYS_AUX + VISTA_AUX, campos, condicion, paramsPS, null);
+		}
+		
         return updateDatoBasico(tipoTabla, idAsunto, idDato, null, null, null, null, null, null, null, valido, null, null, null, null);
     }
 
@@ -1381,10 +1379,9 @@ public class DatosRA2 {
     }
 
     public static int insertOrUpdateDatoBasico(String tipoTabla, Integer idAsunto, DatosRA2 datoViejo, DatosRA2 datoNuevo, String sqlExtra) throws SQLException {
-
-        return insertOrUpdateDatoBasico(tipoTabla, idAsunto, datoViejo.idDato, datoViejo.fechaHora, datoViejo.valido, datoViejo.rF, datoViejo.tBuje, datoViejo.pBuje,
-                datoNuevo.idDato, datoNuevo.fechaHora, datoNuevo.valido, datoNuevo.rF, datoNuevo.tBuje, datoNuevo.pBuje, sqlExtra);
+        return insertOrUpdateDatoBasico(tipoTabla, idAsunto, datoViejo.idDato, datoViejo.fechaHora, datoViejo.valido, datoViejo.rF, datoViejo.tBuje, datoViejo.pBuje, datoNuevo.idDato, datoNuevo.fechaHora, datoNuevo.valido, datoNuevo.rF, datoNuevo.tBuje, datoNuevo.pBuje, sqlExtra);
     }
+
     //Función para añadir/modificar una dato a la BD
     public static int insertOrUpdateDatos(String tipoTabla, Integer idAsunto, Integer idSite, Integer rF, Integer tipoVel, ArrayList<ArrayList<String>> datos, ConfInsercionDatos conf) throws SQLException, NoSuchFieldException, ParserConfigurationException, TransformerException {
         int res, resUpdate = 0, resInsert = 0, nDatos;
@@ -1686,8 +1683,8 @@ public class DatosRA2 {
         //Condicion de invalidacion
         condicion = InteraccionBD.anadeCampoCondicion("", paramsPS, CAMPO_RF, "=", 0);
         condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CAMPO_P_N, ">=", potLimSup);
-	//Llevamos v_d_95 a altura de referencia
-	v_d_95 = TratDecimales.round(v_d_95 * Math.log(zRef / z0Ref) / Math.log(hB / z0Ref), TratDecimales.DEC_VARIABLE_RA);
+		//Llevamos v_d_95 a altura de referencia
+		v_d_95 = TratDecimales.round(v_d_95 * Math.log(zRef / z0Ref) / Math.log(hB / z0Ref), TratDecimales.DEC_VARIABLE_RA);
         condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CAMPO_V_S, "<", v_d_95);
 
         return interBD.updateDatosTabla(tabla, campos, condicion, paramsPS, null);
@@ -1738,225 +1735,225 @@ public class DatosRA2 {
     
     //Valida si puede crear y crea en caso afirmativola vista base Auxiliar de RA utilizada para el cálculo de la k
     public static String createVistaAux(Integer idNorma, String tipoTabla, Integer idAsunto, Integer idSite, int tipoCalculoVelocidad, int tipoCalculoPot, Integer idSerie, Double densidad, long fechaIni, long fechaFin, double[] sector, double zRef, double z0Ref, double z0, boolean resAlturaBuje, boolean esMiniAero) throws SQLException, NoSuchFieldException {
-        String res = "";
-        InteraccionBD interBD = new InteraccionBD();
+		String res = "";
+		InteraccionBD interBD = new InteraccionBD();
 
-        if (tipoTabla != null && idAsunto != null) {
-            setTabla(tipoTabla, idAsunto);
-            setVistaAux(tipoTabla, idAsunto, idSite);
+		if (tipoTabla != null && idAsunto != null) {
+			setTabla(tipoTabla, idAsunto);
+			setVistaAux(tipoTabla, idAsunto, idSite);
 
-            //Obtenemos los campos de la tabla
-            Object[] camposTabla = interBD.getCamposTabla(getTabla());
+			//Obtenemos los campos de la tabla
+			Object[] camposTabla = interBD.getCamposTabla(getTabla());
 
-            //Guardamos los campos de la tabla en un hash para tener un rápida localización
-            HashMap<String, String> mapCamposTabla = new HashMap<String, String>();
+			//Guardamos los campos de la tabla en un hash para tener un rápida localización
+			HashMap<String, String> mapCamposTabla = new HashMap<String, String>();
 
-            int nCamposTabla = camposTabla.length;
+			int nCamposTabla = camposTabla.length;
 
-            for (int i = 0; i < nCamposTabla; i++) {
-                mapCamposTabla.put((String) camposTabla[i], null);
-            }
+			for (int i = 0; i < nCamposTabla; i++) {
+				mapCamposTabla.put((String) camposTabla[i], null);
+			}
 
-            AerogeneradorRA aero;
-            ArrayList<Object[]> regCP; //ArrayList<CurvaRA curva, Double pendiente, Double offset>
-            ArrayList<Object[]> cotas; //ArrayList<long fechaIni, long fechaFin, Double cota>
-            Integer idDatoIni, idDatoFin, lineas;
-            Boolean regulacion;
-            Double vIn, vCut, hB;
-            String cte1, cte2, potNeta, pN, vD, vH, vHAux, vS;
-            ArrayList<String> ctes2;
-            String sqlCase, sqlCaseVD, sqlCaseVH, sqlCaseVS;
-            Double pendiente, offset;
-            int nCotas, nRegCP;
-            CurvaRA curva1, curva2, curvaAux;
-            DatosRA2 datoAux;
-            long fechaAux, fechaIniCota, fechaFinCota;
+			AerogeneradorRA aero;
+			ArrayList<Object[]> regCP; //ArrayList<CurvaRA curva, Double pendiente, Double offset>
+			ArrayList<Object[]> cotas; //ArrayList<long fechaIni, long fechaFin, Double cota>
+			Integer idDatoIni, idDatoFin, lineas;
+			Boolean regulacion;
+			Double vIn, vCut, hB;
+			String cte1, cte2, potNeta, pN, vD, vH, vHAux, vS;
+			ArrayList<String> ctes2;
+			String sqlCase, sqlCaseVD, sqlCaseVH, sqlCaseVS;
+			Double pendiente, offset;
+			int nCotas, nRegCP;
+			CurvaRA curva1, curva2, curvaAux;
+			DatosRA2 datoAux;
+			long fechaAux, fechaIniCota, fechaFinCota;
 
-            aero = AerogeneradorRA.getAeroPorId(AsuntoRA.getAsuntoPorId(idAsunto).getIdAero());
+			aero = AerogeneradorRA.getAeroPorId(AsuntoRA.getAsuntoPorId(idAsunto).getIdAero());
 
-            fechaAux = getFechaIniDatos(tipoTabla, idAsunto);
-            if (fechaAux > fechaIni) {
-                fechaIni = fechaAux;
-            }
-            fechaAux = getFechaFinDatos(tipoTabla, idAsunto);
-            if (fechaAux < fechaFin) {
-                fechaFin = fechaAux;
-            }
-            idDatoIni = getDatoPorFecha(tipoTabla, idAsunto, getFechaPorFechaProximo(tipoTabla, idAsunto, fechaIni, ">=")).getIdDato();
-            idDatoFin = getDatoPorFecha(tipoTabla, idAsunto, getFechaPorFechaProximo(tipoTabla, idAsunto, fechaFin, "<=")).getIdDato();
+			fechaAux = getFechaIniDatos(tipoTabla, idAsunto);
+			if (fechaAux > fechaIni) {
+				fechaIni = fechaAux;
+			}
+			fechaAux = getFechaFinDatos(tipoTabla, idAsunto);
+			if (fechaAux < fechaFin) {
+				fechaFin = fechaAux;
+			}
+			idDatoIni = getDatoPorFecha(tipoTabla, idAsunto, getFechaPorFechaProximo(tipoTabla, idAsunto, fechaIni, ">=")).getIdDato();
+			idDatoFin = getDatoPorFecha(tipoTabla, idAsunto, getFechaPorFechaProximo(tipoTabla, idAsunto, fechaFin, "<=")).getIdDato();
 
-            vIn = aero.getVIn();
-            vCut = aero.getVCut();
-            hB = aero.getHB();
+			vIn = aero.getVIn();
+			vCut = aero.getVCut();
+			hB = aero.getHB();
 
-            regulacion = aero.getRegulacion();
-            lineas = aero.getLineas();
+			regulacion = aero.getRegulacion();
+			lineas = aero.getLineas();
 
-            cotas = LineaConfiguracion.getCotasPorAsuntoSiteSerie(idAsunto, idSite, idSerie);
+			cotas = LineaConfiguracion.getCotasPorAsuntoSiteSerie(idAsunto, idSite, idSerie);
 
-            regCP = CurvaRA.getRectas(CurvaRA.getCurvasPorIdAsuntoDensidad(idAsunto, densidad));
+			regCP = CurvaRA.getRectas(CurvaRA.getCurvasPorIdAsuntoDensidad(idAsunto, densidad));
 
-            //Constante1
-            cte1 = getCte1();
-            if (!res.contains(CAMPO_T_BUJE) && !mapCamposTabla.containsKey(CAMPO_T_BUJE)) {
-                res += "<br>Falta el campo &lt;" + CAMPO_T_BUJE + "&gt; en  la tabla.";
-            }
-            if (!res.contains(CAMPO_P_BUJE) && !mapCamposTabla.containsKey(CAMPO_P_BUJE)) {
-                res += "<br>Falta el campo &lt;" + CAMPO_P_BUJE + "&gt; en  la tabla.";
-            }
+			//Constante1
+			cte1 = getCte1();
+			if (!res.contains(CAMPO_T_BUJE) && !mapCamposTabla.containsKey(CAMPO_T_BUJE)) {
+				res += "<br>Falta el campo &lt;" + CAMPO_T_BUJE + "&gt; en  la tabla.";
+			}
+			if (!res.contains(CAMPO_P_BUJE) && !mapCamposTabla.containsKey(CAMPO_P_BUJE)) {
+				res += "<br>Falta el campo &lt;" + CAMPO_P_BUJE + "&gt; en  la tabla.";
+			}
 
-            //Constante2
-            ctes2 = new ArrayList<String>();
-            
-            nCotas = cotas != null ? cotas.size(): 0;
-
-            for (int i = 0; i < nCotas; i++) {
-                cte2 = "((LOG(" + zRef + " / " + z0Ref + ") * LOG(" + hB + " / " + z0 + "))";
-                cte2 += " / ";
-                cte2 += "(LOG(" + hB + " / " + z0Ref + ") * LOG(" + (Double) cotas.get(i)[1] + " / " + z0 + ")))";
-
-                ctes2.add(cte2);
-            }
-            
-            if (nCotas > 0) {
-                if (zRef < 0.0) {
-                    res += "<br>El valor de zref no puede ser menor que 0.";
-                }
-                if (z0Ref <= 0.0) {
-                    res += "<br>El valor de z0ref no puede ser menor o igual que 0.";
-                }
-                if (hB <= 0.0) {
-                    res += "<br>El valor de hB no puede ser menor que 0.";
-                }
-                if (z0 <= 0.0) {
-                    res += "<br>El valor de z0 no puede ser menor o igual que 0.";
-                }
-                
-                Double cota;
-                for (int i = 0; i < nCotas; i++) {
-                    cota = (Double) cotas.get(i)[1];
-                    
-                    if (cota != null && cota <= 0.0) {
-                        res += "<br>El valor de la cota " + i + " no puede ser menor o igual que 0.";
-                    }
-                }
-            }
-
-            ArrayList<String> campos = new ArrayList<String>();
-            ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
-
-            //Nos interesan todos los campos de la tabla
-            campos.add("*");
-            if (idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) && (tipoTabla.contentEquals(Auxiliares.TIPO_OCT) || tipoTabla.contentEquals(Auxiliares.TIPO_SPL))) {
-                String tablaAuxOCT = getTabla().replace(tipoTabla, Auxiliares.TIPO_OCT);
-                String tablaAuxSPL = getTabla().replace(tipoTabla, Auxiliares.TIPO_SPL);
-                campos.add("(SELECT " + CAMPO_L_A_EQ_1 + " FROM " + tablaAuxSPL + " WHERE " + tablaAuxOCT + "." + CAMPO_FECHA_HORA + " = " + tablaAuxSPL + "." + CAMPO_FECHA_HORA + ") AS " + CAMPO_L_A_EQ_1);
-            }
-
-            ////////////////////////////////////////////////////////////////////////
-            ////RESTO DE CAMPOS PARA VISTA////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////////
-
-            pN = vD = vH = vS = "";
-
-            //Potencia Neta
-            if (lineas == 1) {
-                if (tipoCalculoPot == POT_MEDIDA) {
-                    potNeta = CAMPO_P_ACTIVA;
-
-                    if (!res.contains(CAMPO_P_ACTIVA) && !mapCamposTabla.containsKey(CAMPO_P_ACTIVA)) {
-                        res += "<br>Falta el campo &lt;" + CAMPO_P_ACTIVA + "&gt; en  la tabla.";
-                    }
-                } else {
-                    potNeta = "(" + CAMPO_TENSION  + " * " + CAMPO_INTENSIDAD + ")";
-
-                    if (!res.contains(CAMPO_TENSION) && !mapCamposTabla.containsKey(CAMPO_TENSION)) {
-                        res += "<br>Falta el campo &lt;" + CAMPO_TENSION + "&gt; en  la tabla.";
-                    }
-                    if (!res.contains(CAMPO_INTENSIDAD) && !mapCamposTabla.containsKey(CAMPO_INTENSIDAD)) {
-                        res += "<br>Falta el campo &lt;" + CAMPO_INTENSIDAD + "&gt; en  la tabla.";
-                    }
-                }
-            } else {
-                potNeta = "(" + CAMPO_P_ACT_ROTOR + " + " + CAMPO_P_ACT_ESTATOR + ")";
-
-                if (!res.contains(CAMPO_P_ACT_ROTOR) && !mapCamposTabla.containsKey(CAMPO_P_ACT_ROTOR)) {
-                    res += "<br>Falta el campo &lt;" + CAMPO_P_ACT_ROTOR + "&gt; en  la tabla.";
-                }
-                if (!res.contains(CAMPO_P_ACT_ESTATOR) && !mapCamposTabla.containsKey(CAMPO_P_ACT_ESTATOR)) {
-                    res += "<br>Falta el campo &lt;" + CAMPO_P_ACT_ESTATOR + "&gt; en  la tabla.";
-                }
-            }
-
-            campos.add("CONVERT(" + TIPO_DECIMAL_DEF + ", " + potNeta + ") AS " + CAMPO_P_NETA);
-
-            //VZref - Velocidad a altura de referencia
-            String sqlCaseVZRef = "CONVERT(" + TIPO_DECIMAL_DEF + ", " + "CASE\n";
-            for (int i = 0; i < nCotas; i++) {
-                fechaIniCota = ((Long) cotas.get(i)[0]).longValue();
-                fechaFinCota = getFechaFinDatos(tipoTabla, idAsunto);
-                
-                fechaAux = getFechaIniDatos(tipoTabla, idAsunto);
-                if (fechaAux > fechaIniCota) {
-                    fechaIniCota = fechaAux;
-                }
-                
-                sqlCaseVZRef += "\tWHEN " + CAMPO_FECHA_HORA + " >= " + fechaIniCota + " ";
-                sqlCaseVZRef += "AND " + CAMPO_FECHA_HORA + " <= " + fechaFinCota + " THEN ";
-                sqlCaseVZRef += CAMPO_V_Z + " * " + ctes2.get(i) + "\n";
-
-                if (i == nCotas - 1) { //Última
-                    sqlCaseVZRef += "\tELSE " + VALOR_DECIMAL_DEF + "\n";
-                    sqlCaseVZRef += "END) AS " + CAMPO_V_Z_REF;
-
-                    campos.add(sqlCaseVZRef);
-                }
-            }
-
-            if (nCotas == 0) {
-		sqlCaseVZRef = "CONVERT(" + TIPO_DECIMAL_DEF + ", " + CAMPO_V_Z + ") AS " + CAMPO_V_Z_REF;
-		
-                campos.add(sqlCaseVZRef);
-            }
-            if (!res.contains(CAMPO_FECHA_HORA) && !mapCamposTabla.containsKey(CAMPO_FECHA_HORA)) {
-                res += "<br>Falta el campo &lt;" + CAMPO_FECHA_HORA + "&gt; en  la tabla.";
-            }
-            if (!res.contains(CAMPO_V_Z) && !mapCamposTabla.containsKey(CAMPO_V_Z)) {
-                res += "<br>Falta el campo &lt;" + CAMPO_V_Z + "&gt; en  la tabla.";
-            }
-
-            //Pn - Potencia normalizada
-	    if (!idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) {
-		if (!regulacion) {
-		    pN = "(" + potNeta + " * " + cte1 + ")";
-		    vHAux = "";
-		} else {
-		    pN = potNeta;
-		    vHAux = " * POWER(" + cte1 + ", " + TratDecimales.round(1 / 3.0, TratDecimales.DEC_POTENCIA) + ")";
-		}
-	    } else {
-		pN = potNeta;
-		vHAux = "";
-	    }
-            campos.add("CONVERT(" + TIPO_DECIMAL_DEF + ", " + pN + ") AS " + CAMPO_P_N);
-
-
-            //VD - Velocidad derivada de curva de pontencia
-            //VH - Velocidad a altura de buje
-            //VS  - Velocidad estandarizada
-
-	    String velAlturaRef = sqlCaseVZRef.substring(0, sqlCaseVZRef.indexOf(" AS " + CAMPO_V_Z_REF));
-	    String velAlturaBuje = velAlturaRef + " * " + getCteAltOriAltDes(zRef, hB, z0Ref);
-
-            switch (tipoCalculoVelocidad) {
-                case VEL_DERIVADA_CP:
-                    nRegCP = regCP != null ? regCP.size() : 0;
-                    if (nRegCP > 1) {
-			String vZaCP = velAlturaBuje + " * " + cte1; // Para llevar a condicones de referencia
+			//Constante2
+			ctes2 = new ArrayList<String>();
 			
-                        //Creamos tabla temporal para almacenar las pendientes y offsets
-                        //Borramos la tabla si ya existe
-                        interBD.borraTabla(CURVA_AUX + VISTA_AUX);
+			nCotas = cotas != null ? cotas.size(): 0;
+
+			for (int i = 0; i < nCotas; i++) {
+				cte2 = "((LOG(" + zRef + " / " + z0Ref + ") * LOG(" + hB + " / " + z0 + "))";
+				cte2 += " / ";
+				cte2 += "(LOG(" + hB + " / " + z0Ref + ") * LOG(" + (Double) cotas.get(i)[1] + " / " + z0 + ")))";
+
+				ctes2.add(cte2);
+			}
+		
+			if (nCotas > 0) {
+				if (zRef < 0.0) {
+					res += "<br>El valor de zref no puede ser menor que 0.";
+				}
+				if (z0Ref <= 0.0) {
+					res += "<br>El valor de z0ref no puede ser menor o igual que 0.";
+				}
+				if (hB <= 0.0) {
+					res += "<br>El valor de hB no puede ser menor que 0.";
+				}
+				if (z0 <= 0.0) {
+					res += "<br>El valor de z0 no puede ser menor o igual que 0.";
+				}
+				
+				Double cota;
+				for (int i = 0; i < nCotas; i++) {
+					cota = (Double) cotas.get(i)[1];
+					
+					if (cota != null && cota <= 0.0) {
+						res += "<br>El valor de la cota " + i + " no puede ser menor o igual que 0.";
+					}
+				}
+			}
+
+			ArrayList<String> campos = new ArrayList<String>();
+			ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
+
+			//Nos interesan todos los campos de la tabla
+			campos.add("*");
+			if (idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) && (tipoTabla.contentEquals(Auxiliares.TIPO_OCT) || tipoTabla.contentEquals(Auxiliares.TIPO_SPL))) {
+				String tablaAuxOCT = getTabla().replace(tipoTabla, Auxiliares.TIPO_OCT);
+				String tablaAuxSPL = getTabla().replace(tipoTabla, Auxiliares.TIPO_SPL);
+				campos.add("(SELECT " + CAMPO_L_A_EQ_1 + " FROM " + tablaAuxSPL + " WHERE " + tablaAuxOCT + "." + CAMPO_FECHA_HORA + " = " + tablaAuxSPL + "." + CAMPO_FECHA_HORA + ") AS " + CAMPO_L_A_EQ_1);
+			}
+
+			////////////////////////////////////////////////////////////////////////
+			////RESTO DE CAMPOS PARA VISTA////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////////
+
+			pN = vD = vH = vS = "";
+
+			//Potencia Neta
+			if (lineas == 1) {
+				if (tipoCalculoPot == POT_MEDIDA) {
+					potNeta = CAMPO_P_ACTIVA;
+
+					if (!res.contains(CAMPO_P_ACTIVA) && !mapCamposTabla.containsKey(CAMPO_P_ACTIVA)) {
+						res += "<br>Falta el campo &lt;" + CAMPO_P_ACTIVA + "&gt; en  la tabla.";
+					}
+				} else {
+					potNeta = "(" + CAMPO_TENSION  + " * " + CAMPO_INTENSIDAD + ")";
+
+					if (!res.contains(CAMPO_TENSION) && !mapCamposTabla.containsKey(CAMPO_TENSION)) {
+						res += "<br>Falta el campo &lt;" + CAMPO_TENSION + "&gt; en  la tabla.";
+					}
+					if (!res.contains(CAMPO_INTENSIDAD) && !mapCamposTabla.containsKey(CAMPO_INTENSIDAD)) {
+						res += "<br>Falta el campo &lt;" + CAMPO_INTENSIDAD + "&gt; en  la tabla.";
+					}
+				}
+			} else {
+				potNeta = "(" + CAMPO_P_ACT_ROTOR + " + " + CAMPO_P_ACT_ESTATOR + ")";
+
+				if (!res.contains(CAMPO_P_ACT_ROTOR) && !mapCamposTabla.containsKey(CAMPO_P_ACT_ROTOR)) {
+					res += "<br>Falta el campo &lt;" + CAMPO_P_ACT_ROTOR + "&gt; en  la tabla.";
+				}
+				if (!res.contains(CAMPO_P_ACT_ESTATOR) && !mapCamposTabla.containsKey(CAMPO_P_ACT_ESTATOR)) {
+					res += "<br>Falta el campo &lt;" + CAMPO_P_ACT_ESTATOR + "&gt; en  la tabla.";
+				}
+			}
+
+			campos.add("CONVERT(" + TIPO_DECIMAL_DEF + ", " + potNeta + ") AS " + CAMPO_P_NETA);
+
+			//VZref - Velocidad a altura de referencia
+			String sqlCaseVZRef = "CONVERT(" + TIPO_DECIMAL_DEF + ", " + "CASE\n";
+			for (int i = 0; i < nCotas; i++) {
+				fechaIniCota = ((Long) cotas.get(i)[0]).longValue();
+				fechaFinCota = getFechaFinDatos(tipoTabla, idAsunto);
+				
+				fechaAux = getFechaIniDatos(tipoTabla, idAsunto);
+				if (fechaAux > fechaIniCota) {
+					fechaIniCota = fechaAux;
+				}
+				
+				sqlCaseVZRef += "\tWHEN " + CAMPO_FECHA_HORA + " >= " + fechaIniCota + " ";
+				sqlCaseVZRef += "AND " + CAMPO_FECHA_HORA + " <= " + fechaFinCota + " THEN ";
+				sqlCaseVZRef += CAMPO_V_Z + " * " + ctes2.get(i) + "\n";
+
+				if (i == nCotas - 1) { //Última
+					sqlCaseVZRef += "\tELSE " + VALOR_DECIMAL_DEF + "\n";
+					sqlCaseVZRef += "END) AS " + CAMPO_V_Z_REF;
+
+					campos.add(sqlCaseVZRef);
+				}
+			}
+
+			if (nCotas == 0) {
+				sqlCaseVZRef = "CONVERT(" + TIPO_DECIMAL_DEF + ", " + CAMPO_V_Z + ") AS " + CAMPO_V_Z_REF;
+		
+				campos.add(sqlCaseVZRef);
+			}
+			if (!res.contains(CAMPO_FECHA_HORA) && !mapCamposTabla.containsKey(CAMPO_FECHA_HORA)) {
+				res += "<br>Falta el campo &lt;" + CAMPO_FECHA_HORA + "&gt; en  la tabla.";
+			}
+			if (!res.contains(CAMPO_V_Z) && !mapCamposTabla.containsKey(CAMPO_V_Z)) {
+				res += "<br>Falta el campo &lt;" + CAMPO_V_Z + "&gt; en  la tabla.";
+			}
+
+			//Pn - Potencia normalizada
+			if (!idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) {
+				if (!regulacion) {
+					pN = "(" + potNeta + " * " + cte1 + ")";
+					vHAux = "";
+				} else {
+					pN = potNeta;
+					vHAux = " * POWER(" + cte1 + ", " + TratDecimales.round(1 / 3.0, TratDecimales.DEC_POTENCIA) + ")";
+				}
+			} else {
+				pN = potNeta;
+				vHAux = "";
+			}
+			campos.add("CONVERT(" + TIPO_DECIMAL_DEF + ", " + pN + ") AS " + CAMPO_P_N);
+
+
+			//VD - Velocidad derivada de curva de pontencia
+			//VH - Velocidad a altura de buje
+			//VS  - Velocidad estandarizada
+
+			String velAlturaRef = sqlCaseVZRef.substring(0, sqlCaseVZRef.indexOf(" AS " + CAMPO_V_Z_REF));
+			String velAlturaBuje = velAlturaRef + " * " + getCteAltOriAltDes(zRef, hB, z0Ref);
+
+			switch (tipoCalculoVelocidad) {
+				case VEL_DERIVADA_CP:
+					nRegCP = regCP != null ? regCP.size() : 0;
+					if (nRegCP > 1) {
+						String vZaCP = velAlturaBuje + " * " + cte1; // Para llevar a condicones de referencia
+			
+						//Creamos tabla temporal para almacenar las pendientes y offsets
+						//Borramos la tabla si ya existe
+						interBD.borraTabla(CURVA_AUX + VISTA_AUX);
                         
                         ArrayList<String[]> columnas = new ArrayList<String[]>();
                         columnas.add(new String[]{CAMPO_DESDE_POT, TIPO_DECIMAL, EXTRA_NULO});
@@ -1966,8 +1963,8 @@ public class DatosRA2 {
                         columnas.add(new String[]{CAMPO_RANGO_PERMITIDO, TIPO_INT, EXTRA_NULO});
                         interBD.creaTabla(CURVA_AUX + VISTA_AUX, columnas);
 
-			Double tolerancia;
-			Integer rangoPermitido;
+						Double tolerancia;
+						Integer rangoPermitido;
                         
                         for (int i = 0; i < nRegCP - 1; i++) {
                             String valores = "";
@@ -1979,12 +1976,12 @@ public class DatosRA2 {
                             pendiente = (Double) regCP.get(i)[1];
                             offset = (Double) regCP.get(i)[2];
 
-			    tolerancia = PORC_TOLERANCIA * Math.max(curva1.getPot(), curva2.getPot());
+							tolerancia = PORC_TOLERANCIA * Math.max(curva1.getPot(), curva2.getPot());
                 
-			    if ((curva2.getPot() - tolerancia) - (curva1.getPot() + tolerancia) > 0)
-				rangoPermitido = 1;
-			    else
-				rangoPermitido = 0;
+							if ((curva2.getPot() - tolerancia) - (curva1.getPot() + tolerancia) > 0)
+								rangoPermitido = 1;
+							else
+								rangoPermitido = 0;
 
                             if (curva2.getPot() < curva1.getPot()) {
                                 curvaAux = curva1;
@@ -2010,25 +2007,25 @@ public class DatosRA2 {
                         
                         vD = "(SELECT TOP 1 CASE WHEN 1 = 1" + (idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) ? "AND " + CAMPO_RANGO_PERMITIDO + " = 1 ": "") + " THEN ABS(" + pN + " * " + CAMPO_PENDIENTE + " + " + CAMPO_OFFSET + ") ELSE NULL END FROM " + CURVA_AUX + VISTA_AUX + " WHERE " + pN + " >= " + CAMPO_DESDE_POT + " AND " + pN + " < " + CAMPO_HASTA_POT + " ORDER BY ABS(" + vZaCP + " - ABS(" + pN + " * " + CAMPO_PENDIENTE + " + " + CAMPO_OFFSET + ")))";
 
-			vH = "(" + vD + vHAux + ")";
+						vH = "(" + vD + vHAux + ")";
 
-			//Llevamos el resultado a altura de referencia
-			if (!idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) {
-			    vS = "(" + vH + " * " + getCteAltOriAltDes(hB, zRef, z0Ref) + ")";
-			} else {
-			    if (resAlturaBuje)
-				vS = vH;
-			    else
-				vS = "(" + vH + " * " + getCteAltOriAltDes(hB, zRef, z0Ref) + ")";
-			}
+						//Llevamos el resultado a altura de referencia
+						if (!idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) {
+							vS = "(" + vH + " * " + getCteAltOriAltDes(hB, zRef, z0Ref) + ")";
+						} else {
+							if (resAlturaBuje)
+								vS = vH;
+							else
+								vS = "(" + vH + " * " + getCteAltOriAltDes(hB, zRef, z0Ref) + ")";
+						}
 
                         sqlCaseVD = "CONVERT(" + TIPO_DECIMAL_DEF + ", " + vD + ") AS " + CAMPO_V_D;
                         sqlCaseVH = "CONVERT(" + TIPO_DECIMAL_DEF + ", " + vH + ") AS " + CAMPO_V_H;
                         sqlCaseVS = "CONVERT(" + TIPO_DECIMAL_DEF + ", " + vS + ") AS " + CAMPO_V_S;
 
                         campos.add(sqlCaseVD);
-			campos.add(sqlCaseVH);
-			campos.add(sqlCaseVS);
+						campos.add(sqlCaseVH);
+						campos.add(sqlCaseVS);
                     }
 
                     break;
@@ -2036,29 +2033,29 @@ public class DatosRA2 {
                     //sqlCaseVH = "CONVERT(" + TIPO_DECIMAL_DEF + ", ";
                     sqlCaseVS = "CONVERT(" + TIPO_DECIMAL_DEF + ", ";
 
-		    //Tomamos la velocidad a altura de referencia
-		    if (!idNorma.equals(NormaRA.ID_NORMA_IEC_3_0))
-		    	vS = velAlturaRef;
-		    else {
-			//Llevamos el resultado a altura de Buje
-			if (resAlturaBuje)
-			    vS = velAlturaBuje;
-			else
-			    vS = velAlturaRef;
+					//Tomamos la velocidad a altura de referencia
+					if (!idNorma.equals(NormaRA.ID_NORMA_IEC_3_0))
+						vS = velAlturaRef;
+					else {
+						//Llevamos el resultado a altura de Buje
+						if (resAlturaBuje)
+							vS = velAlturaBuje;
+						else
+							vS = velAlturaRef;
 
-			if (esMiniAero)
-			    vS = "(" + vS + " * POWER(" + cte1 + ", " + TratDecimales.round(1 / 3.0, TratDecimales.DEC_POTENCIA) + "))";
-		    }
+						if (esMiniAero)
+							vS = "(" + vS + " * POWER(" + cte1 + ", " + TratDecimales.round(1 / 3.0, TratDecimales.DEC_POTENCIA) + "))";
+					}
 
-                    //sqlCaseVH += vH + ") AS " + CAMPO_V_H;
-                    sqlCaseVS += vS + ") AS " + CAMPO_V_S;
+					//sqlCaseVH += vH + ") AS " + CAMPO_V_H;
+					sqlCaseVS += vS + ") AS " + CAMPO_V_S;
 
-                    //campos.add(sqlCaseVH);
-                    campos.add(sqlCaseVS);
-                    if (!res.contains(CAMPO_V_Z) && !mapCamposTabla.containsKey(CAMPO_V_Z)) {
-                        res += "<br>Falta el campo &lt;" + CAMPO_V_Z + "&gt; en  la tabla.";
-                    }
-                    break;
+					//campos.add(sqlCaseVH);
+					campos.add(sqlCaseVS);
+					if (!res.contains(CAMPO_V_Z) && !mapCamposTabla.containsKey(CAMPO_V_Z)) {
+						res += "<br>Falta el campo &lt;" + CAMPO_V_Z + "&gt; en  la tabla.";
+					}
+					break;
             }
 
 
@@ -2191,11 +2188,11 @@ public class DatosRA2 {
             campos.add(campoVelMedida);
             campos.add(CAMPO_V_S);
 
-	    String condicion = "";
+			String condicion = "";
             if (potLimInf != null)
                 condicion = InteraccionBD.anadeCampoCondicion(null, paramsPS, CAMPO_P_NETA, ">", potLimInf);
             if (potLimSup != null)
-		condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CAMPO_P_NETA, "<", potLimSup);
+				condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CAMPO_P_NETA, "<", potLimSup);
 
             res = interBD.getDatosTabla(VISTA_AUX, campos, condicion, paramsPS, null, null);
         }
@@ -2465,8 +2462,7 @@ public class DatosRA2 {
         return res;
     }
     //Función que devuelve los datos de la vista neta
-    public static ArrayList<Object[]> getDatosVistaNeta(String tipoTabla, Integer idAsunto, Integer idSite, Double desdeVS, Double hastaVS,
-            ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException {
+    public static ArrayList<Object[]> getDatosVistaNeta(String tipoTabla, Integer idAsunto, Integer idSite, Double desdeVS, Double hastaVS, ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         ArrayList<Object[]> res = null;
 
@@ -2489,8 +2485,7 @@ public class DatosRA2 {
         return res;
     }
     //Función que devuelve los datos de la vista neta
-    public static ArrayList<Object[]> getDatosVistaNetaIdDato(String tipoTabla, Integer idAsunto, Integer idSite, Integer idDato,
-            ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException {
+    public static ArrayList<Object[]> getDatosVistaNetaIdDato(String tipoTabla, Integer idAsunto, Integer idSite, Integer idDato, ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         ArrayList<Object[]> res = null;
 
@@ -2511,9 +2506,7 @@ public class DatosRA2 {
     }
     //Función que devuelve los <campos> de la <tabla> según las <condicion>es, respecto al bin
     //del campo <campoBin> entre sus null <valBinMin> y <valBinMax>
-    public static ArrayList<Object[]> getDatosBin(String tipoTabla, Integer idAsunto, Integer idSite,
-            ArrayList<String> campos, String condicion, ArrayList<Object[]> paramsPS,
-            String campoBin, Integer valBinMin, Integer valBinMax, String sqlExtra, Boolean distinct) throws SQLException {
+    public static ArrayList<Object[]> getDatosBin(String tipoTabla, Integer idAsunto, Integer idSite, ArrayList<String> campos, String condicion, ArrayList<Object[]> paramsPS, String campoBin, Integer valBinMin, Integer valBinMax, String sqlExtra, Boolean distinct) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         ArrayList<Object[]> res = null;
 
@@ -2555,8 +2548,7 @@ public class DatosRA2 {
     }
 
     //Función que devuelve Vs y LAeq1 de los bines entre minVin y maxBin
-    public static ArrayList<DatoVelocidadNivel> getVelocidadNivelBin(Integer idAsunto, Integer idSite, Integer rF, String campoBin, Integer valBinMin,
-            Integer valBinMax) throws SQLException {
+    public static ArrayList<DatoVelocidadNivel> getVelocidadNivelBin(Integer idAsunto, Integer idSite, Integer rF, String campoBin, Integer valBinMin, Integer valBinMax) throws SQLException {
         ArrayList<DatoVelocidadNivel> res = null;
         ArrayList<String> campos = new ArrayList<String>();
         ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
@@ -2822,13 +2814,13 @@ public class DatosRA2 {
 			Double diff = valorAG_RF - valorRF;
 
 			if (diff >= 6.0) {
-			valorAG = TratDecimales.round(10 * java.lang.Math.log10(java.lang.Math.pow(10, 0.1 * valorAG_RF) - java.lang.Math.pow(10, 0.1 * valorRF)), TratDecimales.DEC_VARIABLE_RA);
-			tipo = CORREGIDO_RF_OK;
+				valorAG = TratDecimales.round(10 * java.lang.Math.log10(java.lang.Math.pow(10, 0.1 * valorAG_RF) - java.lang.Math.pow(10, 0.1 * valorRF)), TratDecimales.DEC_VARIABLE_RA);
+				tipo = CORREGIDO_RF_OK;
 			} else if (diff > 3.0) {
-			valorAG = TratDecimales.round(valorAG_RF - 1.3, TratDecimales.DEC_VARIABLE_RA);
-			tipo = CORREGIDO_RF_AVISO;
+				valorAG = TratDecimales.round(valorAG_RF - 1.3, TratDecimales.DEC_VARIABLE_RA);
+				tipo = CORREGIDO_RF_AVISO;
 			} else {
-			tipo = CORREGIDO_RF_ERROR;
+				tipo = CORREGIDO_RF_ERROR;
 			}
 		} else
 			tipo = CORREGIDO_RF_ERROR;
@@ -2943,8 +2935,7 @@ public class DatosRA2 {
     //Función que devuelve los resultados SPL <(L_A_eq,c,k, L_WA, k)> para cada bin k
     //L_WA,k = Nivel aparente para el bin k
     //L_A_eq,c,k = Nivel corregido para RF para el bin k bajo condiciones de referencia
-    public static ArrayList<ArrayList<Entry<Double, Integer>>> getResultadosSPLCorregidoAparente(Integer idAsunto, Integer tipoCalculoAG, Integer tipoCalculoRF, HashMap<String, double[]> coeficientesPol,
-            HashMap<String, HashMap<Integer, Double[]>> coeficientesBin, Integer valBinMin, Integer valBinMax) throws NumberFormatException, SQLException, NoSuchFieldException {
+    public static ArrayList<ArrayList<Entry<Double, Integer>>> getResultadosSPLCorregidoAparente(Integer idAsunto, Integer tipoCalculoAG, Integer tipoCalculoRF, HashMap<String, double[]> coeficientesPol, HashMap<String, HashMap<Integer, Double[]>> coeficientesBin, Integer valBinMin, Integer valBinMax) throws NumberFormatException, SQLException, NoSuchFieldException {
         ArrayList<ArrayList<Entry<Double, Integer>>> res = new ArrayList<ArrayList<Entry<Double, Integer>>>();
 	ArrayList<Entry<Double, Integer>> resBin;
 
@@ -2967,7 +2958,7 @@ public class DatosRA2 {
             coefPol = coeficientesPol.get(Auxiliares.PREF_DATOS_AG);
             nCoefPol = coefPol.length;
             coeficientes = new double[nCoefPol - 1];
-	    System.arraycopy(coefPol, 0, coeficientes, 0, nCoefPol - 1); //Descartamos el último coeficiente (coef. de correlación)
+			System.arraycopy(coefPol, 0, coeficientes, 0, nCoefPol - 1); //Descartamos el último coeficiente (coef. de correlación)
             
             funcionPolAG = new PolynomialFunction2D(coeficientes);
         }
@@ -2981,7 +2972,7 @@ public class DatosRA2 {
             coefPol = coeficientesPol.get(Auxiliares.PREF_DATOS_RF);
             nCoefPol = coefPol.length;
             coeficientes = new double[nCoefPol - 1];
-	    System.arraycopy(coefPol, 0, coeficientes, 0, nCoefPol - 1); //Descartamos el último coeficiente (coef. de correlación)
+			System.arraycopy(coefPol, 0, coeficientes, 0, nCoefPol - 1); //Descartamos el último coeficiente (coef. de correlación)
             
             funcionPolRF = new PolynomialFunction2D(coeficientes);
         }
@@ -2989,7 +2980,7 @@ public class DatosRA2 {
         Double[] coefBin;
         
         for (int i = 0; i < valBinMax - valBinMin + 1; i++) {
-	    resBin = new ArrayList<Entry<Double, Integer>>();
+			resBin = new ArrayList<Entry<Double, Integer>>();
             nBin = valBinMin + i;
 
             splAG_RF = 0.0;
@@ -3037,7 +3028,7 @@ public class DatosRA2 {
             resBin.add(splCorregido);
             resBin.add(splAparente);
 
-	    res.add(resBin);
+			res.add(resBin);
         }
 
         return res;
@@ -3370,7 +3361,6 @@ public class DatosRA2 {
                         arrayEspectroRF.add(new Double[]{frec, datoXML.getNivel()}); //Frecuencia, nivel
                     }
                 }
-
 
                 espectroRF = Auxiliares.arrayObjToDoubleDouble(arrayEspectroRF.toArray());
 
@@ -3799,7 +3789,6 @@ public class DatosRA2 {
     public static Double[][] getBandaCriticaClasificada(Double[][] bandaCritica, Double nivelFrecMax, Double nivelCriterio, Double nivelEnmascaramiento) {
         Double nivelFrec, nivelFrecAnt = null, nivelFrecSig = null;
         Integer tipoFrec;
-
         Double[] frecuencias = getFrecuenciasEspectro(bandaCritica);
         Double[] niveles = getNivelesEspectro(bandaCritica);
         int nFrecs = frecuencias.length;
@@ -3819,7 +3808,7 @@ public class DatosRA2 {
             } else if (nivelFrec > nivelEnmascaramiento + 6) {
                 //Si los adyacentes son posibles tonos, habrá que ver si está a menos de 10dB del máximo
                 if ((nivelFrecAnt != null && nivelFrecAnt > nivelEnmascaramiento + 6) || (nivelFrecSig != null && nivelFrecSig > nivelEnmascaramiento + 6)) {
-                    if (nivelFrecMax - nivelFrec < 10) {
+					if (nivelFrecMax - nivelFrec < 10) {
                         tipoFrec = TIPO_TONO;
                     } else {
                         tipoFrec = TIPO_NADA;
@@ -3857,8 +3846,7 @@ public class DatosRA2 {
     //Función que indica si hay o no frecuencias adyacentes que sean consideradas tonos en una <bandaCriticaClasificada>
     public static boolean hayTonosAdyacentesBandaCritica(Double[][] bandaCriticaClasificada) {
         boolean res = false;
-         Integer 
-         tipoFrec  , tipoFrecAnt = null, tipoFrecSig = null;
+		Integer tipoFrec, tipoFrecAnt = null, tipoFrecSig = null;
 
         int[] tipos = getTiposBcClasificada(bandaCriticaClasificada);
         int nTipos = tipos.length;
@@ -3976,13 +3964,13 @@ public class DatosRA2 {
             if (nivelEnmascCorregido != null)
                 res = getNivelTonoBandaCritica(bandaCriticaClasificada) - nivelEnmascCorregido;
         } else { //Si no hay tonos en la banda crítica
-	    if (anadirTonalidadSinTonos) {
-		Double anchoEfectivoRuido = getAnchoEfectivoRuido(bandaCriticaAG);
-		Double anchoBandaCritica = getAnchoBandaCritica(nivelfrecMax);
+			if (anadirTonalidadSinTonos) {
+				Double anchoEfectivoRuido = getAnchoEfectivoRuido(bandaCriticaAG);
+				Double anchoBandaCritica = getAnchoBandaCritica(nivelfrecMax);
 
-		if (anchoEfectivoRuido != 0.0 && anchoBandaCritica != 0.0)
-		    res = -10 * Math.log(anchoBandaCritica / anchoEfectivoRuido);
-	    }
+				if (anchoEfectivoRuido != 0.0 && anchoBandaCritica != 0.0)
+					res = -10 * Math.log(anchoBandaCritica / anchoEfectivoRuido);
+			}
         }
 
         return res;
@@ -4090,8 +4078,7 @@ public class DatosRA2 {
         return res;
     }
     
-    public static ArrayList<Double> getDatosEstimadosSPL(String tipoTabla, Integer idAsunto, Integer idSite, Integer bin, Integer rF, Integer tipoCalculo, HashMap<String, double[]> coeficientesPol,
-            HashMap<String, HashMap<Integer, Double[]>> coeficientesBin) throws SQLException {
+    public static ArrayList<Double> getDatosEstimadosSPL(String tipoTabla, Integer idAsunto, Integer idSite, Integer bin, Integer rF, Integer tipoCalculo, HashMap<String, double[]> coeficientesPol, HashMap<String, HashMap<Integer, Double[]>> coeficientesBin) throws SQLException {
         ArrayList<Double> res = null;
         
         ArrayList<String> campos = new ArrayList<String>();
@@ -4134,7 +4121,7 @@ public class DatosRA2 {
                 //Para quitar el coeficiente de correlación
                 nCoef = coefAux.length - 1;
                 coef = new double[nCoef];
-		System.arraycopy(coefAux, 0, coef, 0, nCoef);
+				System.arraycopy(coefAux, 0, coef, 0, nCoef);
             }
             
             funcion = new PolynomialFunction2D(coef);
@@ -4461,16 +4448,16 @@ public class DatosRA2 {
 
 				if (distNivel40 != null && distNivel45 != null) {
 					for (Double posDist = desdeDist; posDist <= hastaDist; posDist += pasoDist) {
-					if (distNivel45 > posDist) {
-						pos45Low = pos45Low != null && posDist > pos45Low ? pos45Low : posDist;
-						pos45High = pos45High != null && posDist < pos45High ? pos45High : posDist;
-					} else if (distNivel40 >= posDist) {
-						pos40Low = pos40Low != null && posDist > pos40Low ? pos40Low : posDist;
-						pos40High = pos40High != null && posDist < pos40High ? pos40High : posDist;
-					} else {
-						posMenos40Low = posMenos40Low != null && posDist > posMenos40Low ? posMenos40Low : posDist;
-						posMenos40High = posMenos40High != null && posDist < posMenos40High ? posMenos40High : posDist;
-					}
+						if (distNivel45 > posDist) {
+							pos45Low = pos45Low != null && posDist > pos45Low ? pos45Low : posDist;
+							pos45High = pos45High != null && posDist < pos45High ? pos45High : posDist;
+						} else if (distNivel40 >= posDist) {
+							pos40Low = pos40Low != null && posDist > pos40Low ? pos40Low : posDist;
+							pos40High = pos40High != null && posDist < pos40High ? pos40High : posDist;
+						} else {
+							posMenos40Low = posMenos40Low != null && posDist > posMenos40Low ? posMenos40Low : posDist;
+							posMenos40High = posMenos40High != null && posDist < posMenos40High ? posMenos40High : posDist;
+						}
 					}
                 }
             }
@@ -4523,6 +4510,21 @@ public class DatosRA2 {
         }
         
         return sectores;
+    }
+
+	// Devuelve el sector dada una dirección y una amplitud.
+    public static Double[] getSectorDirAmp(Double direccion, Double amplitud) {
+        Double min, max;
+        
+        min = TratDecimales.round(direccion - amplitud, TratDecimales.DEC_DIRECCION);
+        if (min < 0)
+            min = TratDecimales.round(min + 360, TratDecimales.DEC_DIRECCION);
+        
+        max = TratDecimales.round(direccion + amplitud, TratDecimales.DEC_DIRECCION);
+        if (max > 360)
+            max = TratDecimales.round(max - 360, TratDecimales.DEC_DIRECCION);
+        
+        return new Double[]{min.doubleValue(), max.doubleValue()};
     }
     
     //Función que devuelve el ángulo beta para validar el sector
@@ -4707,19 +4709,19 @@ public class DatosRA2 {
             for (int i = 0; i < nValores; i++) {
                 valor = valores.get(i);
 
-		if (valor == null)
-		    continue;
+				if (valor == null)
+					continue;
 
-		if (posMax != null)
-		    posMaxAnt =  posMax;
+				if (posMax != null)
+					posMaxAnt =  posMax;
 
-		if (posMinSig == null && posMin != null)
-		    posMinSig = i;
+				if (posMinSig == null && posMin != null)
+					posMinSig = i;
 
-		if (valorMin == null ) {
-		    valorMin = valor;
-		    posMin = i;
-		}
+				if (valorMin == null ) {
+					valorMin = valor;
+					posMin = i;
+				}
             
                 if (valor <= valorBuscado && (valorInf == null || valor > valorInf)) {
                     valorInf = valor;
@@ -4729,8 +4731,8 @@ public class DatosRA2 {
                     posSup = i;                             
                 }
 
-		valorMax = valor;
-		posMax = i;
+				valorMax = valor;
+				posMax = i;
             }
             
             if (posInf == null && valorBuscado < valorMin && nDatos >= 10) {
@@ -4941,21 +4943,21 @@ public class DatosRA2 {
             nDatosBin = resOCT != null ? resOCT.size() : 0;
             nFrecs = resOCT != null && resOCT.get(0) != null ? resOCT.get(0).length - 4: 0; //En i = 0 está el número de Bin; en i = 1 la fechaHora; en i = 2 está la velocidad;  en i = 3 está el nivel SPL
             
-	    nDatos.add(nDatosBin);
-	    nivelesMediosBin = null;
-	    resIncertNivelBin = null;
-	    covarianzasBin = null;
+			nDatos.add(nDatosBin);
+			nivelesMediosBin = null;
+			resIncertNivelBin = null;
+			covarianzasBin = null;
 
-	    velMedia = null;
-	    resultadoIncertVel = null;
+			velMedia = null;
+			resultadoIncertVel = null;
 
             if (nFrecs > 0 && nDatosBin > 0) {
                 velocidades = new ArrayList<Double>();
                 nivelesNormalizadosBin = new ArrayList<Double[]>();
                 incertBMedidasVel = new ArrayList<Double>();
-		nivelesMediosBin = new ArrayList<Double>();
-		resIncertNivelBin = new ArrayList<ResultadoIncert>();
-		covarianzasBin = new ArrayList<Double>();
+				nivelesMediosBin = new ArrayList<Double>();
+				resIncertNivelBin = new ArrayList<ResultadoIncert>();
+				covarianzasBin = new ArrayList<Double>();
 
                 for (int j = 0; j < nDatosBin; j++) {
                     nivelesMedidos = new ArrayList<Double>();
@@ -4976,7 +4978,7 @@ public class DatosRA2 {
                 incertAVel = getIncertidumbreTipoA(velocidades, velMedia); //s_V k
                 incertBVel = getIncertidumbreTipoBPromedio(incertBMedidasVel); //u_V,k
 
-		resultadoIncertVel = new ResultadoIncert(k, null, incertAVel, incertBVel, ResultadoIncert.TIPO_VELOCIDAD);
+				resultadoIncertVel = new ResultadoIncert(k, null, incertAVel, incertBVel, ResultadoIncert.TIPO_VELOCIDAD);
                 
                 //NIVELES
                 for (int i = 0; i < nFrecs; i++) {
@@ -5003,14 +5005,14 @@ public class DatosRA2 {
                     covarianzasBin.add(covarianza);
                 }
             }
-	    //Almacenamos el resultado de las incertidumbres
-	    resIncertVel.add(resultadoIncertVel);
-                
-	    //Almacenamos los valores medios
-	    velocidadesMedias.add(velMedia);
-	    nivelesMedios.add(nivelesMediosBin);
-	    covarianzas.add(covarianzasBin);
-	    resIncertNivel.add(resIncertNivelBin);
+			//Almacenamos el resultado de las incertidumbres
+			resIncertVel.add(resultadoIncertVel);
+					
+			//Almacenamos los valores medios
+			velocidadesMedias.add(velMedia);
+			nivelesMedios.add(nivelesMediosBin);
+			covarianzas.add(covarianzasBin);
+			resIncertNivel.add(resIncertNivelBin);
         }
         
         Integer[] posPromedioInfSup;
@@ -5024,41 +5026,41 @@ public class DatosRA2 {
         res = new ArrayList<ArrayList<Double>>();
         
         for (int k = valBinMin; k <= valBinMax; k++) { //Por cada bin
-	    nFrecs = nivelesMedios != null && nivelesMedios.size() > 0 && nivelesMedios.get(k - valBinMin) != null ? nivelesMedios.get(k - valBinMin).size() : 0;
+			nFrecs = nivelesMedios != null && nivelesMedios.size() > 0 && nivelesMedios.get(k - valBinMin) != null ? nivelesMedios.get(k - valBinMin).size() : 0;
             resBin = null;
             resIncertBin = null;
             
-	    if (nDatos.get(k - valBinMin) > 0) {
-		posPromedioInfSup = getPosPromedioInfSup(k * 1.0, velocidadesMedias, nDatos.get(k - valBinMin));
-		if (posPromedioInfSup != null) {
-		    resBin = new ArrayList<Double>();
-		    resIncertBin = new ArrayList<Double>();
+			if (nDatos.get(k - valBinMin) > 0) {
+				posPromedioInfSup = getPosPromedioInfSup(k * 1.0, velocidadesMedias, nDatos.get(k - valBinMin));
+				if (posPromedioInfSup != null) {
+					resBin = new ArrayList<Double>();
+					resIncertBin = new ArrayList<Double>();
 	    
-		    velPromedioInf = velocidadesMedias.get(posPromedioInfSup[0]);
-		    velPromedioSup = velocidadesMedias.get(posPromedioInfSup[1]);
+					velPromedioInf = velocidadesMedias.get(posPromedioInfSup[0]);
+					velPromedioSup = velocidadesMedias.get(posPromedioInfSup[1]);
+					
+					incertVelocidadCombInf = resIncertVel.get(posPromedioInfSup[0]).getIncertCombinada();
+					incertVelocidadCombSup = resIncertVel.get(posPromedioInfSup[1]).getIncertCombinada();
+					
+					nDatosInf = nDatos.get(posPromedioInfSup[0]);
+					nDatosSup = nDatos.get(posPromedioInfSup[1]);
 		    
-		    incertVelocidadCombInf = resIncertVel.get(posPromedioInfSup[0]).getIncertCombinada();
-		    incertVelocidadCombSup = resIncertVel.get(posPromedioInfSup[1]).getIncertCombinada();
-		    
-		    nDatosInf = nDatos.get(posPromedioInfSup[0]);
-		    nDatosSup = nDatos.get(posPromedioInfSup[1]);
-		    
-		    for (int i = 0; i < nFrecs; i++) {
-			nivelPromedioInf = nivelesMedios.get(posPromedioInfSup[0]).get(i);
-			nivelPromedioSup = nivelesMedios.get(posPromedioInfSup[1]).get(i);
+					for (int i = 0; i < nFrecs; i++) {
+						nivelPromedioInf = nivelesMedios.get(posPromedioInfSup[0]).get(i);
+						nivelPromedioSup = nivelesMedios.get(posPromedioInfSup[1]).get(i);
 			
-			incertNivelCombInf = resIncertNivel.get(posPromedioInfSup[0]).get(i).getIncertCombinada();
-			incertNivelCombSup = resIncertNivel.get(posPromedioInfSup[1]).get(i).getIncertCombinada();
+						incertNivelCombInf = resIncertNivel.get(posPromedioInfSup[0]).get(i).getIncertCombinada();
+						incertNivelCombSup = resIncertNivel.get(posPromedioInfSup[1]).get(i).getIncertCombinada();
 			
-			covarianzaInf = covarianzas.get(posPromedioInfSup[0]).get(i);
-			covarianzaSup = covarianzas.get(posPromedioInfSup[1]).get(i);
+						covarianzaInf = covarianzas.get(posPromedioInfSup[0]).get(i);
+						covarianzaSup = covarianzas.get(posPromedioInfSup[1]).get(i);
 			
-			resBin.add(getNivelEstimadoBin(k * 1.0, velPromedioInf, velPromedioSup, nivelPromedioInf, nivelPromedioSup)); //L_v(k,i)
+						resBin.add(getNivelEstimadoBin(k * 1.0, velPromedioInf, velPromedioSup, nivelPromedioInf, nivelPromedioSup)); //L_v(k,i)
 			
-			resIncertBin.add(getIncertidumbreNivelCalculado(k * 1.0, velPromedioInf, velPromedioSup, incertVelocidadCombInf, incertVelocidadCombSup, incertNivelCombInf, incertNivelCombSup, covarianzaInf, nDatosInf, covarianzaSup, nDatosSup));
-		    }
-		}
-	    }
+						resIncertBin.add(getIncertidumbreNivelCalculado(k * 1.0, velPromedioInf, velPromedioSup, incertVelocidadCombInf, incertVelocidadCombSup, incertNivelCombInf, incertNivelCombSup, covarianzaInf, nDatosInf, covarianzaSup, nDatosSup));
+					}
+				}
+			}
             
             res.add(resBin);
             resIncert.add(resIncertBin);
@@ -5105,14 +5107,14 @@ public class DatosRA2 {
 
         int nFrecs = 0;
 
-	int nResAG = resAG != null ? resAG.size() : 0;
+		int nResAG = resAG != null ? resAG.size() : 0;
 	
-	for (int i = 0; i < nResAG; i++) {
-	    int nResAGBin = resAG.get(i) != null ? resAG.get(i).size() : 0;
+		for (int i = 0; i < nResAG; i++) {
+			int nResAGBin = resAG.get(i) != null ? resAG.get(i).size() : 0;
 	    
-	    if (nResAGBin > nFrecs)
-		nFrecs = nResAGBin;
-	}
+			if (nResAGBin > nFrecs)
+				nFrecs = nResAGBin;
+		}
         
         for (int k = valBinMin; k <= valBinMax; k++) {
             nivelCorregidoTercios = new ArrayList<Entry<Double, Integer>>();
@@ -5126,7 +5128,7 @@ public class DatosRA2 {
                 incertCalcRF = valorRF != null ? resIncertRF.get(k - valBinMin).get(i) : null;
                 
                 nivelCorregidoTercios.add(getCorrecionRF_IEC3(valorTotal, valorRF)); //L_V,c,i,k
-		incertTercios.add(getIncertidumbreCorreccionRF(valorTotal, valorRF, incertCalcTotal, incertCalcRF)); //u_c,i,k
+				incertTercios.add(getIncertidumbreCorreccionRF(valorTotal, valorRF, incertCalcTotal, incertCalcRF)); //u_c,i,k
             }
             
             res.add(nivelCorregidoTercios);
@@ -5172,11 +5174,11 @@ public class DatosRA2 {
         ArrayList<Entry<Double, Integer>> nivelAparente;
         ArrayList<Double> nivelAparenteNiveles, nivelCorregidoNiveles;
         Double nivelBinAG, nivelBinRF, nivelCorregido;
-	Integer tipoNivelCorregido;
+		Integer tipoNivelCorregido;
         LinkedHashMap<Double, Integer> mapNivel;
         Iterator it;
 
-	if (resIncert == null)
+		if (resIncert == null)
             resIncert = new ArrayList<Double>();
         
         Double distMicro = getDistanciaMicro(idAsunto);
@@ -5184,61 +5186,61 @@ public class DatosRA2 {
         int nFrecs = nivelesTercios != null && nivelesTercios.size() > 0 && nivelesTercios.get(0) != null ? nivelesTercios.get(0).size() : 0;
         
         for (int k = valBinMin; k <= valBinMax; k++) {
-	    resBin = new ArrayList<Entry<Double, Integer>>();
+			resBin = new ArrayList<Entry<Double, Integer>>();
 	    
             nivelAparente = new ArrayList<Entry<Double, Integer>>();
             nivelAparenteNiveles = new ArrayList<Double>();
             nivelCorregidoNiveles = new ArrayList<Double>();
             
-	    tipoNivelCorregido = DatosRA2.CORREGIDO_RF_OK;
+			tipoNivelCorregido = DatosRA2.CORREGIDO_RF_OK;
 	    
             for (int i = 0; i < nFrecs; i++) {
                 nivelCorregidoBanda = nivelesTercios.get(k - valBinMin).get(i);
 
                 nivelCorregidoNiveles.add(nivelCorregidoBanda.getKey());
 
-		//Nos quedamos con el mayor problema en la corrección por RF
-		if (	(tipoNivelCorregido.equals(DatosRA2.CORREGIDO_RF_OK) && !nivelCorregidoBanda.getValue().equals(DatosRA2.CORREGIDO_RF_OK))	||
-			(tipoNivelCorregido.equals(DatosRA2.CORREGIDO_RF_AVISO_IEC3) && nivelCorregidoBanda.getValue().equals(DatosRA2.CORREGIDO_RF_ERROR)))
-		    tipoNivelCorregido = nivelCorregidoBanda.getValue();
+				//Nos quedamos con el mayor problema en la corrección por RF
+				if (	(tipoNivelCorregido.equals(DatosRA2.CORREGIDO_RF_OK) && !nivelCorregidoBanda.getValue().equals(DatosRA2.CORREGIDO_RF_OK))	||
+						(tipoNivelCorregido.equals(DatosRA2.CORREGIDO_RF_AVISO_IEC3) && nivelCorregidoBanda.getValue().equals(DatosRA2.CORREGIDO_RF_ERROR)))
+					tipoNivelCorregido = nivelCorregidoBanda.getValue();
 
-                nivelAparenteBanda = getNivelAparente(nivelCorregidoBanda, distMicro); //L_WA,i,k
-                nivelAparente.add(nivelAparenteBanda);
-                nivelAparenteNiveles.add(nivelAparenteBanda.getKey());
-            }
+				nivelAparenteBanda = getNivelAparente(nivelCorregidoBanda, distMicro); //L_WA,i,k
+				nivelAparente.add(nivelAparenteBanda);
+				nivelAparenteNiveles.add(nivelAparenteBanda.getKey());
+			}
             
             nivelBinAG = getSumaEnergetica(resAG.get(k - valBinMin));
             nivelBinRF = getSumaEnergetica(resRF.get(k - valBinMin));
-	    nivelCorregido = getSumaEnergetica(nivelCorregidoNiveles);
+			nivelCorregido = getSumaEnergetica(nivelCorregidoNiveles);
 	    
             mapNivel = new LinkedHashMap<Double, Integer>();
-	    mapNivel.put(nivelBinAG, null);
+			mapNivel.put(nivelBinAG, null);
             it = mapNivel.entrySet().iterator();
-	    while (it.hasNext())
-		resBin.add((Entry<Double, Integer>) it.next()); 
+			while (it.hasNext())
+				resBin.add((Entry<Double, Integer>) it.next()); 
 	    
             mapNivel = new LinkedHashMap<Double, Integer>();
-	    mapNivel.put(nivelBinRF, null);
+			mapNivel.put(nivelBinRF, null);
             it = mapNivel.entrySet().iterator();
-	    while (it.hasNext())
-		resBin.add((Entry<Double, Integer>) it.next()); 
+			while (it.hasNext())
+				resBin.add((Entry<Double, Integer>) it.next()); 
 	    
-	    //Marcamos la corrección por RF según IEC 3
+			//Marcamos la corrección por RF según IEC 3
             mapNivel = new LinkedHashMap<Double, Integer>();
-	    mapNivel.put(nivelCorregido, tipoNivelCorregido);
+			mapNivel.put(nivelCorregido, tipoNivelCorregido);
             it = mapNivel.entrySet().iterator();
-	    while (it.hasNext())
-		resBin.add((Entry<Double, Integer>) it.next()); 
+			while (it.hasNext())
+				resBin.add((Entry<Double, Integer>) it.next()); 
 	    
-	    //Marcamos la corrección por RF  según IEC 2.1
+			//Marcamos la corrección por RF  según IEC 2.1
             mapNivel = new LinkedHashMap<Double, Integer>();
             mapNivel.put(getSumaEnergetica(nivelAparenteNiveles), getCorreccionRF(nivelBinAG, nivelBinRF).getValue()); //L_WA,k
             it = mapNivel.entrySet().iterator();
-	    while (it.hasNext())
-		resBin.add((Entry<Double, Integer>) it.next()); 
+			while (it.hasNext())
+				resBin.add((Entry<Double, Integer>) it.next()); 
 	    
             resIncert.add(getIncertidumbreSumarTercios(nivelAparenteNiveles, incertTercios.get(k - valBinMin))); //u_L_WA, k
-	    res.add(resBin);
+			res.add(resBin);
         }
         
         return res;
@@ -5682,28 +5684,28 @@ public class DatosRA2 {
 
     //Función para obtener la velocidad a <altura> metros de altura
     public static Double getVelocidadAltura(Double velocidadBuje, Double hB, Double altura, Double z0ref) {
-	Double res = null;
+		Double res = null;
 
-	if (velocidadBuje != null && hB != null && altura != null && z0ref != null)
-	    res = velocidadBuje * Math.log(altura / z0ref) / Math.log(hB / z0ref);
+		if (velocidadBuje != null && hB != null && altura != null && z0ref != null)
+			res = velocidadBuje * Math.log(altura / z0ref) / Math.log(hB / z0ref);
 
-	return res;
+		return res;
     }
 
     //Función que devuelve la distancia a la que se consigue el <nivelBuscado> dado un <nivelConocido> a una <distConocida>
     public static Double getDistanciaNivel(Double distConocida, Double nivelConocido, Double nivelBuscado) {
-	Double res = null;
+		Double res = null;
 
-	if (distConocida != null && nivelConocido != null && nivelBuscado != null)
-	    res = distConocida * Math.pow(10.0, (nivelConocido - nivelBuscado) / 20.0);
+		if (distConocida != null && nivelConocido != null && nivelBuscado != null)
+			res = distConocida * Math.pow(10.0, (nivelConocido - nivelBuscado) / 20.0);
 
-	return res;
-    }
+		return res;
+	}
 
     public static Comparator<Double[]> distNivel = new Comparator<Double[]>() {
-	public int compare(Double[] dato1, Double[] dato2) {
-	    return (dato1[0]).compareTo(dato2[0]);
-	}
+		public int compare(Double[] dato1, Double[] dato2) {
+			return (dato1[0]).compareTo(dato2[0]);
+		}
     };
     
     //Función para obtener el dataset para dibujar un mapa de ruido

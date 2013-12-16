@@ -305,7 +305,7 @@ public class UAsuntoGUI extends JDialog {
         });
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\pencil.png" )));
+        jButton1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\pencil.png" )));
         jButton1.setToolTipText("Actualizar campos");
         jButton1.setEnabled(false);
         jButton1.setMargin(new java.awt.Insets(2, 2, 2, 2));
@@ -578,7 +578,7 @@ public class UAsuntoGUI extends JDialog {
         jComboBox13.setEnabled(false);
 
         jButton4.setBackground(new java.awt.Color(255, 255, 255));
-        jButton4.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Resultset_up.png" )));
+        jButton4.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Resultset_up.png" )));
         jButton4.setEnabled(false);
         jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -587,7 +587,7 @@ public class UAsuntoGUI extends JDialog {
         });
 
         jButton5.setBackground(new java.awt.Color(255, 255, 255));
-        jButton5.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Resultset_down.png" )));
+        jButton5.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Resultset_down.png" )));
         jButton5.setEnabled(false);
         jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -679,7 +679,7 @@ public class UAsuntoGUI extends JDialog {
         jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel19.setText(" Aerogenerador:");
 
-        jLabel33.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\lock.png" )));
+        jLabel33.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\lock.png" )));
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -822,7 +822,7 @@ public class UAsuntoGUI extends JDialog {
             }
         });
 
-        jLabel34.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\lock.png" )));
+        jLabel34.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\lock.png" )));
 
         jLabel6.setForeground(new java.awt.Color(102, 102, 102));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -998,7 +998,7 @@ public class UAsuntoGUI extends JDialog {
         jpBotonesPosRA.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jbCargarFicPosRA.setBackground(new java.awt.Color(255, 255, 255));
-        jbCargarFicPosRA.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\OpenFolder.gif" )));
+        jbCargarFicPosRA.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\OpenFolder.gif" )));
         jbCargarFicPosRA.setToolTipText("Cargar Fichero");
         jbCargarFicPosRA.setEnabled(false);
         jbCargarFicPosRA.setMargin(new java.awt.Insets(2, 2, 2, 2));
@@ -1011,7 +1011,7 @@ public class UAsuntoGUI extends JDialog {
         jlCargarFicPosRA.setText("CARGAR FICHERO");
 
         jbVerFormatoPosRA.setBackground(new java.awt.Color(255, 255, 255));
-        jbVerFormatoPosRA.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Information.png" )));
+        jbVerFormatoPosRA.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Information.png" )));
         jbVerFormatoPosRA.setToolTipText("Ver Formato de Fichero\n");
         jbVerFormatoPosRA.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jbVerFormatoPosRA.addActionListener(new java.awt.event.ActionListener() {
@@ -1023,7 +1023,7 @@ public class UAsuntoGUI extends JDialog {
         jlVerFormatoPosRA.setText("VER FORMATO");
 
         jbVisualizarPosRA.setBackground(new java.awt.Color(255, 255, 255));
-        jbVisualizarPosRA.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Information.png" )));
+        jbVisualizarPosRA.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Information.png" )));
         jbVisualizarPosRA.setToolTipText("Ver Formato de Fichero\n");
         jbVisualizarPosRA.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jbVisualizarPosRA.addActionListener(new java.awt.event.ActionListener() {
@@ -1151,7 +1151,7 @@ public class UAsuntoGUI extends JDialog {
         jTabbedPane1.addTab("", jpPosicionesRA);
 
         jLabel32.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel32.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\lock.png" )));
+        jLabel32.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\lock.png" )));
         jLabel32.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel28.setFont(new java.awt.Font("Tahoma", 0, 10));
@@ -1166,7 +1166,7 @@ public class UAsuntoGUI extends JDialog {
         });
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Guardar.png" )));
+        jButton2.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Guardar.png" )));
         jButton2.setToolTipText("Salvar cambios");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

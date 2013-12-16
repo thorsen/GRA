@@ -243,9 +243,7 @@ public class AsuntoPosicionRA {
     }
     
     //Función para añadir un TipoRA a la BD
-    public static int updateAsuntoPosicionRA(Integer idAsunto, Integer idPosAero, Integer idPosMicro1, Integer idPosMicro2, Integer idPosMicro3, Integer idPosMicro4, 
-            Integer idAsuntoVal, Integer idPosAeroVal, Integer idPosMicro1Val, Integer idPosMicro2Val, Integer idPosMicro3Val, Integer idPosMicro4Val, String sqlExtra) throws SQLException {
-        InteraccionBD interBD = new InteraccionBD();
+    public static int updateAsuntoPosicionRA(Integer idAsunto, Integer idPosAero, Integer idPosMicro1, Integer idPosMicro2, Integer idPosMicro3, Integer idPosMicro4, Integer idAsuntoVal, Integer idPosAeroVal, Integer idPosMicro1Val, Integer idPosMicro2Val, Integer idPosMicro3Val, Integer idPosMicro4Val, String sqlExtra) throws SQLException { InteraccionBD interBD = new InteraccionBD();
         
         String condicion = "";
         ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
@@ -288,13 +286,11 @@ public class AsuntoPosicionRA {
     }
     
     public static int updateAsuntoPosicionRA(AsuntoPosicionRA asuntoPosViejo, AsuntoPosicionRA asuntoPosNuevo, String sqlExtra) throws SQLException {
-        return updateAsuntoPosicionRA(asuntoPosViejo.idAsunto, asuntoPosViejo.idPosAero, asuntoPosViejo.idPosMicro1, asuntoPosViejo.idPosMicro2, asuntoPosViejo.idPosMicro3, asuntoPosViejo.idPosMicro4, 
-                asuntoPosNuevo.idAsunto, asuntoPosNuevo.idPosAero, asuntoPosNuevo.idPosMicro1, asuntoPosNuevo.idPosMicro2, asuntoPosNuevo.idPosMicro3, asuntoPosNuevo.idPosMicro4, sqlExtra);
+        return updateAsuntoPosicionRA(asuntoPosViejo.idAsunto, asuntoPosViejo.idPosAero, asuntoPosViejo.idPosMicro1, asuntoPosViejo.idPosMicro2, asuntoPosViejo.idPosMicro3, asuntoPosViejo.idPosMicro4, asuntoPosNuevo.idAsunto, asuntoPosNuevo.idPosAero, asuntoPosNuevo.idPosMicro1, asuntoPosNuevo.idPosMicro2, asuntoPosNuevo.idPosMicro3, asuntoPosNuevo.idPosMicro4, sqlExtra);
     }
     
     //Función para añadir/modificar un TipoRA a la BD
-    public static int insertOrUpdateAsuntoPosicionRA(Integer idAsunto, Integer idPosAero, Integer idPosMicro1, Integer idPosMicro2, Integer idPosMicro3, Integer idPosMicro4, 
-            Integer idAsuntoVal, Integer idPosAeroVal, Integer idPosMicro1Val, Integer idPosMicro2Val, Integer idPosMicro3Val, Integer idPosMicro4Val, String sqlExtra) throws SQLException {
+    public static int insertOrUpdateAsuntoPosicionRA(Integer idAsunto, Integer idPosAero, Integer idPosMicro1, Integer idPosMicro2, Integer idPosMicro3, Integer idPosMicro4, Integer idAsuntoVal, Integer idPosAeroVal, Integer idPosMicro1Val, Integer idPosMicro2Val, Integer idPosMicro3Val, Integer idPosMicro4Val, String sqlExtra) throws SQLException {
         int res;
         
         res = updateAsuntoPosicionRA(idAsunto, idPosAero, idPosMicro1, idPosMicro2, idPosMicro3, idPosMicro4, idAsuntoVal, idPosAeroVal, idPosMicro1Val, idPosMicro2Val, idPosMicro3Val, idPosMicro4Val, sqlExtra);
@@ -306,9 +302,7 @@ public class AsuntoPosicionRA {
     }
     
     public static int insertOrUpdateAsuntoPosicionRA(AsuntoPosicionRA asuntoPosViejo, AsuntoPosicionRA asuntoPosNuevo, String sqlExtra) throws SQLException {
-        
-        return insertOrUpdateAsuntoPosicionRA(asuntoPosViejo.idAsunto, asuntoPosViejo.idPosAero, asuntoPosViejo.idPosMicro1, asuntoPosViejo.idPosMicro2, asuntoPosViejo.idPosMicro3, asuntoPosViejo.idPosMicro4, 
-                asuntoPosNuevo.idAsunto, asuntoPosNuevo.idPosAero, asuntoPosNuevo.idPosMicro1, asuntoPosNuevo.idPosMicro2, asuntoPosNuevo.idPosMicro3, asuntoPosNuevo.idPosMicro4, sqlExtra);
+        return insertOrUpdateAsuntoPosicionRA(asuntoPosViejo.idAsunto, asuntoPosViejo.idPosAero, asuntoPosViejo.idPosMicro1, asuntoPosViejo.idPosMicro2, asuntoPosViejo.idPosMicro3, asuntoPosViejo.idPosMicro4, asuntoPosNuevo.idAsunto, asuntoPosNuevo.idPosAero, asuntoPosNuevo.idPosMicro1, asuntoPosNuevo.idPosMicro2, asuntoPosNuevo.idPosMicro3, asuntoPosNuevo.idPosMicro4, sqlExtra);
     }
     
     //Función para eliminar TiposRA que se ajustan a los limites pasados
