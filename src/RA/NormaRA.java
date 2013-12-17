@@ -9,7 +9,8 @@ public class NormaRA {
     private String nombre;
     private Boolean vigente;
     
-    public static final String TABLA = "NormaRA";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "NormaRA";
     public static final String CAMPO_ID_NORMA = "Id_norma";
     public static final String CAMPO_NOMBRE = "Nombre";
     public static final String CAMPO_VIGENTE = "Vigente";

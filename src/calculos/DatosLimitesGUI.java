@@ -1758,6 +1758,8 @@ private void previsualizar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pr
                             } else {
                                 MensajeApp.muestraError(this, null, "No se puede crear la base auxiliar para el site &lt;" + SiteRA.getSitePorId(sitesTipo.get(i)).getNombre() + "&gt;." + valiCrea);
                             }
+
+							DatosRA2.deleteVistas();
                         }
 
                         if (Auxiliares.esSalidaOk(modoSalida))

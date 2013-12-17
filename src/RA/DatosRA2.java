@@ -52,6 +52,7 @@ public class DatosRA2 {
     //Campos variables
     private HashMap<String, Object> variables;
     
+    private static String BD = InteraccionBD.PREF_BD_RA;
     private static String TABLA;
     
     public static final String CAMPO_ID_DATO = "Id";
@@ -372,7 +373,7 @@ public class DatosRA2 {
     }
 
     public static void setTabla(String tipoTabla, Integer idAsunto) {
-        TABLA = InteraccionBD.TABLA_DATOS + tipoTabla + idAsunto;
+        TABLA = BD + InteraccionBD.TABLA_DATOS + tipoTabla + idAsunto;
     }
 
     public static String getVistaAux() {

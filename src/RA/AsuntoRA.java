@@ -48,7 +48,8 @@ public class AsuntoRA {
     private Integer tipo;  
     
     //BD
-    public static final String TABLA = "Asunto";
+    public static final String BD = InteraccionBD.PREF_BD_GENERAL;
+    public static final String TABLA = BD + "Asunto";
     public static final String CAMPO_ID_ASUNTO = "Id_asunto";
     public static final String CAMPO_CODIGO = "Codigo";
     public static final String CAMPO_NOMBRE = "Nombre";

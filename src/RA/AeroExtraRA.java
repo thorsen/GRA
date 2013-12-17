@@ -9,7 +9,8 @@ public class AeroExtraRA {
     private Integer idAero;
     private Double longBuje;
     
-    public static final String TABLA = "AeroExtraRA";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "AeroExtraRA";
     public static final String CAMPO_ID_AERO = TABLA + "." + "Id_aero";
     public static final String CAMPO_LONG_BUJE = TABLA + "." + "LongBuje";
 

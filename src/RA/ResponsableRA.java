@@ -15,7 +15,8 @@ public class ResponsableRA {
     private Boolean activo;
     private Integer rol;
 
-    public static final String TABLA = "Responsable";
+    public static final String BD = InteraccionBD.PREF_BD_GENERAL;
+    public static final String TABLA = BD + "Responsable";
     public static final String CAMPO_ID_RESPONSABLE = "Id_responsable";
     public static final String CAMPO_NOMBRE = "Nombre";
     public static final String CAMPO_APE_1 = "Apellido1";
@@ -192,8 +193,7 @@ public class ResponsableRA {
     }
 
     //Función para obtener la colección de Responsables que se ajustan a los limites pasados
-    public static ArrayList<ResponsableRA> getResponsables(Integer idResponsable, String nombre, String apellido1, String apellido2, String usuario, String password, String mail, Boolean activo, Integer rol,
-            ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
+    public static ArrayList<ResponsableRA> getResponsables(Integer idResponsable, String nombre, String apellido1, String apellido2, String usuario, String password, String mail, Boolean activo, Integer rol, ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
         InteraccionBD interBD = new InteraccionBD();
         
         ArrayList<ResponsableRA> res = null;

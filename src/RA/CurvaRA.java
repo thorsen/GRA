@@ -10,7 +10,8 @@ public class CurvaRA {
     private Double vel;
     private Double pot;
     
-    public static final String TABLA = "Curva";
+    public static final String BD = InteraccionBD.PREF_BD_GENERAL;
+    public static final String TABLA = BD + "Curva";
     public static final String CAMPO_ID_ASUNTO = "Asunto";
     public static final String CAMPO_DENSIDAD = "Densidad";
     public static final String CAMPO_VEL = "V";

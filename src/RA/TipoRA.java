@@ -11,7 +11,8 @@ public class TipoRA {
     private Integer idTipoRA;
     private String sufijo;
     
-    public static final String TABLA = "TipoRA";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "TipoRA";
     public static final String CAMPO_ID_TIPO_RA = "TipoRA";
     public static final String CAMPO_SUFIJO = "SufijoTabla";
     

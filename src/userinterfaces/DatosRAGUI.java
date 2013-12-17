@@ -545,27 +545,27 @@ private void seleccionarRuta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
 }//GEN-LAST:event_seleccionarRuta
    
 private void habilitaClave() {
-        Auxiliares.setEnabledCamposPanel(this.jpClave, true);
-        Auxiliares.setEnabledCamposPanel(this.jpDatos, false);
-        
-        jbCancelar.setEnabled(false);
-        jbInsertar.setEnabled(false);
-        
-        this.jcbAsunto.requestFocus();
-        this.jcbAsunto.setSelectedIndex(0);
-        
-        limpiarCampos();
-    }
-    
-    private void habilitaDatos(){
-        Auxiliares.setEnabledCamposPanel(this.jpClave, false);
-        Auxiliares.setEnabledCamposPanel(this.jpDatos, true);
-        
-        jbCancelar.setEnabled(true);
-        jbInsertar.setEnabled(true);
-        
-        this.jbSelRuta.requestFocus();
-    }
+	Auxiliares.setEnabledCamposPanel(this.jpClave, true);
+	Auxiliares.setEnabledCamposPanel(this.jpDatos, false);
+	
+	jbCancelar.setEnabled(false);
+	jbInsertar.setEnabled(false);
+	
+	this.jcbAsunto.requestFocus();
+	this.jcbAsunto.setSelectedIndex(0);
+	
+	limpiarCampos();
+}
+
+private void habilitaDatos(){
+	Auxiliares.setEnabledCamposPanel(this.jpClave, false);
+	Auxiliares.setEnabledCamposPanel(this.jpDatos, true);
+	
+	jbCancelar.setEnabled(true);
+	jbInsertar.setEnabled(true);
+	
+	this.jbSelRuta.requestFocus();
+}
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

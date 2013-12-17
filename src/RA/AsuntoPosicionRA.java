@@ -12,7 +12,8 @@ public class AsuntoPosicionRA {
     private Integer idPosMicro3;
     private Integer idPosMicro4;
     
-    public static final String TABLA = "AsuntoPosicionRA";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "AsuntoPosicionRA";
     public static final String CAMPO_ID_ASUNTO = "Id_asunto";
     public static final String CAMPO_ID_POS_AERO = "Id_posAero";
     public static final String CAMPO_ID_POS_MICRO1 = "Id_posMicro1";

@@ -12,7 +12,8 @@ public class AsuntoContacto {
     private Boolean notificacion;
     private Boolean adjunto;
     
-    public  static final String TABLA = "AsuntoContacto";
+    public static final String BD = InteraccionBD.PREF_BD_GENERAL;
+    public  static final String TABLA = BD + "AsuntoContacto";
     public static final String CAMPO_ID_CONTACTO = "Contacto";
     public static final String CAMPO_ID_ASUNTO = "Asunto";
     public static final String CAMPO_NOTIFICACION = "Notificacion";

@@ -14,7 +14,8 @@ public class AsuntoIncert {
     private Integer idTipoIncert;
     private Double valor;
     
-    public static final String TABLA = "AsuntoIncert";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "AsuntoIncert";
     public static final String CAMPO_ID_ASUNTO = "Id_asunto";
     public static final String CAMPO_DESDE_FECHA = "Desde_Fecha";
     public static final String CAMPO_ID_NORMA = "Id_Norma";

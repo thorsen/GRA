@@ -19,7 +19,8 @@ public class ConfiguracionRA2 {
     private Integer idConfig;
     private Long fechaIni;
     
-    public static final String TABLA = "ConfiguracionRA";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "ConfiguracionRA";
     public static final String CAMPO_ID_ASUNTO = "Asunto";
     public static final String CAMPO_ID_SITE = "Site";
     public static final String CAMPO_ID_CONFIG = "NConfig";

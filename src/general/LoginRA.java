@@ -26,7 +26,7 @@ public class LoginRA {
         
         resp = ResponsableRA.getResponsablePorUsuario(usuario);
                 
-        if (resp != null && resp.getActivo()) {
+        if (resp != null && resp.getActivo() != null && resp.getActivo()) {
             this.idResponsable = resp.getIdResponsable();
             this.rol = resp.getRol();
         }

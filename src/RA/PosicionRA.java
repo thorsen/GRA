@@ -12,7 +12,8 @@ public class PosicionRA {
     private Double posY;
     private Double posZ;
     
-    public static final String TABLA = "PosicionRA";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "PosicionRA";
     public static final String CAMPO_ID = "Id";
     public static final String CAMPO_POS_X = "PosX";
     public static final String CAMPO_POS_Y = "PosY";

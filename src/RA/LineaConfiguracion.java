@@ -20,7 +20,8 @@ public class LineaConfiguracion {
     private Double offsetP;
     private Double orientacion;
     
-    public static final String TABLA = "LineaConfiguracionRA";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "LineaConfiguracionRA";
     public static final String CAMPO_ID_ASUNTO = "Asunto";
     public static final String CAMPO_ID_SITE = "Site";
     public static final String CAMPO_ID_CONFIG = "NConfig";

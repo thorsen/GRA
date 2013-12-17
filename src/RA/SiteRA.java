@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SiteRA {
-
     private Integer idSite;
     private String nombre;
     private Integer sad;
@@ -17,7 +16,9 @@ public class SiteRA {
     private String horaDesc;
     private Boolean activo;
     private Integer fase;
-    public static final String TABLA = "Site";
+	
+    public static final String BD = InteraccionBD.PREF_BD_GENERAL;
+    public static final String TABLA = BD + "Site";
     public static final String CAMPO_ID_SITE = "Id_site";
     public static final String CAMPO_NOMBRE = "Nombre";
     public static final String CAMPO_SAD = "Sad";

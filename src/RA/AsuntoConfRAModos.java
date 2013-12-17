@@ -9,7 +9,8 @@ public class AsuntoConfRAModos {
     private Integer desdeVel;
     private Integer hastaVel;
     
-    public static final String TABLA = "AsuntoConfRAModos";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "AsuntoConfRAModos";
     public static final String CAMPO_ID_ASUNTO = "Id_asunto";
     public static final String CAMPO_DESDE_VEL = "ModoFuncDesde";
     public static final String CAMPO_HASTA_VEL = "ModoFuncHasta";

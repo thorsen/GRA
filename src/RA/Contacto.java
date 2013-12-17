@@ -17,7 +17,8 @@ public class Contacto {
     private Boolean interno;
     private Boolean activo;
     
-    public static final String TABLA = "Contacto";
+    public static final String BD = InteraccionBD.PREF_BD_GENERAL;
+    public static final String TABLA = BD + "Contacto";
     public static final String CAMPO_ID_CONTACTO = "Id_contacto";
     public static final String CAMPO_NOMBRE = "Nombre";
     public static final String CAMPO_ID_CLIENTE = "Cliente";

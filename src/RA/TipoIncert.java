@@ -9,7 +9,8 @@ public class TipoIncert {
     private String descripcion;
     private Boolean esAcustica;
     
-    public static final String TABLA = "TipoIncertidumbre";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "TipoIncertidumbre";
     public static final String CAMPO_ID_TIPO_INCERT = "id";
     public static final String CAMPO_DESCRIPCION = "Descripcion";
     public static final String CAMPO_ES_ACUSTICA = "esAcustica";

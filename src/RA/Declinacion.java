@@ -11,7 +11,8 @@ public class Declinacion {
     private Double angulo;
     private Character posicion;
     
-    public static final String TABLA = "DeclinacionRA";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "DeclinacionRA";
     public static final String CAMPO_ID_ASUNTO = "Asunto";
     public static final String CAMPO_ID_SITE = "Site";
     public static final String CAMPO_ID_CONFIG = "NConfig";

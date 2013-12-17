@@ -8,7 +8,8 @@ public class TipoSiteRA {
     private Integer idSite;
     private Integer idTipoRA;
     
-    public static final String TABLA = "TipoSiteRA";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "TipoSiteRA";
     public static final String CAMPO_ID_SITE = "Id_Site";
     public static final String CAMPO_ID_TIPO_RA = "TipoRA";
 

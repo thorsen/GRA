@@ -13,7 +13,8 @@ public class Incidencia {
     private Long fechaH;
     private String observacion;
     
-    public static final String TABLA = "IncidenciasRA";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "IncidenciasRA";
     public static final String CAMPO_ID_ASUNTO = "Id_Asunto";
     public static final String CAMPO_ID_SITE = "Id_Site";
     public static final String CAMPO_FECHA_D = "Fecha_Desde";

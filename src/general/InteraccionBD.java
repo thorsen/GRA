@@ -24,12 +24,16 @@ import userinterfaces.GRA;
  */
 public class InteraccionBD {
 
+	//La idea, una vez estén en distinto servidores sería conectar al de RA y que este a su vez tenga como Linked Server al general
     private Connection conexion;
     public static final String URL = "jdbc:sqlserver://192.168.1.165:1433";
-    public static final String USER = "SQL_PwC";
+    public static final String USER = "SQL_RA";
     public static final String PASS = "Ru8865No";
     
-    public static final String PREF_BD_GENERAL = "Power_Curve.dbo.";
+	//Para cuando estén en servidores disintos
+    //public static final String PREF_LINKED_SERVER_GRAL = "B2SOLAR.";
+    public static final String PREF_LINKED_SERVER_GRAL = "";
+    public static final String PREF_BD_GENERAL = PREF_LINKED_SERVER_GRAL + "Power_Curve.dbo.";
     public static final String PREF_BD_RA = "Acoustic_Noise.dbo.";
     
 //    public static final String URL = "jdbc:odbc:SqlServer";
@@ -124,32 +128,36 @@ public class InteraccionBD {
         try {
             String tablas[] = tabla.split(",");
             int nTablas = tablas.length;
+			String tablaAux, tablaSinPref, sql;
+			Statement stmt;
+			ResultSet rs;
             
             con = getConexion();
 
-            String sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=";
-            
-            for (int i = 0; i < nTablas; i++) {
-                sql += "? OR TABLE_NAME=";
-            }
-            sql = sql.substring(0, sql.length() - "? OR TABLE_NAME=".length() + 1);
-            
-            PreparedStatement ps = con.prepareStatement(sql);
-
-            for (int i = 0; i < nTablas; i++) {
-                ps.setString(i+1, tablas[i].trim());
-            }
-            
-            ResultSet rs = ps.executeQuery();
-
             resAux = new ArrayList<String>();
+			for (int i = 0; i < nTablas; i++) {
+				tablaAux = tablas[i].trim();
+				tablaSinPref = tablaAux.substring(tablaAux.lastIndexOf(".") + 1);
 
-            while (rs.next()) {
-                resAux.add(rs.getString(1));
-            }
-            
-            rs.close();
-            ps.close();
+				if (tablaAux.contains(PREF_BD_GENERAL)) {
+					sql = "EXECUTE " + PREF_BD_GENERAL + "sp_executesql N'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=''";
+					sql += tablaSinPref + "'''";
+				} else {
+					sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='";
+					sql += tablaSinPref + "'";
+				}
+
+				stmt = con.createStatement();
+				rs = stmt.executeQuery(sql);
+
+				while (rs.next()) {
+					resAux.add(rs.getString(1));
+				}
+
+				rs.close();
+				stmt.close();
+			}
+
             cierraConexionLocal(con);
 
             res = resAux.toArray();
@@ -456,7 +464,7 @@ public class InteraccionBD {
                         if (campoAct.contains("(*)")) //Hace referencia a una función sobre todos los campos
                             numCols++;
                         else if (campoAct.contains(".")) //Hace referencia a todos los campos de una tabla
-                            numCols += getCamposTabla(campoAct.substring(0, campoAct.indexOf("."))).length;
+                            numCols += getCamposTabla(campoAct.substring(0, campoAct.lastIndexOf("."))).length;
                         else //hace referencia a todos los campos que vengan en <tabla>
                             numCols += getCamposTabla(tabla).length;
                     } else { //Es un campo normal
@@ -482,12 +490,12 @@ public class InteraccionBD {
 
 				if (rs != null) {
 					while (rs.next()) {
-					fila = new Object[numCols];
+						fila = new Object[numCols];
 
-					for (int i = 0; i < numCols; i++) {
-						fila[i] = rs.getObject(i + 1);
-					}
-					res.add(fila);
+						for (int i = 0; i < numCols; i++) {
+							fila[i] = rs.getObject(i + 1);
+						}
+						res.add(fila);
 					}
 				}
 
@@ -997,14 +1005,26 @@ public class InteraccionBD {
         String res = null;
         
         String tablas[] = tabla.split(",");
+		String tablaAux, tablaSinPref, prefTabla;
         int nTablas = tablas.length;
 
         if (nTablas > 0) {
             res = "IF EXISTS ";
-            
-            for (int i = 0; i < nTablas; i++) {
-                res += "(SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='" + tablas[i].trim() +"') AND EXISTS ";
-            }
+
+			for (int i = 0; i < nTablas; i++) {
+				tablaAux = tablas[i].trim();
+
+				if (tablaAux.startsWith(PREF_BD_GENERAL) || tablaAux.startsWith(PREF_BD_RA)) {
+					tablaSinPref = tablaAux.substring(tablaAux.lastIndexOf(".") + 1);
+					prefTabla = tablaAux.substring(0, tablaAux.lastIndexOf(".") + 1);
+				} else {
+					tablaSinPref = tablaAux;
+					prefTabla = PREF_BD_RA;
+				}
+
+				res += "(SELECT 1 FROM " + prefTabla +  "sysobjects WHERE NAME='";
+				res += tablaSinPref + "') AND EXISTS ";
+			}
             
             res = res.substring(0, res.length() - " AND EXISTS ".length()) + "\n";
         }
@@ -1023,7 +1043,7 @@ public class InteraccionBD {
     public static String dameSqlExisteVista(String vista) {
         String res = null;
         
-        res = "IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME='" + vista +"')\n";
+        res = "IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME='" + vista + "')\n";
         
         return res;
     }
@@ -1130,12 +1150,15 @@ public class InteraccionBD {
     public int creaIndicesXml(String tabla, String campoXml) throws SQLException {
         Connection con = null;
         int res = 0;
+		String tablaSinPref;
 
         try {
             con = getConexion();
 
+			tablaSinPref = tabla.substring(tabla.lastIndexOf(".") + 1);
+
             //Creamos el índice primario
-            String nomIndex = "PIdx_" + tabla + "_" + campoXml;
+            String nomIndex = "PIdx_" + tablaSinPref + "_" + campoXml;
             String sql = "CREATE PRIMARY XML INDEX " + nomIndex + "\n";
             sql += "ON " + tabla + "(" + campoXml + ")";
 

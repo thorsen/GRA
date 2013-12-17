@@ -23,7 +23,8 @@ public class AsuntoConfRA {
     private Integer desdeVel;
     private Integer hastaVel;
     
-    public static final String TABLA = "AsuntoConfRA";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "AsuntoConfRA";
     public static final String CAMPO_ID_ASUNTO = "Id_asunto";
     public static final String CAMPO_PER_MEDIDO_OTRO = "PerMedidoOtro";
     public static final String CAMPO_DESDE_FECHA = "DesdeFecha";

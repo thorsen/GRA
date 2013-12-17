@@ -15,7 +15,8 @@ public class Descripcion {
     private Integer idSerie;
     private Double valor;
     
-    public static final String TABLA = "DescripcionRA";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "DescripcionRA";
     public static final String CAMPO_ID_ASUNTO = "Asunto";
     public static final String CAMPO_ID_SERIE = "Serie";
     public static final String CAMPO_VALOR = "Valor";

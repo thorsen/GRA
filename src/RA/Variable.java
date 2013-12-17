@@ -13,7 +13,8 @@ public class Variable {
     private Double salto;
     private Double vCte;
     
-    public static final String TABLA = "Variable";
+    public static final String BD = InteraccionBD.PREF_BD_GENERAL;
+    public static final String TABLA = BD + "Variable";
     public static final String CAMPO_ID_VAR = "Id_variable";
     public static final String CAMPO_NOM_VAR = "Variable";
     public static final String CAMPO_UNIDAD = "Unidad";
@@ -212,6 +213,7 @@ public class Variable {
         ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
         ArrayList<String> campos = new ArrayList<String>();
         ArrayList<String> autoInc = new ArrayList<String>();
+        ArrayList<String> condAutoInc = new ArrayList<String>();
         int res = 0;
         
         if (idVariable != null) {
@@ -248,7 +250,7 @@ public class Variable {
         }
         
         interBD.inicioTransaccion();
-        res = interBD.insertDatosTabla(TABLA, campos, valores, paramsPS, sqlExtra);
+        res = interBD.insertDatosTabla(TABLA, campos, valores, paramsPS, sqlExtra, autoInc, condAutoInc);
         interBD.finTransaccion();
         
         return res;

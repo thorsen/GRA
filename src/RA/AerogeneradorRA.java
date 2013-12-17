@@ -20,7 +20,8 @@ public class AerogeneradorRA {
     private Boolean pequeno;
     private Double longBuje;
     
-    public static final String TABLA = "Aerogenerador";
+    public static final String BD = InteraccionBD.PREF_BD_GENERAL;
+    public static final String TABLA = BD + "Aerogenerador";
     public static final String CAMPO_ID_AERO = TABLA + "." + "Id_aero";
     public static final String CAMPO_MODELO = TABLA + "." + "Modelo";
     public static final String CAMPO_H_B = TABLA + "." + "Hb";

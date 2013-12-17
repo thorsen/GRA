@@ -13,7 +13,8 @@ public class ClienteRA {
     private String fax;
     private String web;
 
-    public static final String TABLA = "Cliente";
+    public static final String BD = InteraccionBD.PREF_BD_GENERAL;
+    public static final String TABLA = BD + "Cliente";
     public static final String CAMPO_ID_CLIENTE = "Id_cliente";
     public static final String CAMPO_NOMBRE = "Nombre";
     public static final String CAMPO_CIF = "CIF";

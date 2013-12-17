@@ -8,7 +8,8 @@ public class TipoIncertNorma {
     private Integer idNorma;
     private Integer idTipoIncert;
     
-    public static final String TABLA = "TipoIncertNorma";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "TipoIncertNorma";
     public static final String CAMPO_ID_NORMA = "id_norma";
     public static final String CAMPO_ID_TIPO_INCERT = "id_tipo_incert";
 

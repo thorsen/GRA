@@ -9,7 +9,8 @@ public class Interpolacion {
     private Double pNominal;
     private Double vCorte;
     
-    public static final String TABLA = "Interpolacion";
+    public static final String BD = InteraccionBD.PREF_BD_GENERAL;
+    public static final String TABLA = BD + "Interpolacion";
     public static final String CAMPO_ID_ASUNTO = "Asunto";
     public static final String CAMPO_P_NOMINAL = "Pnominal";
     public static final String CAMPO_V_CORTE = "Vcorte";

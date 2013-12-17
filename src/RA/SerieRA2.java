@@ -19,7 +19,8 @@ public class SerieRA2 {
     private String codigo;
     private Integer idTipoRA;
     
-    public static final String TABLA = "SerieRA";
+    public static final String BD = InteraccionBD.PREF_BD_RA;
+    public static final String TABLA = BD + "SerieRA";
     public static final String CAMPO_ID_SERIE = "Id_serie";
     public static final String CAMPO_DESC = "Descripción";
     public static final String CAMPO_VAR = "Variable";
