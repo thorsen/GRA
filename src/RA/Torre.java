@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 public class Torre {
     
-    private static String url = "jdbc:sqlserver://192.168.1.165:1433";
+    private static String url = "jdbc:sqlserver://192.168.1.53:1433";
     private static String user = "SQL_PwC";
     private static String pass = "Ru8865No";
     

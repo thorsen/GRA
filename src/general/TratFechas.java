@@ -22,7 +22,10 @@ public class TratFechas {
         try {
             SimpleDateFormat sdfIn = new SimpleDateFormat(formato);
 
-            res =  sdfIn.parse(fecha).getTime();
+			if (!fecha.isEmpty())
+				res =  sdfIn.parse(fecha).getTime();
+			else
+				res = millisFechaGen(FECHA_MAX, FORMATO_FECHA);
         } catch (ParseException e) {
             MensajeApp.muestraError(null, e, "Fallo parseando fecha. Debe seguir el formato " + formato);
         } finally {

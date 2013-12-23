@@ -408,7 +408,7 @@ private void iniCampos() {
     try {
         this.jsDesdeFecha.setTimeInMillis(this.desdeFechaOrig);
 
-        Auxiliares.cargaNormas(this.jcbNorma);
+        Auxiliares.cargaNormasRuido(this.jcbNorma);
         this.jcbNorma.setSelectedItem(ComboBoxObject.getItemWithKey(this.jcbNorma, this.idNormaOrig));
     } catch (SQLException e) {
         MensajeApp.muestraError(this, e, "Fallo al consultar la base de datos");

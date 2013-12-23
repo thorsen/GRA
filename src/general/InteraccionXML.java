@@ -40,22 +40,26 @@ public class InteraccionXML {
     
     public static int creaFftXmlSchema() throws IOException, SQLException {
         int res = 0;
-        InteraccionFic interFic = new InteraccionFic("src/general/" + NOM_FFT_SCHEMA + ".xsd", InteraccionFic.READ);
-        String linea, xmlSchema = "";
         InteraccionBD interBD = new InteraccionBD();
-        
-        while ((linea = interFic.leeLinea()) != null) {
-            if (xmlSchema.length() > 0)
-                xmlSchema += "\n";
-            else //Es la primera línea, cambiamos el encoding
-                linea = linea.replace("UTF-8", "UTF-16");
-            
-            xmlSchema += linea;
-        }
-        
-        interFic.finOpFichero();
-        
-        interBD.creaXmlSchema(NOM_FFT_SCHEMA, xmlSchema);
+
+		//Solo creamos el esquema XML si no existe previamente
+		if (!interBD.existeXmlSchema(NOM_FFT_SCHEMA)) {
+			InteraccionFic interFic = new InteraccionFic("data/" + NOM_FFT_SCHEMA + ".xsd", InteraccionFic.READ);
+			String linea, xmlSchema = "";
+			
+			while ((linea = interFic.leeLinea()) != null) {
+				if (xmlSchema.length() > 0)
+					xmlSchema += "\n";
+				else //Es la primera línea, cambiamos el encoding
+					linea = linea.replace("UTF-8", "UTF-16");
+				
+				xmlSchema += linea;
+			}
+			
+			interFic.finOpFichero();
+			
+			interBD.creaXmlSchema(NOM_FFT_SCHEMA, xmlSchema);
+		}
         
         return res;
     }

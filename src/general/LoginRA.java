@@ -25,6 +25,9 @@ public class LoginRA {
         this.password = password;
         
         resp = ResponsableRA.getResponsablePorUsuario(usuario);
+
+		if (!resp.getPassword().trim().contentEquals(password.trim()))
+			resp = null;
                 
         if (resp != null && resp.getActivo() != null && resp.getActivo()) {
             this.idResponsable = resp.getIdResponsable();

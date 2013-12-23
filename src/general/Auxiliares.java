@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
-import javax.swing.InputVerifier;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -47,7 +46,7 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.XYPlot;
 import userinterfaces.GRA;
-
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 /**
  *
  * @author Victor Fernandez
@@ -101,6 +100,8 @@ public class Auxiliares {
     public static final Color JTP_TIT_FONDO = new Color(102, 102, 102);
     
     public static final Integer NUM_D_FIN_PERTURBACION_RA = 10; //La pertubación de sector por un obstáculo desaparece a 10D
+
+	private static final String CLAVE_ENCRYPT = "25dmlw9LCOdH9WZUL1cq";
     
     public static String dameRutaDefecto(Component c) {
         LoginRA login = obtenerLogin(c);
@@ -158,8 +159,8 @@ public class Auxiliares {
             jcb.setSelectedIndex(0);
     }
     //Función para cargar en un combo los asuntos
-    public static void cargaAsuntos(JComboBox jcb) throws SQLException, NoSuchFieldException {
-        cargaAsuntosGen(jcb, true, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, AsuntoRA.TIPO_ASUNTO_RA);
+    public static void cargaAsuntosTipo(JComboBox jcb, Integer tipo) throws SQLException, NoSuchFieldException {
+        cargaAsuntosGen(jcb, true, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, tipo);
     }
     
     //Función para cargar en un combo los sites dado un asunto
@@ -223,6 +224,27 @@ public class Auxiliares {
                 jcb.insertItemAt(dato, i + 1);
             }
         }
+		
+        jcb.setSelectedIndex(0);
+    }
+
+    //Función para cargar en un combo las normas de ruido de aplicación posibles
+    public static void cargaNormasRuido(JComboBox jcb) throws SQLException, NoSuchFieldException {
+        // Inicializo el combo sites
+        jcb.removeAllItems();
+        jcb.insertItemAt(new ComboBoxObject(null, ""), 0);
+
+        // Cargo el combo sites
+        ArrayList<NormaRA> normas = NormaRA.getNormasRuido(null, null, null, null, null, true);
+
+        if (normas != null) {
+            int n = normas.size();
+            for (int i = 0; i < n; i++) {
+                ComboBoxObject dato = new ComboBoxObject(normas.get(i).getIdNorma(), normas.get(i).getNombre());
+
+                jcb.insertItemAt(dato, i + 1);
+            }
+        }
         jcb.setSelectedIndex(0);
     }
     
@@ -254,7 +276,7 @@ public class Auxiliares {
     public static boolean validaCampos(Container jp) {
         boolean res = true;
         Component[] com;
-        InputVerifier iv;
+        IVExtendido iv;
 
         com = jp.getComponents();
 		for (Component com1 : com) {
@@ -264,9 +286,9 @@ public class Auxiliares {
 					return res;
 			}
 			try {
-				iv = ((JComponent) com1).getInputVerifier();
+				iv = (IVExtendido) ((JComponent) com1).getInputVerifier();
 				if (iv != null) {
-					if (!iv.verify((JComponent) com1)) {
+					if (!iv.verifyFinal((JComponent) com1)) {
 						res = false;
 						return res;
 					}
@@ -1030,10 +1052,13 @@ public class Auxiliares {
     
     //Función que devuelve el ángulo máximo en radianes que forma la recta micro aero con las diferentes curvas de nivel (en caso de que haya intersección)
     public static Double getAnguloMaxConMallado(LineString rectaMicroAero, Double[][] mallado, ArrayList<PosicionRA> puntoAngMax) {
-        Double res = 0.0, resAux = null;
+        Double res = -Math.PI/2.0, resAux = null;
+
+		int nCoordinates = rectaMicroAero.getCoordinates().length;
         
-        if (rectaMicroAero != null && rectaMicroAero.getCoordinates().length != 0 && mallado != null) {
+        if (rectaMicroAero != null && nCoordinates != 0 && mallado != null) {
             Coordinate posMicro = rectaMicroAero.getCoordinateN(0);
+            Coordinate posAero = rectaMicroAero.getCoordinateN(nCoordinates - 1);
             Coordinate puntoCorte;
 
             //Creamos la recta 2D
@@ -1043,6 +1068,8 @@ public class Auxiliares {
             LineString rectaMicroAero2D = getRecta2D(iniRecta.x, iniRecta.y, finRecta.x, finRecta.y);
             
             Double[][] puntosCorte = getPuntosCorteRectaMallado(rectaMicroAero2D, mallado);
+
+			res = getAnguloMaxMicroPuntoCorte(posMicro, posAero);
 
             int nPuntos = puntosCorte != null ? puntosCorte.length : 0;
             for (int i = 0; i < nPuntos; i++) {
@@ -1084,5 +1111,33 @@ public class Auxiliares {
     
     public static Double getAnguloDecimal(Double anguloRadianes) {
         return anguloRadianes != null ? TratDecimales.round(anguloRadianes * 180/Math.PI, TratDecimales.DEC_SECTOR) : null;
+    }
+
+	public static String encrypt(String cadena,String clave) { 
+        StandardPBEStringEncryptor s = new StandardPBEStringEncryptor(); 
+        s.setPassword(clave); 
+		
+        return s.encrypt(cadena); 
+    } 
+ 
+    public static String encrypt(String cadena) { 
+        return encrypt(cadena, CLAVE_ENCRYPT); 
+    }
+	
+	public static String decrypt(String cadena, String clave) { 
+        StandardPBEStringEncryptor s = new StandardPBEStringEncryptor(); 
+        s.setPassword(clave); 
+        String res = ""; 
+		
+        try { 
+            res = s.decrypt(cadena); 
+        } catch (Exception e) { 
+        } 
+
+        return res; 
+    } 
+	
+    public static String decrypt(String cadena) { 
+        return decrypt(cadena, CLAVE_ENCRYPT); 
     }
 }

@@ -1,5 +1,6 @@
 package userinterfaces;
 
+import RA.AsuntoRA;
 import general.Auxiliares;
 import RA.DatosRA2;
 import RA.Descripcion;
@@ -63,7 +64,7 @@ public class DatosRAGUI extends JDialog {
         setBackground(new java.awt.Color(175, 30, 30));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
+        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GCPMini.jpg").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -75,9 +76,9 @@ public class DatosRAGUI extends JDialog {
         jpGral.setBackground(new java.awt.Color(255, 255, 255));
 
         jpDatos.setBackground(new java.awt.Color(255, 255, 255));
-        jpDatos.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 51, 255))); // NOI18N
+        jpDatos.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 51, 255)));
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Selector de Mediciones ");
 
         jbSelRuta.setBackground(new java.awt.Color(255, 255, 255));
@@ -116,30 +117,32 @@ public class DatosRAGUI extends JDialog {
         });
         jtFicheros.getTableHeader().setReorderingAllowed(false);
         jspFicheros.setViewportView(jtFicheros);
-        jtFicheros.getColumnModel().getColumn(0).setMinWidth(200);
-        jtFicheros.getColumnModel().getColumn(0).setPreferredWidth(200);
-        jtFicheros.getColumnModel().getColumn(0).setMaxWidth(500);
-        jtFicheros.getColumnModel().getColumn(1).setMinWidth(50);
-        jtFicheros.getColumnModel().getColumn(1).setPreferredWidth(50);
-        jtFicheros.getColumnModel().getColumn(1).setMaxWidth(50);
-        jtFicheros.getColumnModel().getColumn(2).setMinWidth(50);
-        jtFicheros.getColumnModel().getColumn(2).setPreferredWidth(50);
-        jtFicheros.getColumnModel().getColumn(2).setMaxWidth(50);
-        jtFicheros.getColumnModel().getColumn(3).setMinWidth(50);
-        jtFicheros.getColumnModel().getColumn(3).setPreferredWidth(50);
-        jtFicheros.getColumnModel().getColumn(3).setMaxWidth(50);
-        jtFicheros.getColumnModel().getColumn(4).setResizable(false);
+        if (jtFicheros.getColumnModel().getColumnCount() > 0) {
+            jtFicheros.getColumnModel().getColumn(0).setMinWidth(200);
+            jtFicheros.getColumnModel().getColumn(0).setPreferredWidth(200);
+            jtFicheros.getColumnModel().getColumn(0).setMaxWidth(500);
+            jtFicheros.getColumnModel().getColumn(1).setMinWidth(50);
+            jtFicheros.getColumnModel().getColumn(1).setPreferredWidth(50);
+            jtFicheros.getColumnModel().getColumn(1).setMaxWidth(50);
+            jtFicheros.getColumnModel().getColumn(2).setMinWidth(50);
+            jtFicheros.getColumnModel().getColumn(2).setPreferredWidth(50);
+            jtFicheros.getColumnModel().getColumn(2).setMaxWidth(50);
+            jtFicheros.getColumnModel().getColumn(3).setMinWidth(50);
+            jtFicheros.getColumnModel().getColumn(3).setPreferredWidth(50);
+            jtFicheros.getColumnModel().getColumn(3).setMaxWidth(50);
+            jtFicheros.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         jLabel5.setText("  Fecha de Inicio:");
 
-        jtfFechaDesde.setBackground(new java.awt.Color(204, 204, 204));
         jtfFechaDesde.setEditable(false);
+        jtfFechaDesde.setBackground(new java.awt.Color(204, 204, 204));
         jtfFechaDesde.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel6.setText("  Último dato:");
 
-        jtfFechaHasta.setBackground(new java.awt.Color(204, 204, 204));
         jtfFechaHasta.setEditable(false);
+        jtfFechaHasta.setBackground(new java.awt.Color(204, 204, 204));
         jtfFechaHasta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jpProgress.setBackground(new java.awt.Color(255, 255, 255));
@@ -148,7 +151,7 @@ public class DatosRAGUI extends JDialog {
         jpbProg.setBackground(new java.awt.Color(255, 255, 255));
 
         jlProg.setBackground(new java.awt.Color(255, 255, 255));
-        jlProg.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jlProg.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jlProg.setText("Progreso de la inserción »");
         jlProg.setFocusable(false);
 
@@ -159,9 +162,9 @@ public class DatosRAGUI extends JDialog {
             .addGroup(jpProgressLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jpbProg, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
+                    .addComponent(jpbProg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jlProg, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGap(8, 8, 8))
         );
         jpProgressLayout.setVerticalGroup(
             jpProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,7 +173,7 @@ public class DatosRAGUI extends JDialog {
                 .addComponent(jlProg)
                 .addGap(11, 11, 11)
                 .addComponent(jpbProg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jrbMetrosSeg.setBackground(new java.awt.Color(255, 255, 255));
@@ -193,19 +196,20 @@ public class DatosRAGUI extends JDialog {
         jpDatosLayout.setHorizontalGroup(
             jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpDatosLayout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
-                .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jpProgress, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jspFicheros, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpDatosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpDatosLayout.createSequentialGroup()
                         .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addComponent(jtfFechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
                         .addGap(48, 48, 48)
                         .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jtfFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jpDatosLayout.createSequentialGroup()
+                                .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jtfFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(48, 48, 48))
                             .addGroup(jpDatosLayout.createSequentialGroup()
                                 .addGap(46, 46, 46)
                                 .addComponent(jLabel4)
@@ -215,13 +219,16 @@ public class DatosRAGUI extends JDialog {
                                 .addComponent(jrbMetrosSegSB)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jrbRevPorMin)
-                                .addGap(18, 18, 18)
-                                .addComponent(jbSelRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jbSelRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jpProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jspFicheros, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         jpDatosLayout.setVerticalGroup(
             jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpDatosLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jpDatosLayout.createSequentialGroup()
                         .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,9 +249,10 @@ public class DatosRAGUI extends JDialog {
                         .addComponent(jLabel4))
                     .addComponent(jbSelRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jspFicheros, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jspFicheros, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jpProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jpProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jbCancelar.setBackground(new java.awt.Color(255, 255, 255));
@@ -263,14 +271,14 @@ public class DatosRAGUI extends JDialog {
             }
         });
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("MEDICIONES DEL ENSAYO DE RUIDO ACÚSTICO");
 
         jpClave.setBackground(new java.awt.Color(255, 255, 255));
         jpClave.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder()));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setText("Asunto:");
 
         jcbAsunto.addActionListener(new java.awt.event.ActionListener() {
@@ -279,7 +287,7 @@ public class DatosRAGUI extends JDialog {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("Site:");
 
         jcbSite.addActionListener(new java.awt.event.ActionListener() {
@@ -297,7 +305,7 @@ public class DatosRAGUI extends JDialog {
                 .addGroup(jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 191, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jpClaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jcbAsunto, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jcbSite, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -324,13 +332,16 @@ public class DatosRAGUI extends JDialog {
             .addGroup(jpGralLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpGralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jpDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
-                    .addComponent(jpClave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jpGralLayout.createSequentialGroup()
-                        .addComponent(jbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
-                        .addComponent(jbInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jpGralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jpGralLayout.createSequentialGroup()
+                                .addComponent(jbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jbInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jpClave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jpDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jpGralLayout.setVerticalGroup(
@@ -362,8 +373,8 @@ public class DatosRAGUI extends JDialog {
             .addComponent(jpGral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-610)/2, (screenSize.height-614)/2, 610, 614);
+        setSize(new java.awt.Dimension(592, 586));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelar
@@ -517,7 +528,7 @@ private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
         this.jtFicheros.removeColumn(this.jtFicheros.getColumn("Path"));
         
         //Carga inicial de Asuntos
-        Auxiliares.cargaAsuntos(this.jcbAsunto);
+        Auxiliares.cargaAsuntosTipo(this.jcbAsunto, AsuntoRA.TIPO_ASUNTO_RA);
         
         habilitaClave();
     } catch (SQLException e) {
@@ -545,27 +556,27 @@ private void seleccionarRuta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
 }//GEN-LAST:event_seleccionarRuta
    
 private void habilitaClave() {
-	Auxiliares.setEnabledCamposPanel(this.jpClave, true);
-	Auxiliares.setEnabledCamposPanel(this.jpDatos, false);
-	
-	jbCancelar.setEnabled(false);
-	jbInsertar.setEnabled(false);
-	
-	this.jcbAsunto.requestFocus();
-	this.jcbAsunto.setSelectedIndex(0);
-	
-	limpiarCampos();
-}
-
-private void habilitaDatos(){
-	Auxiliares.setEnabledCamposPanel(this.jpClave, false);
-	Auxiliares.setEnabledCamposPanel(this.jpDatos, true);
-	
-	jbCancelar.setEnabled(true);
-	jbInsertar.setEnabled(true);
-	
-	this.jbSelRuta.requestFocus();
-}
+        Auxiliares.setEnabledCamposPanel(this.jpClave, true);
+        Auxiliares.setEnabledCamposPanel(this.jpDatos, false);
+        
+        jbCancelar.setEnabled(false);
+        jbInsertar.setEnabled(false);
+        
+        this.jcbAsunto.requestFocus();
+        this.jcbAsunto.setSelectedIndex(0);
+        
+        limpiarCampos();
+    }
+    
+    private void habilitaDatos(){
+        Auxiliares.setEnabledCamposPanel(this.jpClave, false);
+        Auxiliares.setEnabledCamposPanel(this.jpDatos, true);
+        
+        jbCancelar.setEnabled(true);
+        jbInsertar.setEnabled(true);
+        
+        this.jbSelRuta.requestFocus();
+    }
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

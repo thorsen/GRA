@@ -9,16 +9,18 @@ public class NormaRA {
     private String nombre;
     private Boolean vigente;
     
-    public static final String BD = InteraccionBD.PREF_BD_RA;
-    public static final String TABLA = BD + "NormaRA";
-    public static final String CAMPO_ID_NORMA = "Id_norma";
-    public static final String CAMPO_NOMBRE = "Nombre";
-    public static final String CAMPO_VIGENTE = "Vigente";
+    public static final String BD = InteraccionBD.PREF_BD_GENERAL;
+    public static final String TABLA = BD + "Norma";
+    public static final String TABLA_RUIDO = InteraccionBD.PREF_BD_RA + "NormaRuido";
+    public static final String CAMPO_ID_NORMA = TABLA + "." + "Id_norma";
+    public static final String CAMPO_NOMBRE = TABLA + "." + "Nombre";
+    public static final String CAMPO_VIGENTE = TABLA + "." + "Vigente";
+    public static final String CAMPO_ID_NORMA_RUIDO = TABLA_RUIDO + "." + "Id_norma";
     
-    public static final Integer ID_NORMA_IEC_2_1 = 1;
-    public static final Integer ID_NORMA_BWEA = 2;
-    public static final Integer ID_NORMA_AWEA = 3;
-    public static final Integer ID_NORMA_IEC_3_0 = 4;
+    public static final Integer ID_NORMA_IEC_2_1 = 4;
+    public static final Integer ID_NORMA_IEC_3_0 = 5;
+    public static final Integer ID_NORMA_BWEA = 6;
+    public static final Integer ID_NORMA_AWEA = 7;
     
     public static final Integer DESDE_VEL_BWEA = 4;
     public static final Integer HASTA_VEL_BWEA = 18;
@@ -98,7 +100,8 @@ public class NormaRA {
         } else if (campo.compareTo(CAMPO_VIGENTE) == 0) {
             this.vigente = (Boolean) valor;
         } else {
-            throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+            //throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+			System.out.println("No existe el campo <" + campo + "> en la clase " + this.getClass().getSimpleName());
         }
     }
     
@@ -126,6 +129,17 @@ public class NormaRA {
         String condicion = "";
         ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
 
+		if (campos == null || campos.isEmpty()) {
+			Object[] camposNorma = interBD.getCamposTabla(TABLA);
+
+			campos = new ArrayList<String>();
+
+			int nCamposNorma = camposNorma.length;
+			for (int i = 0; i < nCamposNorma; i++) {
+				campos.add(TABLA + "." + (String) camposNorma[i]);
+			}
+		}
+
         condicion = getCondicion(idNorma, nombre, vigente, paramsPS);
         
         //Por defecto lo devolvemos ordenado por tipo
@@ -135,6 +149,52 @@ public class NormaRA {
         }
                
         ArrayList<Object[]> resAux = interBD.getDatosTabla(TABLA, campos, condicion, paramsPS, sqlExtra, distinct);
+
+        if (resAux != null) {
+            int n = resAux.size();
+            res = new ArrayList<NormaRA>();
+            
+            for (int i = 0; i < n; i++) {
+               res.add(new NormaRA(resAux.get(i), campos));
+            }
+        }
+
+        return res;
+    }
+
+	//Función para obtener la colección de NormasRA que se ajustan a los limites pasados
+    public static ArrayList<NormaRA> getNormasRuido(Integer idNorma, String nombre, Boolean vigente, ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
+        InteraccionBD interBD = new InteraccionBD();
+        
+        ArrayList<NormaRA> res = null;
+        String condicion = "";
+        ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
+
+		if (campos == null || campos.isEmpty()) {
+			Object[] camposNorma = interBD.getCamposTabla(TABLA);
+
+			campos = new ArrayList<String>();
+
+			int nCamposNorma = camposNorma.length;
+			for (int i = 0; i < nCamposNorma; i++) {
+				campos.add(TABLA + "." + (String) camposNorma[i]);
+			}
+		}
+
+        condicion = getCondicion(idNorma, nombre, vigente, paramsPS);
+
+		condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CAMPO_ID_NORMA_RUIDO, InteraccionBD.ASIGNACION_CAMPOS, CAMPO_ID_NORMA);
+        
+        //Por defecto lo devolvemos ordenado por tipo
+        if (sqlExtra == null || sqlExtra.trim().length() == 0) {
+            String sqlOrderBy = InteraccionBD.anadeCampoOrderBy(null, CAMPO_ID_NORMA);
+            sqlExtra = InteraccionBD.anadeSqlExtra(null, sqlOrderBy);
+        }
+
+		String tabla = InteraccionBD.anadeTabla(null, TABLA);
+        tabla = InteraccionBD.anadeTabla(tabla, TABLA_RUIDO);
+               
+        ArrayList<Object[]> resAux = interBD.getDatosTabla(tabla, campos, condicion, paramsPS, sqlExtra, distinct);
 
         if (resAux != null) {
             int n = resAux.size();

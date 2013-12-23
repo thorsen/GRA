@@ -1,14 +1,20 @@
 
 package userinterfaces;
 
+import general.Auxiliares;
 import general.IVExtendido;
+import general.InteraccionFic;
 import general.LoginRA;
 import general.MensajeApp;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import javax.swing.*;
 
 public class UsuarioRAGUI extends JDialog {
+
+	private static final String FIC_CONF = "GRA.ini";
      
 public UsuarioRAGUI(java.awt.Frame parent) {
     super(parent, true);
@@ -29,6 +35,7 @@ public UsuarioRAGUI(java.awt.Frame parent) {
         jLabel38 = new javax.swing.JLabel();
         jbSalir = new javax.swing.JButton();
         jbAceptar = new javax.swing.JButton();
+        jcbGuardar = new javax.swing.JCheckBox();
 
         jButton6.setText("OK");
 
@@ -58,7 +65,7 @@ public UsuarioRAGUI(java.awt.Frame parent) {
 
         jLabel1.setText("Usuario:");
 
-        jtfUsuario.setText("Ruth");
+        jtfUsuario.setName("Usuario"); // NOI18N
         jtfUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jtfUsuarioKeyPressed(evt);
@@ -71,8 +78,8 @@ public UsuarioRAGUI(java.awt.Frame parent) {
 
         jLabel2.setText("Contraseña:");
 
-        jpfPassword.setText("Ru8865No");
         jpfPassword.setToolTipText("");
+        jpfPassword.setName("Contraseña"); // NOI18N
         jpfPassword.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jpfPasswordKeyPressed(evt);
@@ -135,6 +142,8 @@ public UsuarioRAGUI(java.awt.Frame parent) {
             }
         });
 
+        jcbGuardar.setText("Guardar");
+
         javax.swing.GroupLayout jpEntradaLayout = new javax.swing.GroupLayout(jpEntrada);
         jpEntrada.setLayout(jpEntradaLayout);
         jpEntradaLayout.setHorizontalGroup(
@@ -145,8 +154,9 @@ public UsuarioRAGUI(java.awt.Frame parent) {
                     .addComponent(jpDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jpEntradaLayout.createSequentialGroup()
                         .addComponent(jbSalir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
-                        .addComponent(jbAceptar)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
+                        .addComponent(jbAceptar))
+                    .addComponent(jcbGuardar))
                 .addContainerGap())
         );
         jpEntradaLayout.setVerticalGroup(
@@ -160,7 +170,8 @@ public UsuarioRAGUI(java.awt.Frame parent) {
                         .addGap(95, 95, 95)
                         .addGroup(jpEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jbSalir)
-                            .addComponent(jbAceptar))))
+                            .addComponent(jbAceptar)
+                            .addComponent(jcbGuardar))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -179,13 +190,50 @@ public UsuarioRAGUI(java.awt.Frame parent) {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+private void cargaConfiguracion() {
+	try {
+		File f = new File(FIC_CONF);
+		if (f.exists()) {
+			InteraccionFic interfic = new InteraccionFic(FIC_CONF, InteraccionFic.READ);
+			String user = interfic.leeLinea().trim();
+			String passwd = Auxiliares.decrypt(interfic.leeLinea().trim());
+			String guardar = interfic.leeLinea();
+			interfic.finOpFichero();
+
+			this.jtfUsuario.setText(user);
+			this.jpfPassword.setText(passwd);
+			this.jcbGuardar.setSelected(guardar.contentEquals("S"));
+		}
+	} catch (IOException ex) {
+		MensajeApp.muestraError(this, ex, "Error leyendo fichero de configuración");
+	}
+}
+
+private void guardaConfiguracion() {
+	try {
+		InteraccionFic interfic = new InteraccionFic(FIC_CONF, InteraccionFic.OVERWRITE);
+		String user = this.jtfUsuario.getText();
+		String passwd = "";
+
+		if (this.jcbGuardar.isSelected())
+			passwd = Auxiliares.encrypt(String.valueOf(this.jpfPassword.getPassword()));
+
+		interfic.escribeLineaFic(user);
+		interfic.escribeLineaFic(passwd);
+		interfic.escribeLineaFic(this.jcbGuardar.isSelected() ? "S" : "N");
+		interfic.finOpFichero();
+	} catch (IOException ex) {
+		MensajeApp.muestraError(this, ex, "Error leyendo fichero de configuración");
+	}
+}
+	
 private void validarEntrada() {
     try {
         LoginRA login = new LoginRA(this.jtfUsuario.getText(), String.valueOf(this.jpfPassword.getPassword()));
 
         if (login.getIdResponsable() != null) {
             ((GRA) this.getParent()).setLogin(login);
-            dispose();
+			dispose();
         } else {
             MensajeApp.muestraError(this, null, "Usuario/Contraseña incorrectos");
         }                        
@@ -194,10 +242,17 @@ private void validarEntrada() {
     } catch (NoSuchFieldException e) {
         MensajeApp.muestraError(this, e, "Fallo añadiendo campo");
     }
-}    
+}
+
+private void accesoAplicacion() {
+	guardaConfiguracion();
+	
+	if (Auxiliares.validaCampos(this))
+		validarEntrada();
+}
     
 private void aceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptar
-    validarEntrada();
+	accesoAplicacion();
         }//GEN-LAST:event_aceptar
 
 private void salir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salir
@@ -207,25 +262,33 @@ private void salir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salir
 
 private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
     //Añadimos los verificadores de los campos de entrada
-    this.jtfUsuario.setInputVerifier(new IVExtendido(this, IVExtendido.TIPO_STRING, false, true));
-    this.jpfPassword.setInputVerifier(new IVExtendido(this, IVExtendido.TIPO_STRING, false, true));
+    this.jtfUsuario.setInputVerifier(new IVExtendido(this, IVExtendido.TIPO_STRING, false, false));
+    this.jpfPassword.setInputVerifier(new IVExtendido(this, IVExtendido.TIPO_STRING, false, false));
+
+	cargaConfiguracion();
+
+	if (!this.jtfUsuario.getText().isEmpty()) {
+		this.jpfPassword.requestFocus();
+		if (!String.valueOf(this.jpfPassword.getPassword()).isEmpty())
+			this.jbAceptar.requestFocus();
+	}
 }//GEN-LAST:event_formWindowOpened
 
 private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
     if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
-        validarEntrada();
+		accesoAplicacion();
     }
 }//GEN-LAST:event_formKeyPressed
 
 private void jtfUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfUsuarioKeyPressed
     if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
-        validarEntrada();
+        accesoAplicacion();
     }
 }//GEN-LAST:event_jtfUsuarioKeyPressed
 
 private void jpfPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jpfPasswordKeyPressed
     if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
-        validarEntrada();
+        accesoAplicacion();
     }
 }//GEN-LAST:event_jpfPasswordKeyPressed
     
@@ -237,6 +300,7 @@ private void jpfPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:eve
     private javax.swing.JLabel jLabel38;
     private javax.swing.JButton jbAceptar;
     private javax.swing.JButton jbSalir;
+    private javax.swing.JCheckBox jcbGuardar;
     private javax.swing.JPanel jpDatos;
     private javax.swing.JPanel jpEntrada;
     private javax.swing.JPasswordField jpfPassword;

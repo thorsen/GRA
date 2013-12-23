@@ -18,7 +18,7 @@ import java.util.Date;
 
 public class DatosRA {
     
-     private static String url = "jdbc:sqlserver://192.168.1.165:1433";
+     private static String url = "jdbc:sqlserver://192.168.1.53:1433";
     //private static String url = "jdbc:sqlserver://localhost";
     private static String user = "SQL_PwC";
     private static String pass = "Ru8865No";

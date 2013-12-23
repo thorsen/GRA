@@ -194,10 +194,10 @@
       <Color blue="cc" green="cc" red="cc" type="rgb"/>
     </Property>
     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-      <Color id="Cursor predeterminado"/>
+      <Color id="Cursor Por defecto"/>
     </Property>
     <Property name="iconImage" type="java.awt.Image" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-      <Connection code="new ImageIcon(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\GCPMini.jpg&quot;).getImage()" type="code"/>
+      <Connection code="new ImageIcon(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\GCPMini.jpg&quot;).getImage()" type="code"/>
     </Property>
     <Property name="locationByPlatform" type="boolean" value="true"/>
     <Property name="name" type="java.lang.String" value="Cliente" noResource="true"/>
@@ -215,6 +215,7 @@
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
@@ -359,7 +360,7 @@
                                   <Component id="jLabel56" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel10" alignment="0" max="32767" attributes="1"/>
                                   <Component id="jLabel1" alignment="0" max="32767" attributes="1"/>
-                                  <Component id="jLabel38" alignment="0" pref="67" max="32767" attributes="1"/>
+                                  <Component id="jLabel38" alignment="0" max="32767" attributes="1"/>
                                   <Component id="jLabel41" alignment="0" max="32767" attributes="1"/>
                                   <Component id="jLabel3" alignment="0" max="32767" attributes="1"/>
                                   <Component id="jLabel2" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
@@ -374,10 +375,7 @@
                                               <Component id="jTextField22" min="-2" pref="63" max="-2" attributes="1"/>
                                               <Component id="jTextField1" min="-2" pref="91" max="-2" attributes="1"/>
                                               <Component id="jComboBox2" alignment="1" max="32767" attributes="1"/>
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
-                                                  <Component id="jTextField6" min="-2" pref="57" max="-2" attributes="0"/>
-                                              </Group>
+                                              <Component id="jTextField6" alignment="1" min="-2" pref="57" max="-2" attributes="0"/>
                                               <Component id="jTextField20" alignment="1" min="-2" pref="236" max="-2" attributes="1"/>
                                           </Group>
                                           <Component id="jcbNorma" min="-2" pref="175" max="-2" attributes="1"/>
@@ -515,10 +513,10 @@
                     </Component>
                     <Component class="javax.swing.JTextField" name="jTextField1">
                       <Properties>
+                        <Property name="editable" type="boolean" value="false"/>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="cc" green="cc" red="cc" type="rgb"/>
                         </Property>
-                        <Property name="editable" type="boolean" value="false"/>
                         <Property name="horizontalAlignment" type="int" value="0"/>
                       </Properties>
                       <Events>
@@ -526,7 +524,7 @@
                         <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="ValidarCodigo"/>
                       </Events>
                       <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Asunto A=new Asunto();&#xa;try{&#xa;   this.jTextField1.setText(A.getNuevoCodigo());     &#xa;}&#xa;catch (SQLException ex) {&#xa;   ex.printStackTrace();&#xa;}"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Asunto A=new Asunto();&#xa;try{&#xa;&#x9;this.jTextField1.setText(A.getNuevoCodigo());&#xa;}&#xa;catch (SQLException ex) {&#xa;   ex.printStackTrace();&#xa;}"/>
                       </AuxValues>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel38">
@@ -578,10 +576,10 @@
                     </Component>
                     <Component class="javax.swing.JTextField" name="jTextField22">
                       <Properties>
+                        <Property name="editable" type="boolean" value="false"/>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="cc" green="cc" red="cc" type="rgb"/>
                         </Property>
-                        <Property name="editable" type="boolean" value="false"/>
                         <Property name="horizontalAlignment" type="int" value="0"/>
                       </Properties>
                       <Events>
@@ -632,7 +630,7 @@
                     <Component class="javax.swing.JLabel" name="jLabel57">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\user.png&quot; ))" type="code"/>
+                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\user.png&quot; ))" type="code"/>
                         </Property>
                       </Properties>
                     </Component>
@@ -812,10 +810,7 @@
                                           <Group type="103" groupAlignment="1" attributes="0">
                                               <Component id="jTextField3" alignment="1" min="-2" pref="229" max="-2" attributes="1"/>
                                               <Component id="jTextField4" min="-2" pref="138" max="-2" attributes="0"/>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="jTextField2" pref="311" max="32767" attributes="1"/>
-                                              </Group>
+                                              <Component id="jTextField2" alignment="0" pref="311" max="32767" attributes="1"/>
                                           </Group>
                                       </Group>
                                       <Component id="jLabel45" min="-2" pref="26" max="-2" attributes="1"/>
@@ -867,39 +862,39 @@
                       <SubComponents>
                         <Component class="javax.swing.JTextField" name="jTextField4">
                           <Properties>
+                            <Property name="editable" type="boolean" value="false"/>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="cc" green="cc" red="cc" type="rgb"/>
                             </Property>
-                            <Property name="editable" type="boolean" value="false"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JTextField" name="jTextField2">
                           <Properties>
+                            <Property name="editable" type="boolean" value="false"/>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="cc" green="cc" red="cc" type="rgb"/>
                             </Property>
-                            <Property name="editable" type="boolean" value="false"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JTextField" name="jTextField3">
                           <Properties>
+                            <Property name="editable" type="boolean" value="false"/>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="cc" green="cc" red="cc" type="rgb"/>
                             </Property>
-                            <Property name="editable" type="boolean" value="false"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel58">
                           <Properties>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\user_suit.png&quot; ))" type="code"/>
+                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\user_suit.png&quot; ))" type="code"/>
                             </Property>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel42">
                           <Properties>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\telephone.png&quot; ))" type="code"/>
+                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\telephone.png&quot; ))" type="code"/>
                             </Property>
                           </Properties>
                         </Component>
@@ -911,14 +906,14 @@
                         <Component class="javax.swing.JLabel" name="jLabel11">
                           <Properties>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\email.png&quot; ))" type="code"/>
+                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\email.png&quot; ))" type="code"/>
                             </Property>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel45">
                           <Properties>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\vcard.png&quot; ))" type="code"/>
+                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\vcard.png&quot; ))" type="code"/>
                             </Property>
                           </Properties>
                         </Component>
@@ -991,7 +986,7 @@
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\resultset_down.png&quot; ))" type="code"/>
+                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_down.png&quot; ))" type="code"/>
                         </Property>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
@@ -1005,7 +1000,7 @@
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\resultset_up.png&quot; ))" type="code"/>
+                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_up.png&quot; ))" type="code"/>
                         </Property>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
@@ -1191,7 +1186,7 @@
                     <Component class="javax.swing.JLabel" name="jLabel60">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\aero.png&quot; ))" type="code"/>
+                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\aero.png&quot; ))" type="code"/>
                         </Property>
                       </Properties>
                     </Component>
@@ -1530,7 +1525,7 @@
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Guardar.png&quot; ))" type="code"/>
+                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\Guardar.png&quot; ))" type="code"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Guardar Aerogenerador"/>
                         <Property name="enabled" type="boolean" value="false"/>
@@ -1800,7 +1795,7 @@
                     <Component class="javax.swing.JLabel" name="jLabel59">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\parque.png&quot; ))" type="code"/>
+                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\parque.png&quot; ))" type="code"/>
                         </Property>
                       </Properties>
                     </Component>
@@ -1963,7 +1958,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Component id="jButton4" min="-2" pref="29" max="-2" attributes="0"/>
-                                      <Component id="jPanel12" alignment="1" min="-2" pref="181" max="-2" attributes="1"/>
+                                      <Component id="jPanel12" alignment="1" min="-2" max="-2" attributes="1"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
@@ -2120,7 +2115,7 @@
                                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                                 </Property>
                                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\OpenFolder.gif&quot; ))" type="code"/>
+                                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\OpenFolder.gif&quot; ))" type="code"/>
                                 </Property>
                                 <Property name="toolTipText" type="java.lang.String" value="Cargar Fichero"/>
                                 <Property name="enabled" type="boolean" value="false"/>
@@ -2143,7 +2138,7 @@
                                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                                 </Property>
                                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Information.png&quot; ))" type="code"/>
+                                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\Information.png&quot; ))" type="code"/>
                                 </Property>
                                 <Property name="toolTipText" type="java.lang.String" value="Ver Formato de Fichero&#xa;"/>
                                 <Property name="enabled" type="boolean" value="false"/>
@@ -2166,7 +2161,7 @@
                                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                                 </Property>
                                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\printer.png&quot; ))" type="code"/>
+                                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\printer.png&quot; ))" type="code"/>
                                 </Property>
                                 <Property name="toolTipText" type="java.lang.String" value="Imprimir posiciones"/>
                                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
@@ -2190,7 +2185,7 @@
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Guardar.png&quot; ))" type="code"/>
+                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\Guardar.png&quot; ))" type="code"/>
                             </Property>
                             <Property name="toolTipText" type="java.lang.String" value="Guardar Parque"/>
                             <Property name="enabled" type="boolean" value="false"/>
@@ -2274,7 +2269,7 @@
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jspPosicionesRA" min="-2" pref="430" max="-2" attributes="1"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jpBotonesPosRA" pref="215" max="32767" attributes="1"/>
+                                      <Component id="jpBotonesPosRA" max="32767" attributes="1"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -2288,7 +2283,7 @@
                               <Component id="jLabel69" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jpBotonesPosRA" min="0" pref="105" max="32767" attributes="1"/>
+                                  <Component id="jpBotonesPosRA" min="0" pref="0" max="32767" attributes="1"/>
                                   <Component id="jspPosicionesRA" alignment="0" min="-2" pref="105" max="-2" attributes="1"/>
                               </Group>
                               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
@@ -2416,7 +2411,7 @@
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\OpenFolder.gif&quot; ))" type="code"/>
+                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\OpenFolder.gif&quot; ))" type="code"/>
                             </Property>
                             <Property name="toolTipText" type="java.lang.String" value="Cargar Fichero"/>
                             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
@@ -2438,7 +2433,7 @@
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Information.png&quot; ))" type="code"/>
+                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\Information.png&quot; ))" type="code"/>
                             </Property>
                             <Property name="toolTipText" type="java.lang.String" value="Ver Formato de Fichero&#xa;"/>
                             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
@@ -2460,7 +2455,7 @@
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Information.png&quot; ))" type="code"/>
+                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\Information.png&quot; ))" type="code"/>
                             </Property>
                             <Property name="toolTipText" type="java.lang.String" value="Ver Formato de Fichero&#xa;"/>
                             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">

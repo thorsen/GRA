@@ -211,7 +211,8 @@ public class LineaConfiguracion {
         } else if (campo.compareTo(CAMPO_ORIENTACION) == 0) {
             this.orientacion = (Double) valor;
         } else {
-            throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+            //throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+			System.out.println("No existe el campo <" + campo + "> en la clase " + this.getClass().getSimpleName());
         }
     }
     

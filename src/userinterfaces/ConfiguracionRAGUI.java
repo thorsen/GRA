@@ -108,7 +108,7 @@ public class ConfiguracionRAGUI extends JDialog {
         jpCabecera.setBackground(new java.awt.Color(255, 255, 255));
         jpCabecera.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder()));
 
-        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlAsunto.setText("Asunto:");
 
         jcbAsunto.addActionListener(new java.awt.event.ActionListener() {
@@ -117,7 +117,7 @@ public class ConfiguracionRAGUI extends JDialog {
             }
         });
 
-        jlSite.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlSite.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlSite.setText("Site:");
 
         jcbSite.addActionListener(new java.awt.event.ActionListener() {
@@ -139,7 +139,7 @@ public class ConfiguracionRAGUI extends JDialog {
                 .addComponent(jlSite)
                 .addGap(18, 18, 18)
                 .addComponent(jcbSite, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpCabeceraLayout.setVerticalGroup(
             jpCabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,13 +167,13 @@ public class ConfiguracionRAGUI extends JDialog {
         jtLineasConf.getTableHeader().setReorderingAllowed(false);
         jspLineasConf.setViewportView(jtLineasConf);
 
-        jlSerie.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlSerie.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlSerie.setText("Serie:");
 
         jcbSerie.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
         jcbSerie.setEnabled(false);
 
-        jlCanal.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jlCanal.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlCanal.setText("Canal:");
 
         jcbCanal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
@@ -205,29 +205,29 @@ public class ConfiguracionRAGUI extends JDialog {
         jspHistorico.setViewportView(jtHistorico);
         jtHistorico.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("         ");
 
-        jTitConfiguraciones.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jTitConfiguraciones.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jTitConfiguraciones.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jTitConfiguraciones.setText("CONFIGURACIONES");
         jTitConfiguraciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlFechaIniMed.setText("  Fecha Inicio Medidas:");
+        jlFechaIniMed.setText("  Fecha Inicio Configuración:");
 
         jsFechaIniMed.setEnabled(false);
 
-        jlTitHistorico.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlTitHistorico.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlTitHistorico.setText("Histórico:");
 
-        jlTitNueva.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlTitNueva.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlTitNueva.setText("Nueva:");
 
-        jlFechaIniNueva.setText("  Fecha Inicio");
+        jlFechaIniNueva.setText("  Fecha Inicio Validez Conf");
 
         jlDeclinacion.setText("  Declinación");
 
-        jlTitLineas.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlTitLineas.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlTitLineas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlTitLineas.setText("LÍNEAS DE CONFIGURACIÓN");
         jlTitLineas.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -311,14 +311,6 @@ public class ConfiguracionRAGUI extends JDialog {
         jpDatosLayout.setHorizontalGroup(
             jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpDatosLayout.createSequentialGroup()
-                .addGap(209, 209, 209)
-                .addComponent(jTitConfiguraciones, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(228, Short.MAX_VALUE))
-            .addGroup(jpDatosLayout.createSequentialGroup()
-                .addGap(212, 212, 212)
-                .addComponent(jlTitLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(225, Short.MAX_VALUE))
-            .addGroup(jpDatosLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpDatosLayout.createSequentialGroup()
@@ -332,7 +324,7 @@ public class ConfiguracionRAGUI extends JDialog {
                                 .addComponent(jlCanal)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jcbCanal, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 235, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel8)
                                 .addGap(8, 8, 8)
                                 .addComponent(jbAnadir, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -346,41 +338,48 @@ public class ConfiguracionRAGUI extends JDialog {
                                     .addComponent(jspHistorico, 0, 0, Short.MAX_VALUE)
                                     .addGroup(jpDatosLayout.createSequentialGroup()
                                         .addComponent(jlFechaIniMed)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jsFechaIniMed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jlSepHistorico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jlTitHistorico))
                                 .addGap(120, 120, 120)
                                 .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jlTitNueva)
-                                    .addComponent(jlSepNueva)
                                     .addGroup(jpDatosLayout.createSequentialGroup()
                                         .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jlFechaIniNueva)
                                             .addComponent(jlDeclinacion))
-                                        .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGap(22, 22, 22)
+                                        .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jsFechaIniNueva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(jpDatosLayout.createSequentialGroup()
-                                                .addGap(104, 104, 104)
                                                 .addComponent(jtfDeclinacion, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jlGrados, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jrbDecEste)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jrbDecOeste))
-                                            .addGroup(jpDatosLayout.createSequentialGroup()
-                                                .addGap(84, 84, 84)
-                                                .addComponent(jsFechaIniNueva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                    .addComponent(jbCargarLineas, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))
-                                .addGap(10, 10, 10)))
+                                                .addComponent(jrbDecOeste))))
+                                    .addComponent(jlTitNueva)
+                                    .addComponent(jlSepNueva)
+                                    .addComponent(jbCargarLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(142, 142, 142))
                     .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jspLineasConf, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jbImprimirTabla, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(152, 152, 152))
             .addGroup(jpDatosLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jsSep, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpDatosLayout.createSequentialGroup()
+                        .addGap(209, 209, 209)
+                        .addComponent(jTitConfiguraciones, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpDatosLayout.createSequentialGroup()
+                        .addGap(212, 212, 212)
+                        .addComponent(jlTitLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpDatosLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jsSep, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpDatosLayout.setVerticalGroup(
             jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -490,8 +489,8 @@ public class ConfiguracionRAGUI extends JDialog {
                 .addComponent(jpDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                    .addComponent(jbGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
+                    .addComponent(jbCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jbGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -647,6 +646,26 @@ private void eliminarLineaConf(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
     }
 }
 
+private Integer getNumeroConfiguracionHistorico(Long fecha) {
+	Integer res = null;
+
+    DefaultTableModel dtmHistorico = (DefaultTableModel) this.jtHistorico.getModel();
+	Long fechaHistorico;
+
+	int nConfiguraciones = dtmHistorico.getRowCount();
+
+	for (int i = 0; i < nConfiguraciones; i++) {
+		fechaHistorico = TratFechas.millisFecha((String) dtmHistorico.getValueAt(i, 1));
+		
+		if (fechaHistorico.equals(fecha)) { //Ya existe, es una modificación
+			res = (Integer) dtmHistorico.getValueAt(i, 0);
+			break;
+		}
+	}
+
+	return res;
+}
+
 private void guardarConf(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarConf
     DefaultTableModel dtmLineasConf = (DefaultTableModel) this.jtLineasConf.getModel();
 
@@ -658,11 +677,12 @@ private void guardarConf(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guar
 
             Integer idAsunto = (Integer) ComboBoxObject.getClaveSelCombo(this.jcbAsunto);
             Integer idSite = (Integer) ComboBoxObject.getClaveSelCombo(this.jcbSite);
-            Integer idConfig = ConfiguracionRA2.getUltimaConfiguracion(idAsunto, idSite);
-            if (idConfig == null)
-                idConfig = 0;
-            
-            idConfig++;
+			Integer idConfig = ConfiguracionRA2.getUltimaConfiguracion(idAsunto, idSite);
+
+			if (idConfig == null)
+				idConfig = 0;
+			
+			idConfig++;
 
             Double angulo = Double.parseDouble(this.jtfDeclinacion.getText());
             Character posicion = this.jrbDecOeste.isSelected() ? Declinacion.CHAR_OESTE : Declinacion.CHAR_ESTE;
@@ -715,7 +735,7 @@ private void guardarConf(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guar
                 if (equipo == null)
                     error += "Faltan el código de equipo de la serie " + codigo  + "<br>";
                 if (cota == null) {
-                    if (idSerie.equals("11"))
+                    if (idSerie == 11)
                         error += "Falta la cota del sensor de presión principal de la serie " + codigo  + "<br>";
                     else if (nomVariable != null && nomVariable.equals("Velocidad"))
                         error += "Falta la cota del anemómetro de la serie " + codigo  + "<br>";
@@ -725,7 +745,7 @@ private void guardarConf(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guar
                 if (slopeP == null || offsetP == null)
                     error += "Faltan datos en la programación de la serie " + codigo + "<br>";
 
-                if (idSerie.equals("2") && orientacion == null)
+                if (idSerie == 2 && orientacion == null)
                     error += "Faltan la orientación del anemómetro de la serie " + codigo + "<br>";
             }
 
@@ -757,34 +777,38 @@ private void guardarConf(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guar
 private void cargarLineasConf(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarLineasConf
     try {
         if (this.jsFechaIniNueva.getTimeInMillis() != 0) {
-            // Inicializo el combo de series
-            this.jcbSerie.removeAllItems();
-            this.jcbSerie.insertItemAt("", 0);
+			if (getNumeroConfiguracionHistorico(this.jsFechaIniNueva.getTimeInMillis()) == null) {
+				// Inicializo el combo de series
+				this.jcbSerie.removeAllItems();
+				this.jcbSerie.insertItemAt("", 0);
 
-            Integer idAsunto = (Integer) ComboBoxObject.getClaveSelCombo(this.jcbAsunto);
-            Integer idSite = (Integer) ComboBoxObject.getClaveSelCombo(this.jcbSite);
-            Integer idTipoRA = TipoRA.getTipoRAPorIdSite(idSite).getIdTipoRA();
-            
-            cargarCodigos(idAsunto, idTipoRA);
-            
-            // Habilito
-            this.jbGuardar.setEnabled(true);
-            this.jbEliminar.setEnabled(true);
-            this.jbAnadir.setEnabled(true);
-            this.jbActualizar.setEnabled(true);
-            this.jcbSerie.setEnabled(true);
-            this.jcbCanal.setEnabled(true);
+				Integer idAsunto = (Integer) ComboBoxObject.getClaveSelCombo(this.jcbAsunto);
+				Integer idSite = (Integer) ComboBoxObject.getClaveSelCombo(this.jcbSite);
+				Integer idTipoRA = TipoRA.getTipoRAPorIdSite(idSite).getIdTipoRA();
+				
+				cargarCodigos(idAsunto, idTipoRA);
+				
+				// Habilito
+				this.jbGuardar.setEnabled(true);
+				this.jbEliminar.setEnabled(true);
+				this.jbAnadir.setEnabled(true);
+				this.jbActualizar.setEnabled(true);
+				this.jcbSerie.setEnabled(true);
+				this.jcbCanal.setEnabled(true);
 
-            int nLineas = this.jtHistorico.getRowCount();
-            // se carga la última
-            if (nLineas > 0) {
-                int numConfig = (Integer) this.jtHistorico.getValueAt(nLineas - 1, 0);
-                cargarLineas(numConfig);
-            }
+				int nLineas = this.jtHistorico.getRowCount();
+				// se carga la última
+				if (nLineas > 0) {
+					int numConfig = (Integer) this.jtHistorico.getValueAt(nLineas - 1, 0);
+					cargarLineas(numConfig);
+				}
 
-            this.jsFechaIniNueva.setEnabled(false);
-        } else{
-            JOptionPane.showMessageDialog(this, "Introduzca fecha de inicio de configuracion","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+				this.jsFechaIniNueva.setEnabled(false);
+			} else {
+				MensajeApp.muestraWarning(this, "Ya existe una configuración con esa fecha de inicio de validez");
+			}
+        } else {
+			MensajeApp.muestraWarning(this, "Introduzca fecha de inicio de validez de configuración");
         }
     } catch (SQLException e) {
         MensajeApp.muestraError(this, e, "Fallo al consultar la base de datos");
@@ -879,7 +903,7 @@ private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
         this.jtLineasConf.getTableHeader().setReorderingAllowed(false);
 
         //Carga inicial de Asuntos
-        Auxiliares.cargaAsuntos(this.jcbAsunto);
+        Auxiliares.cargaAsuntosTipo(this.jcbAsunto, AsuntoRA.TIPO_ASUNTO_RA);
     } catch (SQLException e) {
         MensajeApp.muestraError(this, e, "Fallo al consultar la base de datos");
     } catch (NoSuchFieldException e) {
@@ -897,7 +921,7 @@ private void limpiarCampos() {
     dtmHistorico.setRowCount(0);
 
     // Fase Nueva
-    this.jsFechaIniNueva.setText(TratFechas.FECHA_MIN);
+    this.jsFechaIniNueva.setText(TratFechas.toStringFecha(System.currentTimeMillis()));
     this.jsFechaIniNueva.setEnabled(true);
     this.jtfDeclinacion.setText("0");
     this.jrbDecEste.setSelected(true);
@@ -948,7 +972,7 @@ private void cargarLineas(Integer numConfig){
         if (dec != null) {
             this.jtfDeclinacion.setText(dec.getAngulo().toString());
             this.jrbDecEste.setSelected(dec.getPosicion().equals(Declinacion.CHAR_ESTE));
-            this.jrbDecEste.setSelected(dec.getPosicion().equals(Declinacion.CHAR_OESTE));
+            this.jrbDecOeste.setSelected(dec.getPosicion().equals(Declinacion.CHAR_OESTE));
         }
     } catch (SQLException e) {
         MensajeApp.muestraError(this, e, "Fallo al consultar la base de datos");

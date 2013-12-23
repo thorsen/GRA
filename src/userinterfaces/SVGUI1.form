@@ -18,7 +18,7 @@
       <Color blue="0" green="0" red="ff" type="rgb"/>
     </Property>
     <Property name="iconImage" type="java.awt.Image" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-      <Connection code="new ImageIcon(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\GCPMini.jpg&quot;).getImage()" type="code"/>
+      <Connection code="new ImageIcon(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\GCPMini.jpg&quot;).getImage()" type="code"/>
     </Property>
     <Property name="locationByPlatform" type="boolean" value="true"/>
     <Property name="name" type="java.lang.String" value="Cliente" noResource="true"/>
@@ -190,7 +190,7 @@
             <Component class="javax.swing.JLabel" name="jLabel59">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\parque.png&quot; ))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\parque.png&quot; ))" type="code"/>
                 </Property>
               </Properties>
             </Component>
@@ -199,7 +199,7 @@
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\database_gear.png&quot; ))" type="code"/>
+              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\database_gear.png&quot; ))" type="code"/>
             </Property>
           </Properties>
         </Component>
@@ -383,7 +383,7 @@
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\resultset_down.png&quot; ))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_down.png&quot; ))" type="code"/>
                 </Property>
               </Properties>
               <Events>
@@ -394,7 +394,7 @@
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\map.png&quot; ))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\map.png&quot; ))" type="code"/>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
@@ -407,7 +407,7 @@
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\add.png&quot; ))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\add.png&quot; ))" type="code"/>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -665,7 +665,7 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\printer.png&quot; ))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\printer.png&quot; ))" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value="Imprimir"/>
                   </Properties>
@@ -748,7 +748,7 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\delete.png&quot; ))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\delete.png&quot; ))" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -761,7 +761,7 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\printer.png&quot; ))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\printer.png&quot; ))" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value="Imprimir"/>
                   </Properties>
@@ -963,7 +963,7 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\delete.png&quot; ))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\delete.png&quot; ))" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -976,7 +976,7 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\printer.png&quot; ))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\printer.png&quot; ))" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value="Imprimir"/>
                   </Properties>

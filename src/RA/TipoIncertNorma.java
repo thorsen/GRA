@@ -63,7 +63,8 @@ public class TipoIncertNorma {
         } else if (campo.compareTo(CAMPO_ID_TIPO_INCERT) == 0) {
             this.idTipoIncert = (Integer) valor;
         } else {
-            throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+            //throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+			System.out.println("No existe el campo <" + campo + "> en la clase " + this.getClass().getSimpleName());
         }
     }
     

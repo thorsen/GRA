@@ -149,8 +149,8 @@ public class DatosRA2 {
     public static final int TIPO_CAL_REG_LIN = 0;
     public static final int TIPO_CAL_REG_POL = 1;
     
-    private static final String SEP_CAMPOS_OCT = "\t";
-    private static final String SEP_CAMPOS_SPL = "\t";
+    private static final String SEP_CAMPOS_OCT = ";"; //Priemras pruebas, era "\t"
+    private static final String SEP_CAMPOS_SPL = ";"; //Priemras pruebas, era "\t"
     private static final String SEP_CAMPOS_FFT = ";";
     
     public static final String MARCA_INI_BRACKETS = "[";
@@ -2027,7 +2027,9 @@ public class DatosRA2 {
                         campos.add(sqlCaseVD);
 						campos.add(sqlCaseVH);
 						campos.add(sqlCaseVS);
-                    }
+                    } else {
+						res += "<br>No hay datos suficientes de CP para derivar.";
+					}
 
                     break;
                 case VEL_MEDIDA:
@@ -2259,7 +2261,7 @@ public class DatosRA2 {
         if (tipoTabla != null && idAsunto != null && idSite != null) {
             setVistaAux(tipoTabla, idAsunto, idSite);
             setVistaNeta(tipoTabla, idAsunto, idSite);
-            
+
             Double hB = AerogeneradorRA.getAeroPorId(AsuntoRA.getAsuntoPorId(idAsunto).getIdAero()).getHB();
 
             //Obtenemos los campos de la tabla
@@ -2857,7 +2859,7 @@ public class DatosRA2 {
     
     public static PosicionRA getPosicionBuje(PosicionRA posAero, PosicionRA posMicro, Double hB, Double longBuje) {
         //Alejamos la posición del aero la distancia del buje con respecto al micrófono
-        PosicionRA posBuje = posAero;
+        PosicionRA posBuje = new PosicionRA(null, posAero.getPosX(), posAero.getPosY(), posAero.getPosZ());
         
         Double posAeroX = posAero.getPosX();
         Double posAeroY = posAero.getPosY();
@@ -3474,11 +3476,15 @@ public class DatosRA2 {
     public static void deleteVistas() throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         
-        interBD.borraVista(VISTA_NETA);
-        interBD.borraVista(VISTA_AUX);
+		if (VISTA_NETA != null)
+			interBD.borraVista(VISTA_NETA);
+
+		if (VISTA_AUX != null) {
+			interBD.borraVista(VISTA_AUX);
         
-        interBD.borraTabla(CURVA_AUX + VISTA_AUX);
-        interBD.borraTabla(VALI_SYS_AUX + VISTA_AUX);
+			interBD.borraTabla(CURVA_AUX + VISTA_AUX);
+			interBD.borraTabla(VALI_SYS_AUX + VISTA_AUX);
+		}
     }
 
     //Devuelve la cadena de la función dados los parámetros pasados y = coefBin_0 + coefBin_1*x + coefBin_2*x^2 + ... + coefBin_n*x^n

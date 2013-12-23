@@ -21,7 +21,7 @@
       <Color blue="0" green="0" red="ff" type="rgb"/>
     </Property>
     <Property name="iconImage" type="java.awt.Image" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-      <Connection code="new ImageIcon(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\GCPMini.jpg&quot;).getImage()" type="code"/>
+      <Connection code="new ImageIcon(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\GCPMini.jpg&quot;).getImage()" type="code"/>
     </Property>
     <Property name="locationByPlatform" type="boolean" value="true"/>
     <Property name="name" type="java.lang.String" value="Cliente" noResource="true"/>
@@ -253,14 +253,14 @@
             <Component class="javax.swing.JLabel" name="jLabel6">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\world.png&quot; ))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\world.png&quot; ))" type="code"/>
                 </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel8">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\telephone.png&quot; ))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\telephone.png&quot; ))" type="code"/>
                 </Property>
               </Properties>
             </Component>

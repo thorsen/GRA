@@ -208,7 +208,8 @@ public class InsercionRA {
         } else if (campo.compareTo(CAMPO_RF) == 0) {
             this.rf = (Integer) valor;
         } else {
-            throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+            //throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+			System.out.println("No existe el campo <" + campo + "> en la clase " + this.getClass().getSimpleName());
         }
     }
     

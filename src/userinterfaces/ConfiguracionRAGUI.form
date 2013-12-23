@@ -12,6 +12,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <Events>
     <EventHandler event="windowOpened" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowOpened"/>
@@ -19,6 +20,7 @@
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
@@ -76,8 +78,8 @@
                   <Component id="jpDatos" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jbCancelar" pref="23" max="32767" attributes="1"/>
-                      <Component id="jbGuardar" pref="23" max="32767" attributes="1"/>
+                      <Component id="jbCancelar" max="32767" attributes="1"/>
+                      <Component id="jbGuardar" max="32767" attributes="1"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -113,7 +115,7 @@
                       <Component id="jlSite" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jcbSite" min="-2" pref="113" max="-2" attributes="0"/>
-                      <EmptySpace pref="57" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -185,16 +187,6 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="209" max="-2" attributes="0"/>
-                      <Component id="jTitConfiguraciones" min="-2" pref="333" max="-2" attributes="0"/>
-                      <EmptySpace pref="228" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="212" max="-2" attributes="0"/>
-                      <Component id="jlTitLineas" min="-2" pref="333" max="-2" attributes="0"/>
-                      <EmptySpace pref="225" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
@@ -208,7 +200,7 @@
                                       <Component id="jlCanal" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jcbCanal" min="-2" pref="85" max="-2" attributes="0"/>
-                                      <EmptySpace pref="235" max="32767" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
                                       <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                                       <Component id="jbAnadir" min="-2" pref="44" max="-2" attributes="1"/>
@@ -223,7 +215,7 @@
                                           <Component id="jspHistorico" min="0" pref="0" max="32767" attributes="1"/>
                                           <Group type="102" alignment="0" attributes="0">
                                               <Component id="jlFechaIniMed" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace pref="38" max="32767" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
                                               <Component id="jsFechaIniMed" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <Component id="jlSepHistorico" alignment="0" max="32767" attributes="1"/>
@@ -231,16 +223,15 @@
                                       </Group>
                                       <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jlTitNueva" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jlSepNueva" alignment="0" min="-2" max="-2" attributes="1"/>
                                           <Group type="102" alignment="0" attributes="0">
                                               <Group type="103" groupAlignment="0" attributes="0">
                                                   <Component id="jlFechaIniNueva" alignment="0" min="-2" max="-2" attributes="0"/>
                                                   <Component id="jlDeclinacion" alignment="0" min="-2" max="-2" attributes="0"/>
                                               </Group>
-                                              <Group type="103" groupAlignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="1" attributes="0">
+                                                  <Component id="jsFechaIniNueva" min="-2" max="-2" attributes="1"/>
                                                   <Group type="102" attributes="0">
-                                                      <EmptySpace min="-2" pref="104" max="-2" attributes="0"/>
                                                       <Component id="jtfDeclinacion" min="-2" pref="38" max="-2" attributes="0"/>
                                                       <EmptySpace max="-2" attributes="0"/>
                                                       <Component id="jlGrados" min="-2" pref="17" max="-2" attributes="0"/>
@@ -249,15 +240,12 @@
                                                       <EmptySpace max="-2" attributes="0"/>
                                                       <Component id="jrbDecOeste" min="-2" max="-2" attributes="0"/>
                                                   </Group>
-                                                  <Group type="102" alignment="0" attributes="0">
-                                                      <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
-                                                      <Component id="jsFechaIniNueva" min="-2" max="-2" attributes="1"/>
-                                                  </Group>
                                               </Group>
                                           </Group>
-                                          <Component id="jbCargarLineas" alignment="0" pref="300" max="32767" attributes="1"/>
+                                          <Component id="jlTitNueva" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jlSepNueva" alignment="0" min="-2" max="-2" attributes="1"/>
+                                          <Component id="jbCargarLineas" alignment="0" min="-2" pref="300" max="-2" attributes="1"/>
                                       </Group>
-                                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace min="-2" pref="142" max="-2" attributes="0"/>
@@ -269,9 +257,22 @@
                       </Group>
                       <EmptySpace min="-2" pref="152" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jsSep" min="-2" pref="750" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="209" max="-2" attributes="0"/>
+                              <Component id="jTitConfiguraciones" min="-2" pref="333" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="212" max="-2" attributes="0"/>
+                              <Component id="jlTitLineas" min="-2" pref="333" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jsSep" min="-2" pref="750" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -491,7 +492,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jlFechaIniMed">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#xf0a7;  Fecha Inicio Medidas:"/>
+                <Property name="text" type="java.lang.String" value="&#xf0a7;  Fecha Inicio Configuraci&#xf3;n:"/>
               </Properties>
             </Component>
             <Component class="general.JSpinnerDate" name="jsFechaIniMed">
@@ -517,7 +518,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jlFechaIniNueva">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#xf0a7;  Fecha Inicio"/>
+                <Property name="text" type="java.lang.String" value="&#xf0a7;  Fecha Inicio Validez Conf"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jlDeclinacion">
@@ -542,7 +543,7 @@
             <Component class="javax.swing.JButton" name="jbAnadir">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Down.gif&quot; ))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\Down.gif&quot; ))" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="A&#xf1;adir L&#xed;nea de Configuraci&#xf3;n"/>
                 <Property name="alignmentX" type="float" value="0.5"/>
@@ -559,7 +560,7 @@
             <Component class="javax.swing.JButton" name="jbEliminar">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Up.gif&quot; ))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\Up.gif&quot; ))" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Eliminar L&#xed;nea de Configuraci&#xf3;n"/>
                 <Property name="alignmentX" type="float" value="0.5"/>
@@ -589,7 +590,7 @@
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\printer.png&quot; ))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\printer.png&quot; ))" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Imprime la tabla de la configuracion seleccionada"/>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
@@ -648,7 +649,7 @@
             <Component class="javax.swing.JButton" name="jbActualizar">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\arrow_refresh.png&quot; ))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\arrow_refresh.png&quot; ))" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Actualizar L&#xed;nea de Configuraci&#xf3;n"/>
                 <Property name="alignmentX" type="float" value="0.5"/>
@@ -681,7 +682,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\Guardar.png&quot; ))" type="code"/>
+              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\Guardar.png&quot; ))" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Guardar Configuraci&#xf3;n"/>
             <Property name="enabled" type="boolean" value="false"/>

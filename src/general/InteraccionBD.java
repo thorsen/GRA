@@ -26,7 +26,7 @@ public class InteraccionBD {
 
 	//La idea, una vez estén en distinto servidores sería conectar al de RA y que este a su vez tenga como Linked Server al general
     private Connection conexion;
-    public static final String URL = "jdbc:sqlserver://192.168.1.165:1433";
+    public static final String URL = "jdbc:sqlserver://192.168.1.53:1433";
     public static final String USER = "SQL_RA";
     public static final String PASS = "Ru8865No";
     
@@ -371,6 +371,8 @@ public class InteraccionBD {
                     ps.setInt(pos, ((Integer) fila[1]).intValue());
                 } else if (tipo.compareTo("int") == 0) {
                     ps.setInt(pos, ((Integer) fila[1]).intValue());
+                } else if (tipo.compareTo("Double") == 0) {
+                    ps.setDouble(pos, ((Double) fila[1]).doubleValue());
                 } else if (tipo.compareTo("double") == 0) {
                     ps.setDouble(pos, ((Double) fila[1]).doubleValue());
                 } else if (tipo.compareTo("float") == 0) {
@@ -1047,6 +1049,42 @@ public class InteraccionBD {
         
         return res;
     }
+	
+	public boolean existeXmlSchema(String nombreSchema) throws SQLException {
+        Connection con = null;
+        boolean res = false;
+
+        try {
+            con = getConexion();
+
+            //Si existe no hace falta que continuemos
+            String sql = dameSqlExisteXmlSchema(nombreSchema, true);
+
+			sql += "SELECT 1 ELSE SELECT 0";
+
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+			rs.next();
+            res = rs.getInt(1) == 1;
+            
+            rs.close();
+			
+            st.close();
+            cierraConexionLocal(con);
+        } catch (SQLException e) {
+            if (con != null)
+                rollbackGlobal(con);
+            throw e;
+        } finally {
+            if (con != null) {
+                cierraConexionLocal(con);
+            }
+        }
+
+        return res;
+    }
+    
 
     public int creaXmlSchema(String nombreSchema, String xmlSchema) throws SQLException {
         Connection con = null;
@@ -1090,7 +1128,7 @@ public class InteraccionBD {
             Statement st = con.createStatement();
             res = st.executeUpdate(sql);
 
-            st.close();
+			st.close();
             cierraConexionLocal(con);
         } catch (SQLException e) {
             if (con != null)
@@ -1131,7 +1169,7 @@ public class InteraccionBD {
             
             rs.next();
             res = rs.getBoolean(1);
-            
+
             rs.close();
             st.close();
         } catch (SQLException e) {
@@ -1146,7 +1184,7 @@ public class InteraccionBD {
 
         return res;
     }
-    
+
     public int creaIndicesXml(String tabla, String campoXml) throws SQLException {
         Connection con = null;
         int res = 0;

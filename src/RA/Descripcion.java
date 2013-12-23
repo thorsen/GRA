@@ -82,7 +82,8 @@ public class Descripcion {
         } else if (campo.compareTo(CAMPO_VALOR) == 0) {
             this.valor = (Double) valor;
         } else {
-            throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+            //throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+			System.out.println("No existe el campo <" + campo + "> en la clase " + this.getClass().getSimpleName());
         }
     }
 
@@ -103,8 +104,7 @@ public class Descripcion {
     }
     
     //Función para obtener la colección de Descripciones que se ajustan a los limites pasados
-    public static ArrayList<Descripcion> getDescripciones(Integer idAsunto, Integer idSerie, Double valor,
-            ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
+    public static ArrayList<Descripcion> getDescripciones(Integer idAsunto, Integer idSerie, Double valor, ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
         InteraccionBD interBD = new InteraccionBD();
         
         ArrayList<Descripcion> res = null;
@@ -242,7 +242,8 @@ public class Descripcion {
         if (codVarOCT != null)
             DatosRA2.createDatos(Auxiliares.TIPO_OCT, idAsunto, codVarNoAcus, codVarOCT, false, sqlExtra);
         if (codVarFFT != null)
-            DatosRA2.createDatos(Auxiliares.TIPO_FFT, idAsunto, codVarNoAcus, codVarFFT, true, sqlExtra);
+            DatosRA2.createDatos(Auxiliares.TIPO_FFT, idAsunto, codVarNoAcus, codVarFFT, false, sqlExtra); //No creamos índices XML porque, en principio, no nos harán falta -- Mejora eficiencia
+            //DatosRA2.createDatos(Auxiliares.TIPO_FFT, idAsunto, codVarNoAcus, codVarFFT, true, sqlExtra);
 
         interBD.finTransaccion();
             
@@ -250,8 +251,7 @@ public class Descripcion {
     }
     
     //Función para añadir una descripcion a la BD
-    public static int updateDescripcion(Integer idAsunto, Integer idSerie, Double valor,
-            Integer idAsuntoVal, Integer idSerieVal, Double valorVal, String sqlExtra) throws SQLException {
+    public static int updateDescripcion(Integer idAsunto, Integer idSerie, Double valor, Integer idAsuntoVal, Integer idSerieVal, Double valorVal, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         
         String condicion = "";
@@ -283,13 +283,11 @@ public class Descripcion {
     }
     
     public static int updateDescripcion(Descripcion descVieja, Descripcion descNueva, String sqlExtra) throws SQLException {
-        return updateDescripcion(descVieja.idAsunto, descVieja.idSerie, descVieja.valor,
-                descNueva.idAsunto, descNueva.idSerie, descNueva.valor, sqlExtra);
+        return updateDescripcion(descVieja.idAsunto, descVieja.idSerie, descVieja.valor, descNueva.idAsunto, descNueva.idSerie, descNueva.valor, sqlExtra);
     }
     
     //Función para añadir/modificar una descripcion a la BD
-    public static int insertOrUpdateDescripcion(Integer idAsunto, Integer idSerie, Double valor, 
-            Integer idAsuntoVal, Integer idSerieVal, Double valorVal, String sqlExtra) throws SQLException {
+    public static int insertOrUpdateDescripcion(Integer idAsunto, Integer idSerie, Double valor, Integer idAsuntoVal, Integer idSerieVal, Double valorVal, String sqlExtra) throws SQLException {
         int res;
         
         res = updateDescripcion(idAsunto, idSerie, valor, idAsuntoVal, idSerieVal, valorVal, sqlExtra);
@@ -301,9 +299,7 @@ public class Descripcion {
     }
     
     public static int insertOrUpdateDescripcion(Descripcion descVieja, Descripcion descNueva, String sqlExtra) throws SQLException {
-        
-        return insertOrUpdateDescripcion(descVieja.idAsunto, descVieja.idSerie, descVieja.valor,
-                descNueva.idAsunto, descNueva.idSerie, descNueva.valor, sqlExtra);
+        return insertOrUpdateDescripcion(descVieja.idAsunto, descVieja.idSerie, descVieja.valor, descNueva.idAsunto, descNueva.idSerie, descNueva.valor, sqlExtra);
     }
     
     //Función para eliminar Descripciones que se ajustan a los limites pasados

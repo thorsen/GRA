@@ -1,6 +1,7 @@
 
 package userinterfaces;
 
+import RA.AsuntoRA;
 import RA.Descripcion;
 import RA.SerieRA2;
 import RA.TipoRA;
@@ -90,7 +91,7 @@ public class DescripcionRAGUI2 extends JDialog {
         jpClave.setBackground(new java.awt.Color(255, 255, 255));
         jpClave.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder()));
 
-        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlAsunto.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlAsunto.setText("Asunto:");
 
         jcbAsunto.addActionListener(new java.awt.event.ActionListener() {
@@ -106,7 +107,7 @@ public class DescripcionRAGUI2 extends JDialog {
             .addGroup(jpClaveLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jlAsunto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addComponent(jcbAsunto, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -125,7 +126,7 @@ public class DescripcionRAGUI2 extends JDialog {
         jpNoAcus.setBackground(new java.awt.Color(255, 255, 255));
         jpNoAcus.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlNoAcusPosibles.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlNoAcusPosibles.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlNoAcusPosibles.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlNoAcusPosibles.setText("SERIES POSIBLES");
 
@@ -167,7 +168,7 @@ public class DescripcionRAGUI2 extends JDialog {
             }
         });
 
-        jlNoAcusInsertar.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlNoAcusInsertar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlNoAcusInsertar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlNoAcusInsertar.setText("SERIES A INSERTAR");
 
@@ -240,7 +241,7 @@ public class DescripcionRAGUI2 extends JDialog {
         jpSPL.setBackground(new java.awt.Color(255, 255, 255));
         jpSPL.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlSPLPosibles.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlSPLPosibles.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlSPLPosibles.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlSPLPosibles.setText("SERIES POSIBLES");
 
@@ -282,7 +283,7 @@ public class DescripcionRAGUI2 extends JDialog {
             }
         });
 
-        jLSPLInsertar.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLSPLInsertar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLSPLInsertar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLSPLInsertar.setText("SERIES A INSERTAR");
 
@@ -355,7 +356,7 @@ public class DescripcionRAGUI2 extends JDialog {
         jpOCT.setBackground(new java.awt.Color(255, 255, 255));
         jpOCT.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jlOCTPosibles.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlOCTPosibles.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlOCTPosibles.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlOCTPosibles.setText("SERIES POSIBLES");
 
@@ -397,7 +398,7 @@ public class DescripcionRAGUI2 extends JDialog {
             }
         });
 
-        jlOCTInsertar.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jlOCTInsertar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jlOCTInsertar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlOCTInsertar.setText("SERIES A INSERTAR");
 
@@ -550,12 +551,12 @@ public class DescripcionRAGUI2 extends JDialog {
         jpFFT.setLayout(jpFFTLayout);
         jpFFTLayout.setHorizontalGroup(
             jpFFTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 463, Short.MAX_VALUE)
+            .addGap(0, 460, Short.MAX_VALUE)
             .addGroup(jpFFTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jpFFTLayout.createSequentialGroup()
                     .addGap(0, 83, Short.MAX_VALUE)
                     .addComponent(jpFFTLim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 83, Short.MAX_VALUE)))
+                    .addGap(0, 84, Short.MAX_VALUE)))
         );
         jpFFTLayout.setVerticalGroup(
             jpFFTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -587,8 +588,8 @@ public class DescripcionRAGUI2 extends JDialog {
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jpClave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jbAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtpDatos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(jtpDatos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -606,17 +607,15 @@ public class DescripcionRAGUI2 extends JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-500)/2, (screenSize.height-584)/2, 500, 584);
+        setSize(new java.awt.Dimension(505, 580));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 private void limpiarCampos() {
@@ -818,7 +817,7 @@ private void aceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptar
 private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
     try {
         Auxiliares.bloqueaDialog(this, true);
-        Auxiliares.cargaAsuntos(this.jcbAsunto);
+        Auxiliares.cargaAsuntosTipo(this.jcbAsunto, AsuntoRA.TIPO_ASUNTO_RA);
 
         //Establecemos iconos de los botones
         this.jbNoAcusQuita.setIcon(Auxiliares.ICONO_PREV);

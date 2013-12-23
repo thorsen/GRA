@@ -326,7 +326,8 @@ public class AsuntoRA {
         } else if (campo.compareTo(CAMPO_TIPO) == 0) {
             this.tipo = (Integer) valor;
         } else {
-            throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+            //throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+			System.out.println("No existe el campo <" + campo + "> en la clase " + this.getClass().getSimpleName());
         }
     }
 

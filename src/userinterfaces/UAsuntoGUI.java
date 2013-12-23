@@ -5,6 +5,7 @@ import RA.Aerogenerador;
 import RA.AerogeneradorRA;
 import RA.Asunto;
 import RA.AsuntoPosicionRA;
+import RA.AsuntoRA;
 import RA.Cliente;
 import RA.FechaRA;
 import RA.Norma;
@@ -295,7 +296,7 @@ public class UAsuntoGUI extends JDialog {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setText("Asunto:");
 
         jcbAsunto.addActionListener(new java.awt.event.ActionListener() {
@@ -322,7 +323,7 @@ public class UAsuntoGUI extends JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 299, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jcbAsunto, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -347,7 +348,7 @@ public class UAsuntoGUI extends JDialog {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel21.setText(" Identificación:");
 
         jTextField1.setEditable(false);
@@ -455,7 +456,7 @@ public class UAsuntoGUI extends JDialog {
 
         jLabel12.setText("  Estado:");
 
-        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel17.setText(" Descripción:");
 
         jComboBox5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "ABIERTO", "CERRADO" }));
@@ -522,7 +523,7 @@ public class UAsuntoGUI extends JDialog {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel30)
                     .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
@@ -553,7 +554,7 @@ public class UAsuntoGUI extends JDialog {
 
         jLabel5.setText("  Persona / s de Contacto: ");
 
-        jLabel18.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel18.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel18.setText(" Cliente:");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -616,12 +617,12 @@ public class UAsuntoGUI extends JDialog {
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)))))
+                                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(5, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -676,7 +677,7 @@ public class UAsuntoGUI extends JDialog {
         jComboBox10.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
         jComboBox10.setEnabled(false);
 
-        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel19.setText(" Aerogenerador:");
 
         jLabel33.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\lock.png" )));
@@ -690,7 +691,7 @@ public class UAsuntoGUI extends JDialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
@@ -756,7 +757,7 @@ public class UAsuntoGUI extends JDialog {
         jComboBox11.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
         jComboBox11.setEnabled(false);
 
-        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel20.setText(" Posición:");
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
@@ -799,7 +800,7 @@ public class UAsuntoGUI extends JDialog {
 
         jLabel25.setText("  Fecha Incicio de Ensayo:");
 
-        jLabel27.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel27.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel27.setText(" Campaña :");
 
         jTextField9.setBackground(new java.awt.Color(204, 204, 204));
@@ -855,7 +856,7 @@ public class UAsuntoGUI extends JDialog {
                     .addGroup(jPanel11Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel27)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 585, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel11Layout.createSequentialGroup()
                         .addGap(24, 24, 24)
@@ -870,7 +871,7 @@ public class UAsuntoGUI extends JDialog {
                         .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel31)
                             .addComponent(jLabel29))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jTextField19)
                             .addComponent(jTextField18, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -935,7 +936,7 @@ public class UAsuntoGUI extends JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE))))
+                            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 357, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
@@ -992,7 +993,9 @@ public class UAsuntoGUI extends JDialog {
         jtPosicionesRA.setEnabled(false);
         jtPosicionesRA.getTableHeader().setReorderingAllowed(false);
         jspPosicionesRA.setViewportView(jtPosicionesRA);
-        jtPosicionesRA.getColumnModel().getColumn(4).setResizable(false);
+        if (jtPosicionesRA.getColumnModel().getColumnCount() > 0) {
+            jtPosicionesRA.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         jpBotonesPosRA.setBackground(new java.awt.Color(255, 255, 255));
         jpBotonesPosRA.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -1073,7 +1076,7 @@ public class UAsuntoGUI extends JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel69.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel69.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel69.setText("Posiciones:");
 
         jpContGraficaPosRA.setBackground(new java.awt.Color(255, 255, 255));
@@ -1114,7 +1117,7 @@ public class UAsuntoGUI extends JDialog {
                     .addGroup(jpDatosPosicionesRALayout.createSequentialGroup()
                         .addComponent(jspPosicionesRA, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jpBotonesPosRA, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)))
+                        .addComponent(jpBotonesPosRA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jpDatosPosicionesRALayout.setVerticalGroup(
@@ -1154,7 +1157,7 @@ public class UAsuntoGUI extends JDialog {
         jLabel32.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\lock.png" )));
         jLabel32.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel28.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jLabel28.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLabel28.setText("Editable para asuntos sin datos insertados");
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
@@ -1204,7 +1207,7 @@ public class UAsuntoGUI extends JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -1220,8 +1223,8 @@ public class UAsuntoGUI extends JDialog {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-743)/2, (screenSize.height-739)/2, 743, 739);
+        setSize(new java.awt.Dimension(751, 739));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
   
 private void Cerrar(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Cerrar
@@ -1731,7 +1734,7 @@ private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
         Auxiliares.maximizaTitulosJTabbedPane(this.jTabbedPane1);
         
         //Rellenamos combo de asuntos con los relacionados con el parque
-        Auxiliares.cargaAsuntos(this.jcbAsunto);
+        Auxiliares.cargaAsuntosTipo(this.jcbAsunto, AsuntoRA.TIPO_ASUNTO_RA);
         
         //Añadimos la columna Tipo como combo
         TableColumn comboColumn = this.jtPosicionesRA.getColumnModel().getColumn(3);

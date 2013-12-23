@@ -354,7 +354,7 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\resultset_next.png&quot;))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_next.png&quot;))" type="code"/>
                     </Property>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[2, 2, 2, 2]"/>
@@ -370,7 +370,7 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\resultset_previous.png&quot;))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_previous.png&quot;))" type="code"/>
                     </Property>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[2, 2, 2, 2]"/>
@@ -543,7 +543,7 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\resultset_next.png&quot;))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_next.png&quot;))" type="code"/>
                     </Property>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[2, 2, 2, 2]"/>
@@ -559,7 +559,7 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\resultset_previous.png&quot;))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_previous.png&quot;))" type="code"/>
                     </Property>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[2, 2, 2, 2]"/>
@@ -732,7 +732,7 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\resultset_next.png&quot;))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_next.png&quot;))" type="code"/>
                     </Property>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[2, 2, 2, 2]"/>
@@ -748,7 +748,7 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\resultset_previous.png&quot;))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_previous.png&quot;))" type="code"/>
                     </Property>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[2, 2, 2, 2]"/>
@@ -916,7 +916,7 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\resultset_next.png&quot;))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_next.png&quot;))" type="code"/>
                     </Property>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[2, 2, 2, 2]"/>
@@ -932,7 +932,7 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\Bsolar\\DatosSolar\\Curva\\Imagenes\\resultset_previous.png&quot;))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_previous.png&quot;))" type="code"/>
                     </Property>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[2, 2, 2, 2]"/>

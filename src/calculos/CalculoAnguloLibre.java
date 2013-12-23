@@ -655,10 +655,10 @@ private void calcularAngulos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
             PosicionRA posMicro3 = asuntoPos.getIdPosMicro3() != null ? PosicionRA.getPosicion(asuntoPos.getIdPosMicro3()) : null;
             PosicionRA posMicro4 = asuntoPos.getIdPosMicro4() != null ? PosicionRA.getPosicion(asuntoPos.getIdPosMicro4()) : null;
 
-            LineString rectaMicroAero;
+            LineString rectaMicroBuje, rectaMicroAero;
             Double angMicroAero, angMinLibre, angLibre;
             if (posAero != null) {
-                PosicionRA posBuje = posAero;
+                PosicionRA posBuje = new PosicionRA(null, posAero.getPosX(), posAero.getPosY(), posAero.getPosZ());
 				ArrayList<PosicionRA> posCorte = new ArrayList<PosicionRA>();
                 
                 if (posAero != null && posMicro1 != null) {
@@ -671,92 +671,108 @@ private void calcularAngulos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
                 }
                 
                 if (posMicro1 != null) {
-                     rectaMicroAero = Auxiliares.getRecta3D(posMicro1.getPosX(), posMicro1.getPosY(), posMicro1.getPosZ(), posBuje.getPosX(), posBuje.getPosY(), posBuje.getPosZ());
-                     angMicroAero = Auxiliares.getAnguloRectaPlano(rectaMicroAero);
+                     rectaMicroBuje = Auxiliares.getRecta3D(posMicro1.getPosX(), posMicro1.getPosY(), posMicro1.getPosZ(), posBuje.getPosX(), posBuje.getPosY(), posBuje.getPosZ());
+                     rectaMicroAero = Auxiliares.getRecta3D(posMicro1.getPosX(), posMicro1.getPosY(), posMicro1.getPosZ(), posAero.getPosX(), posAero.getPosY(), posAero.getPosZ());
+                     angMicroAero = Auxiliares.getAnguloRectaPlano(rectaMicroBuje);
                      angMinLibre = Auxiliares.getAnguloMaxConMallado(rectaMicroAero, mallado, posCorte);
 
                      this.jtfAngMicro1Aero.setText(angMicroAero != null ? Auxiliares.getAnguloDecimal(angMicroAero).toString() : null);
                      this.jtfAngLibreMicro1Aero.setText(angMinLibre != null ? Auxiliares.getAnguloDecimal(angMinLibre).toString() : null);
 
-					 this.jtfPosLibre1.setText(posCorte.get(0).toString());
+					 if (!posCorte.isEmpty())
+						 this.jtfPosLibre1.setText(posCorte.get(0).toString());
+					 else
+						 this.jtfPosLibre1.setText(null);
 
                      if (angMicroAero != null && angMinLibre != null) {
                          angLibre = Auxiliares.getAnguloDecimal(angMicroAero - angMinLibre);
 
+						 this.jlResMicro1Aero.setText(angLibre.toString());
+
                          if (angLibre >= 25.0 && angLibre <= 40.0) {
-                             this.jlResMicro1Aero.setText("OK");
                              this.jlResMicro1Aero.setBackground(Color.GREEN);
                          } else {
-                             this.jlResMicro1Aero.setText("NO OK");
                              this.jlResMicro1Aero.setBackground(Color.RED);
                          }
                      }
                 }
 
                 if (posMicro2 != null) {
-                     rectaMicroAero = Auxiliares.getRecta3D(posMicro2.getPosX(), posMicro2.getPosY(), posMicro2.getPosZ(), posBuje.getPosX(), posBuje.getPosY(), posBuje.getPosZ());
-                     angMicroAero = Auxiliares.getAnguloRectaPlano(rectaMicroAero);
+                     rectaMicroBuje = Auxiliares.getRecta3D(posMicro2.getPosX(), posMicro2.getPosY(), posMicro2.getPosZ(), posBuje.getPosX(), posBuje.getPosY(), posBuje.getPosZ());
+                     rectaMicroAero = Auxiliares.getRecta3D(posMicro2.getPosX(), posMicro2.getPosY(), posMicro2.getPosZ(), posAero.getPosX(), posAero.getPosY(), posAero.getPosZ());
+                     angMicroAero = Auxiliares.getAnguloRectaPlano(rectaMicroBuje);
                      angMinLibre = Auxiliares.getAnguloMaxConMallado(rectaMicroAero, mallado, posCorte);
 
                      this.jtfAngMicro2Aero.setText(angMicroAero != null ? Auxiliares.getAnguloDecimal(angMicroAero).toString() : null);
                      this.jtfAngLibreMicro2Aero.setText(angMinLibre != null ? Auxiliares.getAnguloDecimal(angMinLibre).toString() : null);
 
-					 this.jtfPosLibre2.setText(posCorte.get(0).toString());
+					 if (!posCorte.isEmpty())
+						 this.jtfPosLibre2.setText(posCorte.get(0).toString());
+					 else
+						 this.jtfPosLibre2.setText(null);
 
                      if (angMicroAero != null && angMinLibre != null) {
                          angLibre = Auxiliares.getAnguloDecimal(angMicroAero - angMinLibre);
+
+						 this.jlResMicro2Aero.setText(angLibre.toString());
                      
                          if (angLibre >= 25.0 && angLibre <= 40.0) {
-                             this.jlResMicro2Aero.setText("OK");
                              this.jlResMicro2Aero.setBackground(Color.GREEN);
                          } else {
-                             this.jlResMicro2Aero.setText("NO OK");
                              this.jlResMicro2Aero.setBackground(Color.RED);
                          }
                      }
                 }
 
                 if (posMicro3 != null) {
-                     rectaMicroAero = Auxiliares.getRecta3D(posMicro3.getPosX(), posMicro3.getPosY(), posMicro3.getPosZ(), posBuje.getPosX(), posBuje.getPosY(), posBuje.getPosZ());
-                     angMicroAero = Auxiliares.getAnguloRectaPlano(rectaMicroAero);
+                     rectaMicroBuje = Auxiliares.getRecta3D(posMicro3.getPosX(), posMicro3.getPosY(), posMicro3.getPosZ(), posBuje.getPosX(), posBuje.getPosY(), posBuje.getPosZ());
+                     rectaMicroAero = Auxiliares.getRecta3D(posMicro3.getPosX(), posMicro3.getPosY(), posMicro3.getPosZ(), posAero.getPosX(), posAero.getPosY(), posAero.getPosZ());
+                     angMicroAero = Auxiliares.getAnguloRectaPlano(rectaMicroBuje);
                      angMinLibre = Auxiliares.getAnguloMaxConMallado(rectaMicroAero, mallado, posCorte);
 
                      this.jtfAngMicro3Aero.setText(angMicroAero != null ? Auxiliares.getAnguloDecimal(angMicroAero).toString() : null);
                      this.jtfAngLibreMicro3Aero.setText(angMinLibre != null ? Auxiliares.getAnguloDecimal(angMinLibre).toString() : null);
 
-					 this.jtfPosLibre3.setText(posCorte.get(0).toString());
+					 if (!posCorte.isEmpty())
+						 this.jtfPosLibre3.setText(posCorte.get(0).toString());
+					 else
+						 this.jtfPosLibre3.setText(null);
 
                      if (angMicroAero != null && angMinLibre != null) {
                          angLibre = Auxiliares.getAnguloDecimal(angMicroAero - angMinLibre);
+
+						 this.jlResMicro3Aero.setText(angLibre.toString());
                      
                          if (angLibre >= 25.0 && angLibre <= 40.0) {
-                             this.jlResMicro3Aero.setText("OK");
                              this.jlResMicro3Aero.setBackground(Color.GREEN);
                          } else {
-                             this.jlResMicro3Aero.setText("NO OK");
                              this.jlResMicro3Aero.setBackground(Color.RED);
                          }
                      }
                 }
 
                 if (posMicro4 != null) {
-                     rectaMicroAero = Auxiliares.getRecta3D(posMicro4.getPosX(), posMicro4.getPosY(), posMicro4.getPosZ(), posBuje.getPosX(), posBuje.getPosY(), posBuje.getPosZ());
-                     angMicroAero = Auxiliares.getAnguloRectaPlano(rectaMicroAero);
+                     rectaMicroBuje = Auxiliares.getRecta3D(posMicro4.getPosX(), posMicro4.getPosY(), posMicro4.getPosZ(), posBuje.getPosX(), posBuje.getPosY(), posBuje.getPosZ());
+                     rectaMicroAero = Auxiliares.getRecta3D(posMicro4.getPosX(), posMicro4.getPosY(), posMicro4.getPosZ(), posAero.getPosX(), posAero.getPosY(), posAero.getPosZ());
+                     angMicroAero = Auxiliares.getAnguloRectaPlano(rectaMicroBuje);
                      angMinLibre = Auxiliares.getAnguloMaxConMallado(rectaMicroAero, mallado, posCorte);
 
                      this.jtfAngMicro4Aero.setText(angMicroAero != null ? Auxiliares.getAnguloDecimal(angMicroAero).toString() : null);
                      this.jtfAngLibreMicro4Aero.setText(angMinLibre != null ? Auxiliares.getAnguloDecimal(angMinLibre).toString() : null);
 
-					 this.jtfPosLibre4.setText(posCorte.get(0).toString());
+					 if (!posCorte.isEmpty())
+						 this.jtfPosLibre4.setText(posCorte.get(0).toString());
+					 else
+						 this.jtfPosLibre4.setText(null);
 
                      if (angMicroAero != null && angMinLibre != null) {
                          angLibre = Auxiliares.getAnguloDecimal(angMicroAero - angMinLibre);
+
+						 this.jlResMicro4Aero.setText(angLibre.toString());
                      
                          if (angLibre >= 25.0 && angLibre <= 40.0) {
-                             this.jlResMicro4Aero.setText("OK");
                              this.jlResMicro4Aero.setBackground(Color.GREEN);
                          } else {
-                             this.jlResMicro4Aero.setText("NO OK");
                              this.jlResMicro4Aero.setBackground(Color.RED);
                          }
                      }
@@ -776,7 +792,7 @@ private void calcularAngulos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
 private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
     try {
         //Rellenamos combo de asuntos con los relacionados con el parque
-        Auxiliares.cargaAsuntos(this.jcbAsunto);
+        Auxiliares.cargaAsuntosTipo(this.jcbAsunto, AsuntoRA.TIPO_ASUNTO_RA);
         
         //Añadimos los verificadores de los campos de entrada
         this.jtfRutaMallado.setInputVerifier(new IVExtendido(this, IVExtendido.TIPO_STRING, false, false));

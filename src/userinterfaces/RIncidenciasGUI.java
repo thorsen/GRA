@@ -1,5 +1,6 @@
 package userinterfaces;
 
+import RA.AsuntoRA;
 import general.Auxiliares;
 import RA.Incidencia;
 import general.ComboBoxObject;
@@ -431,7 +432,7 @@ private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
         this.jtRegistros.getTableHeader().setReorderingAllowed(false);
 
         //Carga inicial de Asuntos
-        Auxiliares.cargaAsuntos(this.jcbAsunto);
+        Auxiliares.cargaAsuntosTipo(this.jcbAsunto, AsuntoRA.TIPO_ASUNTO_RA);
         
         habilitaClave();
     } catch (SQLException e) {

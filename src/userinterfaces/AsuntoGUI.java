@@ -32,6 +32,8 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -333,7 +335,7 @@ public class AsuntoGUI extends JDialog {
         setTitle("ASUNTO");
         setBackground(new java.awt.Color(204, 204, 204));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
+        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GCPMini.jpg").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -356,13 +358,13 @@ public class AsuntoGUI extends JDialog {
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("  Codigo:");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("  Norma:");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("  Responsable:");
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
@@ -394,8 +396,8 @@ public class AsuntoGUI extends JDialog {
         catch (SQLException ex) {
             ex.printStackTrace();
         }
-        jTextField1.setBackground(new java.awt.Color(204, 204, 204));
         jTextField1.setEditable(false);
+        jTextField1.setBackground(new java.awt.Color(204, 204, 204));
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -408,7 +410,7 @@ public class AsuntoGUI extends JDialog {
             }
         });
 
-        jLabel38.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel38.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel38.setText("  Nombre:");
 
         jTextField20.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -421,19 +423,19 @@ public class AsuntoGUI extends JDialog {
             }
         });
 
-        jLabel36.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel36.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel36.setForeground(new java.awt.Color(153, 153, 153));
         jLabel36.setText("*");
 
-        jLabel40.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel40.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel40.setForeground(new java.awt.Color(153, 153, 153));
         jLabel40.setText("*");
 
-        jLabel41.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel41.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel41.setText("  Nombre corto:");
 
-        jTextField22.setBackground(new java.awt.Color(204, 204, 204));
         jTextField22.setEditable(false);
+        jTextField22.setBackground(new java.awt.Color(204, 204, 204));
         jTextField22.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField22.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -446,17 +448,17 @@ public class AsuntoGUI extends JDialog {
             }
         });
 
-        jLabel48.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel48.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel48.setForeground(new java.awt.Color(153, 153, 153));
         jLabel48.setText("*");
 
-        jLabel49.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel49.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel49.setForeground(new java.awt.Color(153, 153, 153));
         jLabel49.setText("*");
 
         jLabel56.setText("  Idioma:");
 
-        jComboBox10.setFont(new java.awt.Font("Tahoma", 2, 11));
+        jComboBox10.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jComboBox10.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Castellano", "Inglés" }));
 
         jLabel57.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\user.png" )));
@@ -474,7 +476,7 @@ public class AsuntoGUI extends JDialog {
                     .addComponent(jLabel56)
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel38, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+                    .addComponent(jLabel38, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel41, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -488,9 +490,7 @@ public class AsuntoGUI extends JDialog {
                                 .addComponent(jTextField22, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel5Layout.createSequentialGroup()
-                                    .addGap(123, 123, 123)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jTextField20, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jcbNorma, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -577,7 +577,7 @@ public class AsuntoGUI extends JDialog {
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("  Empresa:");
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
@@ -602,14 +602,14 @@ public class AsuntoGUI extends JDialog {
         jPanel13.setBackground(new java.awt.Color(255, 255, 255));
         jPanel13.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTextField4.setBackground(new java.awt.Color(204, 204, 204));
         jTextField4.setEditable(false);
+        jTextField4.setBackground(new java.awt.Color(204, 204, 204));
 
-        jTextField2.setBackground(new java.awt.Color(204, 204, 204));
         jTextField2.setEditable(false);
+        jTextField2.setBackground(new java.awt.Color(204, 204, 204));
 
-        jTextField3.setBackground(new java.awt.Color(204, 204, 204));
         jTextField3.setEditable(false);
+        jTextField3.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel58.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\user_suit.png" )));
 
@@ -641,9 +641,7 @@ public class AsuntoGUI extends JDialog {
                         .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel13Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE))))
+                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)))
                     .addComponent(jLabel45, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -680,7 +678,7 @@ public class AsuntoGUI extends JDialog {
                 .addGap(36, 36, 36))
         );
 
-        jLabel44.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel44.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel44.setText("  Contacto:");
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
@@ -790,7 +788,7 @@ public class AsuntoGUI extends JDialog {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 483, Short.MAX_VALUE)
                 .addGap(214, 214, 214))
         );
 
@@ -801,7 +799,7 @@ public class AsuntoGUI extends JDialog {
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setText("Modelo:");
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
@@ -823,7 +821,7 @@ public class AsuntoGUI extends JDialog {
             }
         });
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel9.setText("Hb [m]:");
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
@@ -963,19 +961,19 @@ public class AsuntoGUI extends JDialog {
         jComboBox6.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "1", "2" }));
         jComboBox6.setEnabled(false);
 
-        jLabel26.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel26.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(153, 153, 153));
         jLabel26.setText("*");
 
-        jLabel27.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel27.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(153, 153, 153));
         jLabel27.setText("*");
 
-        jLabel28.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel28.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(153, 153, 153));
         jLabel28.setText("*");
 
-        jLabel37.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel37.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel37.setForeground(new java.awt.Color(153, 153, 153));
         jLabel37.setText("*");
 
@@ -990,15 +988,15 @@ public class AsuntoGUI extends JDialog {
             }
         });
 
-        jLabel32.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel32.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel32.setForeground(new java.awt.Color(153, 153, 153));
         jLabel32.setText("*");
 
-        jLabel33.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel33.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(153, 153, 153));
         jLabel33.setText("*");
 
-        jLabel34.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel34.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(153, 153, 153));
         jLabel34.setText("*");
 
@@ -1007,7 +1005,7 @@ public class AsuntoGUI extends JDialog {
         jComboBox7.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Cambio de Paso", "Pérdida Aerodinámica" }));
         jComboBox7.setEnabled(false);
 
-        jLabel52.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel52.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel52.setForeground(new java.awt.Color(153, 153, 153));
         jLabel52.setText("*");
 
@@ -1176,7 +1174,7 @@ public class AsuntoGUI extends JDialog {
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
         jPanel10.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel12.setText("Parque:");
 
         jComboBox5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
@@ -1199,7 +1197,7 @@ public class AsuntoGUI extends JDialog {
             }
         });
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel13.setText("Posicion: ");
 
         jComboBox8.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
@@ -1313,12 +1311,14 @@ public class AsuntoGUI extends JDialog {
             }
         });
         jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getColumn(0).setPreferredWidth(30);
-        jTable1.getColumnModel().getColumn(1).setPreferredWidth(50);
-        jTable1.getColumnModel().getColumn(2).setPreferredWidth(50);
-        jTable1.getColumnModel().getColumn(3).setPreferredWidth(50);
-        jTable1.getColumnModel().getColumn(4).setPreferredWidth(20);
-        jTable1.getColumnModel().getColumn(5).setPreferredWidth(20);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(30);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(50);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(50);
+            jTable1.getColumnModel().getColumn(3).setPreferredWidth(50);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(20);
+            jTable1.getColumnModel().getColumn(5).setPreferredWidth(20);
+        }
 
         jPanel12.setBackground(new java.awt.Color(255, 255, 255));
         jPanel12.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -1412,7 +1412,7 @@ public class AsuntoGUI extends JDialog {
             }
         });
 
-        jLabel29.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel29.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel29.setText("Aerogeneradores :");
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
@@ -1427,7 +1427,7 @@ public class AsuntoGUI extends JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel16Layout.setVerticalGroup(
@@ -1546,10 +1546,12 @@ public class AsuntoGUI extends JDialog {
             }
         });
         jspPosicionesRA.setViewportView(jtPosicionesRA);
-        jtPosicionesRA.getColumnModel().getColumn(0).setPreferredWidth(50);
-        jtPosicionesRA.getColumnModel().getColumn(1).setPreferredWidth(50);
-        jtPosicionesRA.getColumnModel().getColumn(2).setPreferredWidth(50);
-        jtPosicionesRA.getColumnModel().getColumn(3).setPreferredWidth(40);
+        if (jtPosicionesRA.getColumnModel().getColumnCount() > 0) {
+            jtPosicionesRA.getColumnModel().getColumn(0).setPreferredWidth(50);
+            jtPosicionesRA.getColumnModel().getColumn(1).setPreferredWidth(50);
+            jtPosicionesRA.getColumnModel().getColumn(2).setPreferredWidth(50);
+            jtPosicionesRA.getColumnModel().getColumn(3).setPreferredWidth(40);
+        }
 
         jpBotonesPosRA.setBackground(new java.awt.Color(255, 255, 255));
         jpBotonesPosRA.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -1629,7 +1631,7 @@ public class AsuntoGUI extends JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel69.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel69.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel69.setText("Posiciones:");
 
         jpContGraficaPosRA.setBackground(new java.awt.Color(255, 255, 255));
@@ -1670,7 +1672,7 @@ public class AsuntoGUI extends JDialog {
                     .addGroup(jpDatosPosicionesRALayout.createSequentialGroup()
                         .addComponent(jspPosicionesRA, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jpBotonesPosRA, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)))
+                        .addComponent(jpBotonesPosRA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jpDatosPosicionesRALayout.setVerticalGroup(
@@ -1680,7 +1682,7 @@ public class AsuntoGUI extends JDialog {
                 .addComponent(jLabel69)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpDatosPosicionesRALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jpBotonesPosRA, 0, 105, Short.MAX_VALUE)
+                    .addComponent(jpBotonesPosRA, 0, 0, Short.MAX_VALUE)
                     .addComponent(jspPosicionesRA, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(17, 17, 17)
                 .addComponent(jpContGraficaPosRA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1729,7 +1731,7 @@ public class AsuntoGUI extends JDialog {
             }
         });
 
-        jLabel55.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel55.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel55.setForeground(new java.awt.Color(102, 102, 102));
         jLabel55.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel55.setText("INFORMACIÓN DE UN NUEVO PROYECTO");
@@ -1779,8 +1781,8 @@ public class AsuntoGUI extends JDialog {
             .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-743)/2, (screenSize.height-635)/2, 743, 635);
+        setSize(new java.awt.Dimension(743, 635));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void GuardarAsunto(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarAsunto
@@ -2284,7 +2286,7 @@ private void ValidarCodigo(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_Val
    
     try {
         String campo=this.jTextField1.getText();
-        if (A.ExisteCodigo(campo)){
+        if (AsuntoRA.existeCodigo(campo)) {
             this.jTextField1.setText(null);
             JOptionPane.showMessageDialog(this, "El código ya existe","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
         }else{
@@ -2297,7 +2299,10 @@ private void ValidarCodigo(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_Val
     } catch (SQLException e){
         e.printStackTrace();
         JOptionPane.showMessageDialog(this, "Fallo al consultar la base de datos","ERROR",JOptionPane.ERROR_MESSAGE);
-    }
+    }	catch (NoSuchFieldException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Fallo al consultar la base de datos","ERROR",JOptionPane.ERROR_MESSAGE);
+	}
     
 }//GEN-LAST:event_ValidarCodigo
 

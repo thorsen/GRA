@@ -24,10 +24,11 @@ public class InteraccionFic {
     public static String LINEA_SEP = "--------------------------------------------------------------------------------";
     public static String SALTO_LINEA = "\r\n";
     
+    public static String OVERWRITE = "WW";
     public static String WRITE = "W";
     public static String READ = "R";
     
-    public static final String FORMATO_FECHA = "dd/MM/yyyy  HH:mm:ss";
+    public static final String FORMATO_FECHA = "dd/MM/yyyy HH:mm:ss"; //Primeras pruebas eran con 2 espacios entre fecha y hora
 
     public InteraccionFic(String ruta, String operacion) throws IOException {
         this.ruta = ruta;
@@ -36,12 +37,16 @@ public class InteraccionFic {
     
     //Función para iniciar las operaciones con el fichero  
     public void iniOpFichero(String ruta, String operacion) throws IOException {
-        if (operacion.contains(WRITE))
-            this.fileWriter = new FileWriter(ruta, true);
-        if (operacion.contains(READ)) {
-            this.fileReader = new FileReader(ruta);
-            this.buffReader = new BufferedReader(this.fileReader);
-        }
+        if (operacion.contentEquals(OVERWRITE)) 
+			this.fileWriter = new FileWriter(ruta, false);
+		else {
+			if (operacion.contains(WRITE))
+				this.fileWriter = new FileWriter(ruta, true);
+			if (operacion.contains(READ)) {
+				this.fileReader = new FileReader(ruta);
+				this.buffReader = new BufferedReader(this.fileReader);
+			}
+		}
     }
     
     //Función para acabar las operaciones con el fichero  
@@ -163,9 +168,7 @@ public class InteraccionFic {
                 Double.parseDouble(campos[0]);
                 break;
             } catch (ArrayIndexOutOfBoundsException e) {
-                continue;
             } catch (NumberFormatException e) {
-                continue;
             }
         }
         

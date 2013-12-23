@@ -74,64 +74,69 @@ public class IVExtendido extends InputVerifier {
     
     @Override
     public boolean verify(JComponent input) {
-            boolean res = true;
+		boolean res = true;
 
 	    String valorText = null;
 	    String nomCampo = null;
 	    JTextField jtf = null;
 	    JSpinnerDate jsp = null;
 
+		String mensajeWarning = "";
+
 	    if (input instanceof JTextField) {
-		jtf = (JTextField) input;
-		valorText = jtf.getText();
-		nomCampo = jtf.getName();
+			jtf = (JTextField) input;
+			valorText = jtf.getText();
+			nomCampo = jtf.getName();
 	    } else if (input instanceof JSpinnerDate) {
-		jsp = (JSpinnerDate) input;
-		valorText = jsp.getText();
-		nomCampo = jsp.getName();
+			jsp = (JSpinnerDate) input;
+			valorText = jsp.getText();
+			nomCampo = jsp.getName();
 	    }
 
-            if (valorText.length() != 0) {
-                if (tipo.contentEquals(TIPO_DOUBLE)) { //Tipo double
-                    try {
-                        Double.parseDouble(valorText);
-                    } catch (NumberFormatException e) {
-                        res = false;
-                        MensajeApp.muestraWarning(jd, "El valor del campo " + nomCampo + " debe ser un número");
-                    }
-                } else if (tipo.contentEquals(TIPO_INT)) { //Tipo int
-                    try {
-                        Integer.parseInt(valorText);
-                    } catch (NumberFormatException e) {
-                        res = false;
-                        MensajeApp.muestraWarning(jd, "El valor del campo " + nomCampo + " debe ser un número");
-                    }
-                } else if (tipo.contentEquals(TIPO_FECHA)) { //Tipo fecha
-                    if (TratFechas.millisFecha(valorText) == -1) //Es un error en parseo, TratFechas dará la excepción
-                        res = false;
+		if (valorText.length() != 0) {
+			if (tipo.contentEquals(TIPO_DOUBLE)) { //Tipo double
+				try {
+					Double.parseDouble(valorText);
+				} catch (NumberFormatException e) {
+					res = false;
+					mensajeWarning = "El valor del campo " + nomCampo + " debe ser un número";
+				}
+			} else if (tipo.contentEquals(TIPO_INT)) { //Tipo int
+				try {
+					Integer.parseInt(valorText);
+				} catch (NumberFormatException e) {
+					res = false;
+					mensajeWarning = "El valor del campo " + nomCampo + " debe ser un número";
+				}
+			} else if (tipo.contentEquals(TIPO_FECHA)) { //Tipo fecha
+				if (TratFechas.millisFecha(valorText) == -1) //Es un error en parseo, TratFechas dará la excepción
+					res = false;
                 } else if (tipo.contentEquals(TIPO_STRING)) { //Tipo string
                     //En principio, no hay que validar nada
                 } else {
                     res = false;
-                    MensajeApp.muestraWarning(jd, "Tipo de validación del campo " + nomCampo + " no soportado");
+                    mensajeWarning = "Tipo de validación del campo " + nomCampo + " no soportado";
                 }
             } else {
                 if (!permiteVacio) {
                     res = false;
-                    MensajeApp.muestraWarning(jd, "El campo " + nomCampo + " debe contener un valor");
+                    mensajeWarning = "El campo " + nomCampo + " debe contener un valor";
                 }
             }
 
+		if (!this.verifDura)
+			res = true;
+
 	    if (jtf != null)
-		actualizaColor(res, jtf);
+			actualizaColor(res, jtf);
 	    else if (jsp != null)
-		actualizaColor(res, jsp);
+			actualizaColor(res, jsp);
 
-            if (!res && !verifDura)
-                res = true;
+		if (!res)
+			MensajeApp.muestraWarning(jd, mensajeWarning);
 
-            return res;
-        }
+		return res;
+	}
 
     public boolean verifyFinal(JComponent input) {
         boolean res, verifDuraOrig;

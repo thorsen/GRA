@@ -1207,8 +1207,8 @@ private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
         this.jtfVelHas.setInputVerifier(new IVExtendido(this, IVExtendido.TIPO_INT, false, true));
         
 
-        Auxiliares.cargaAsuntos(this.jcbAsunto);
-        Auxiliares.cargaNormas(this.jcbNorma);
+        Auxiliares.cargaAsuntosTipo(this.jcbAsunto, AsuntoRA.TIPO_ASUNTO_RA);
+        Auxiliares.cargaNormasRuido(this.jcbNorma);
 
         limpiarCampos();
     } catch (SQLException e) {
@@ -1757,6 +1757,8 @@ private void previsualizar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pr
                                 }
                             } else {
                                 MensajeApp.muestraError(this, null, "No se puede crear la base auxiliar para el site &lt;" + SiteRA.getSitePorId(sitesTipo.get(i)).getNombre() + "&gt;." + valiCrea);
+								Auxiliares.ocultaProgress(jpb);
+								Auxiliares.bloqueaDialog(this, false);
                             }
 
 							DatosRA2.deleteVistas();

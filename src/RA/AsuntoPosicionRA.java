@@ -127,7 +127,8 @@ public class AsuntoPosicionRA {
         } else if (campo.compareTo(CAMPO_ID_POS_MICRO4) == 0) {
             this.idPosMicro4 = (Integer) valor;
         } else {
-            throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+            //throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+			System.out.println("No existe el campo <" + campo + "> en la clase " + this.getClass().getSimpleName());
         }
     }
     

@@ -76,7 +76,8 @@ public class Interpolacion {
         } else if (campo.compareTo(CAMPO_V_CORTE) == 0) {
             this.vCorte = (Double) valor;
         } else {
-            throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+            //throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
+			System.out.println("No existe el campo <" + campo + "> en la clase " + this.getClass().getSimpleName());
         }
     }
     

@@ -1937,7 +1937,7 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
                 "Presión sonora equivalente (dBA)",
                 dataset,
                 PlotOrientation.VERTICAL,
-                false,
+                true,
                 true,
                 false);
 

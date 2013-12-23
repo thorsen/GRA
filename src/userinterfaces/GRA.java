@@ -198,9 +198,9 @@ public class GRA extends JFrame {
         Panel.setDoubleBuffered(false);
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 2, 11));
+        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 2, 11)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\logo gcp final.jpg" )));
+        jLabel1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\logo gra final.jpg" )));
         jLabel1.setAlignmentX(0.5F);
 
         javax.swing.GroupLayout PanelLayout = new javax.swing.GroupLayout(Panel);
@@ -463,8 +463,8 @@ public class GRA extends JFrame {
             .addComponent(Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-1462)/2, (screenSize.height-864)/2, 1462, 864);
+        setSize(new java.awt.Dimension(1462, 864));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
  
