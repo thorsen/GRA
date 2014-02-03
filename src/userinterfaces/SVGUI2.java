@@ -71,7 +71,7 @@ public class SVGUI2 extends JDialog {
         setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\B2Solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "GRA.png").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
         setResizable(false);
@@ -140,7 +140,7 @@ public class SVGUI2 extends JDialog {
         jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2Solar\\Datos\\Curva\\Imagenes\\resultset_previous.png" )));
+        jButton1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_previous.png" )));
         jButton1.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -149,7 +149,7 @@ public class SVGUI2 extends JDialog {
         });
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2Solar\\Datos\\Curva\\Imagenes\\resultset_next.png" )));
+        jButton2.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_next.png" )));
         jButton2.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -158,7 +158,7 @@ public class SVGUI2 extends JDialog {
         });
 
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
-        jButton7.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2Solar\\Datos\\Curva\\Imagenes\\camera.png" )));
+        jButton7.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "camera.png" )));
         jButton7.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -481,7 +481,7 @@ public class SVGUI2 extends JDialog {
         );
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
-        jButton8.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2Solar\\Datos\\Curva\\Imagenes\\resultset_last.png" )));
+        jButton8.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_last.png" )));
         jButton8.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -490,7 +490,7 @@ public class SVGUI2 extends JDialog {
         });
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
-        jButton9.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2Solar\\Datos\\Curva\\Imagenes\\resultset_first.png" )));
+        jButton9.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_first.png" )));
         jButton9.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

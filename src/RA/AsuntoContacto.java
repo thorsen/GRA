@@ -19,7 +19,7 @@ public class AsuntoContacto {
     public static final String CAMPO_NOTIFICACION = "Notificacion";
     public static final String CAMPO_ADJUNTO = "Adjunto";
     
-    private static final int ID_JESUS = 29;
+    public static final int ID_JESUS = 29;
     
     public AsuntoContacto(Integer idContacto, Integer idAsunto, Boolean notificacion, Boolean adjunto) {
         this.idContacto = idContacto;
@@ -181,7 +181,7 @@ public class AsuntoContacto {
         
         if (interFic != null)
             interFic.escribeLineaFic(InteraccionBD.dameSentenciaSql(InteraccionBD.TIPO_DELETE, TABLA, campos, valores, paramsPS, sqlExtra, false, null, null));
-        
+
         return res;
     }
     
@@ -206,7 +206,7 @@ public class AsuntoContacto {
         Boolean notificacion = true;
         Boolean adjunto = false;
 
-        int nAsuntoConta = contactoAsunto.size();
+        int nAsuntoConta = contactoAsunto != null ? contactoAsunto.size() : 0;
         Integer idContacto;
 
         for (int i = 0; i < nAsuntoConta; i++) {

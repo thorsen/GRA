@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////EQUIVALENCIAS///////////////////////////////////////////////
 ///////AsuntoRA//////////////////////////////////////////////Asunto///////////////////////////////
@@ -72,7 +73,7 @@ public class AsuntoRA {
   
     
     //Otras constantes
-    private static final String RUTA_ASUNTOS = "\\\\B2solar\\Datos\\Curva\\Asuntos\\";
+    private static final String RUTA_ASUNTOS = RA.Global.RUTA_DATOS + "Curva\\Asuntos\\";
     private static final String SUB_INSERCION = "\\Insercion";
     private static final String SUB_EDICION = "\\Edicion";
     private static final String SUB_REVISION = "\\Revision";
@@ -499,11 +500,11 @@ public class AsuntoRA {
     // Inserta una linea en interpolacion (si tipo=0,1)
     // Inserta en la tabla contactos (si jesus no es contatco de cliente, se inserta tb como contacto)
     // Devuelve true si el codigo del asunto ya existe
-    public boolean insertAsunto(String codigo, String nombre, Integer pe, Integer norma, Integer periodicidad, Integer cliente, Integer responsable, Integer aero, String nPos, ArrayList<String> contactoAsunto, String nCorto, String idioma, Integer tipo, String sqlExtra) throws SQLException, NoSuchFieldException, IOException, ClassNotFoundException {
-
-        InteraccionBD interBD = new InteraccionBD();
+    public static boolean insertAsunto(String codigo, String nombre, Integer pe, Integer norma, Integer periodicidad, Integer cliente, Integer responsable, Integer aero, String nPos, ArrayList<String> contactoAsunto, String nCorto, String idioma, Integer tipo, String sqlExtra) throws SQLException, NoSuchFieldException, IOException, ClassNotFoundException {
         boolean res = false;
         File folder = null;
+
+		InteraccionBD interBD = new InteraccionBD();
 
         try {
             Aerogenerador AG = new Aerogenerador();
@@ -521,7 +522,7 @@ public class AsuntoRA {
             sqlExtra = InteraccionBD.anadeSqlExtra(sqlExtra, sqlOrderBy);
 
             //Iniciamos la transacción
-            interBD.inicioTransaccion();
+			//interBD.inicioTransaccion();
 
             ArrayList<AsuntoRA> asuntos = getAsuntosPorId(null, null, campos, sqlExtra, false);
 
@@ -540,7 +541,7 @@ public class AsuntoRA {
 
             //El nuevo Id será el del último más uno (están ordenados en orden descendente)
             if (nAsuntos > 0) {
-                idAsuntoNuevo = asuntos.get(0).getIdAsunto() + 1;
+                idAsuntoNuevo = asuntos.get(nAsuntos - 1).getIdAsunto() + 1;
             } else {
                 idAsuntoNuevo = 0;
             }
@@ -597,8 +598,8 @@ public class AsuntoRA {
                 valores = InteraccionBD.anadeCampoValor(valores, paramsPS, nPos);
                 campos.add(CAMPO_POS);
             }
-            if (this.nCorto != null) {
-                valores = InteraccionBD.anadeCampoValor(valores, paramsPS, this.nCorto);
+            if (nCorto != null) {
+                valores = InteraccionBD.anadeCampoValor(valores, paramsPS, nCorto);
                 campos.add(CAMPO_N_CORTO);
             }
             if (idioma != null) {
@@ -622,9 +623,10 @@ public class AsuntoRA {
             // Se insertan los contactos
             AsuntoContacto.insertAsuntoContaArray(idAsuntoNuevo, contactoAsunto);
 
-            interBD.finTransaccion();
+			//interBD.finTransaccion();
 
             // Se crea el directorio asociado
+			/*
             String rutaAsunto = RUTA_ASUNTOS + codigo + "." + nombre;
             InteraccionFic.creaDir(rutaAsunto);
             InteraccionFic.creaDir(rutaAsunto + SUB_INSERCION);
@@ -632,6 +634,9 @@ public class AsuntoRA {
             InteraccionFic.creaDir(rutaAsunto + SUB_REVISION);
             InteraccionFic.creaDir(rutaAsunto + SUB_INFORMES);
             InteraccionFic.creaDir(rutaAsunto + SUB_CORRECION);
+					*/
+
+			res = true;
         } catch (SQLException e) {
             if (folder != null) {
                 folder.delete();
@@ -642,6 +647,7 @@ public class AsuntoRA {
 
         return res;
     }
+
     //Función para añadir una incidencia a la BD
     public static int updateAsunto(Integer idAsunto, String codigo, String nombre, Integer pE, Integer idNorma, Integer periodicidad, Boolean clave, Integer idCliente, Integer idResponsable, Integer idAero, Boolean abierto, String posicion, String nCorto, Character idioma, Long finiPC, Long finiSC, Long finiME1, Long finiME10, Integer tipo, Integer idAsuntoVal, String codigoVal, String nombreVal, Integer pEVal, Integer idNormaVal, Integer periodicidadVal, Boolean claveVal, Integer idClienteVal, Integer idResponsableVal, Integer idAeroVal, Boolean abiertoVal, String posicionVal, String nCortoVal, Character idiomaVal, Long finiPCVal, Long finiSCVal, Long finiME1Val, Long finiME10Val, Integer tipoVal, ArrayList<String> contactoAsuntoVal, String sqlExtra) throws SQLException, IOException, ClassNotFoundException, NoSuchFieldException {
         InteraccionBD interBD = new InteraccionBD();
@@ -908,7 +914,7 @@ public class AsuntoRA {
     }
     
     //Función para eliminar Asuntos que se ajustan a los limites pasados
-    public static int deleteAsuntos(Integer idAsunto, String codigo, String nombre, Integer pE, Integer idNorma, Integer periodicidad, Boolean clave, Integer idCliente, Integer idResponsable, Integer idAero, Boolean abierto, String posicion, String nCorto, Character idioma, Long finiPC, Long finiSC, Long finiME1, Long finiME10, Integer tipo, String sqlExtra) throws SQLException, ClassNotFoundException, IOException {
+    public static int deleteAsuntos(Integer idAsunto, String codigo, String nombre, Integer pE, Integer idNorma, Integer periodicidad, Boolean clave, Integer idCliente, Integer idResponsable, Integer idAero, Boolean abierto, String posicion, String nCorto, Character idioma, Long finiPC, Long finiSC, Long finiME1, Long finiME10, Integer tipo, String sqlExtra) throws SQLException, ClassNotFoundException, IOException, NoSuchFieldException {
         InteraccionBD interBD = new InteraccionBD();
         
         String condicion = "";
@@ -924,14 +930,203 @@ public class AsuntoRA {
         AsuntoConfRA.deleteAsuntoConfs(idAsunto, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         AsuntoConfRAModos.deleteAsuntoConfs(idAsunto, null, null, null);
         AsuntoIncert.deleteAsuntoIncerts(idAsunto, null, null, null, null, null);
-        
+
+		Incidencia.deleteIncidencias(idAsunto, null, null, null, null);
+		Descripcion.deleteDescripciones(idAsunto, null, null, null);
+		LineaConfiguracion.deleteLineaConf(idAsunto, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		ConfiguracionRA2.deleteConfiguracionesRA(idAsunto, null, null, null, null);
+
+		//Borramos las tablas de datos
+		ArrayList<TipoSiteRA> tiposSite = TipoSiteRA.getTiposSiteRA(null, null, null, null, Boolean.TRUE);
+		int nTipos = tiposSite != null ? tiposSite.size() : 0;
+		Integer idSite;
+
+		for (int i = 0; i < nTipos; i++) {
+			idSite = tiposSite.get(i).getIdSite();
+			
+			DatosRA2.setTabla(TipoRA.getTipoRAPorIdSite(idSite).getSufijo(), idAsunto);
+			if (interBD.existeTabla(DatosRA2.getTabla()))
+				interBD.borraTabla(DatosRA2.getTabla());
+		}
+		
         res  = interBD.deleteDatosTabla(TABLA, condicion, paramsPS, sqlExtra);
         interBD.finTransaccion();
         
         return res;
     }
     
-    public static int deleteAsuntos(AsuntoRA asuntoRA, String sqlExtra) throws SQLException, ClassNotFoundException, IOException {
+    public static int deleteAsuntos(AsuntoRA asuntoRA, String sqlExtra) throws SQLException, ClassNotFoundException, IOException, NoSuchFieldException {
         return deleteAsuntos(asuntoRA.idAsunto, asuntoRA.codigo, asuntoRA.nombre, asuntoRA.pE, asuntoRA.idNorma, asuntoRA.periodicidad, asuntoRA.clave, asuntoRA.idCliente, asuntoRA.idResponsable, asuntoRA.idAero, asuntoRA.abierto, asuntoRA.posicion, asuntoRA.nCorto, asuntoRA.idioma, asuntoRA.finiPC, asuntoRA.finiSC, asuntoRA.finiME1, asuntoRA.finiME10, asuntoRA.tipo, sqlExtra);
     }
+
+    // Duplica un asunto y sus tablas asociadas (en ambas BDs)
+    public static boolean duplicarAsunto(Integer idAsuntoOri, String codigoDes, String nombreDes, String nCortoDes) throws SQLException, NoSuchFieldException, IOException, ClassNotFoundException {
+		boolean res = true;
+		Integer idAsuntoDes = null;
+
+		AsuntoRA asuntoOri = getAsuntoPorId(idAsuntoOri);
+
+		DUPLICADO:	if (asuntoOri != null) {
+						ArrayList<AsuntoContacto> asuntoContactos = AsuntoContacto.getAsuntoContas(null, idAsuntoOri, null, null, null, null, null);
+						AsuntoContacto asuntoContactoAux;
+
+						res = insertAsunto(codigoDes, nombreDes, asuntoOri.getPE(), asuntoOri.getIdNorma(), asuntoOri.getPeriodicidad(), asuntoOri.getIdCliente(), asuntoOri.getIdResponsable(), asuntoOri.getIdAero(), asuntoOri.getPosicion(), null, nCortoDes, asuntoOri.getIdioma().toString(), asuntoOri.getTipo(), null);
+
+						if (!res)
+							break DUPLICADO;
+
+						idAsuntoDes = getAsuntos(null, codigoDes, nombreDes, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null).get(0).getIdAsunto();
+						
+						//Insertamos el resto de contactos excepto a Jesús porque ya se inserta automáticamente
+						int nContactos = asuntoContactos.size();
+						for (int i = 0; i < nContactos; i++) {
+							if (asuntoContactos.get(i).getIdContacto().equals(AsuntoContacto.ID_JESUS))
+								continue;
+
+							asuntoContactoAux = asuntoContactos.get(i);
+							asuntoContactoAux.setIdAsunto(idAsuntoDes);
+
+							if (AsuntoContacto.insertAsuntoConta(asuntoContactos.get(i), null) == 0) {
+								res = false;
+								break DUPLICADO;
+							}
+						}
+
+						//Configuración particular del asunto
+						AsuntoConfRA asuntoConfRA = AsuntoConfRA.getAsuntoConfPorIdAsunto(idAsuntoOri);
+						if (asuntoConfRA != null) {
+							asuntoConfRA.setIdAsunto(idAsuntoDes);
+
+							if (AsuntoConfRA.insertAsuntoConf(asuntoConfRA, null) == 0) {
+								res = false;
+								break DUPLICADO;
+							}
+						}
+						
+						//Configuración de modos
+						ArrayList<AsuntoConfRAModos> asuntoConfRAModos = AsuntoConfRAModos.getAsuntoConfsPorIdAsunto(idAsuntoOri);
+						if (asuntoConfRAModos != null) {
+							AsuntoConfRAModos asuntoConfRAModosAux;
+							int nAsuntoConfRAModos = asuntoConfRAModos.size();
+
+							for (int i = 0; i < nAsuntoConfRAModos; i++) {
+								asuntoConfRAModosAux = asuntoConfRAModos.get(i);
+								asuntoConfRAModosAux.setIdAsunto(idAsuntoDes);
+
+								if (AsuntoConfRAModos.insertAsuntoConf(asuntoConfRAModosAux, null) == 0) {
+									res = false;
+									break DUPLICADO;
+								}
+							}
+						}
+
+						//Posiciones
+						AsuntoPosicionRA asuntoPosicion = AsuntoPosicionRA.getAsuntoPosicionRA(idAsuntoOri);
+						if (asuntoPosicion != null) {
+							asuntoPosicion.setIdAsunto(idAsuntoDes);
+
+							if (AsuntoPosicionRA.insertAsuntoPosicionRA(asuntoPosicion, null) == 0) {
+								res = false;
+								break DUPLICADO;
+							}
+						}
+
+						//Incertidumbres del asunto
+						AsuntoIncert asuntoIncert = AsuntoIncert.getAsuntoIncertPorIdAsunto(idAsuntoOri);
+						if (asuntoIncert != null) {
+							asuntoIncert.setIdAsunto(idAsuntoDes);
+
+							if (AsuntoIncert.insertAsuntoIncert(asuntoIncert, null) == 0) {
+								res = false;
+								break DUPLICADO;
+							}
+						}
+
+						//Incidencias
+						ArrayList<Incidencia> incidencia = Incidencia.getIncidencias(idAsuntoOri, null, null, null, null, null, null);
+						if (incidencia != null) {
+							Incidencia incidenciaAux;
+							int nIncidencias = incidencia.size();
+
+							for (int i = 0; i < nIncidencias; i++) {
+								incidenciaAux = incidencia.get(i);
+								incidenciaAux.setIdAsunto(idAsuntoDes);
+
+								if (Incidencia.insertIncidencia(incidenciaAux, null) == 0) {
+									res = false;
+									break DUPLICADO;
+								}
+							}
+						}
+
+						//Descripción
+						ArrayList<Descripcion> descripcion = Descripcion.getDescripciones(idAsuntoOri, null, null, null, null, null);
+						if (descripcion != null) {
+							Descripcion descripcionAux;
+							Integer idSerie;
+							SerieRA2 serie;
+							LinkedHashMap<String, Double> nomVarNoAcusticas = new LinkedHashMap<String, Double>();
+							LinkedHashMap<String, Double> nomVarAcusticas = new LinkedHashMap<String, Double>();
+							int nDescripciones = descripcion.size();
+
+							for (int i = 0; i < nDescripciones; i++) {
+								descripcionAux = descripcion.get(i);
+								idSerie = descripcionAux.getIdSerie();
+								serie = SerieRA2.getSerieRA2PorId(idSerie);
+
+								if (serie.getIdTipoRA().equals(TipoRA.ID_TIPO_GEN)) { //No acústicas
+									nomVarNoAcusticas.put(serie.getDescripcion(), descripcionAux.getValor());
+								} else { //Acústicas
+									nomVarAcusticas.put(serie.getDescripcion(), descripcionAux.getValor());
+								}
+							}
+
+							if (Descripcion.insertDescripcionCreateDatos(idAsuntoDes, nomVarNoAcusticas, nomVarAcusticas, null) == 0) {
+								res = false;
+								break DUPLICADO;
+							}
+						}
+
+						//Configuración
+						ArrayList<ConfiguracionRA2> configuracionRA = ConfiguracionRA2.getConfiguracionesRA(idAsuntoOri, null, null, null, null, null, null);
+						if (configuracionRA != null) {
+							ConfiguracionRA2 configuracionRAAux;
+							int nConfs = configuracionRA.size();
+
+							for (int i = 0; i < nConfs; i++) {
+								configuracionRAAux = configuracionRA.get(i);
+								configuracionRAAux.setIdAsunto(idAsuntoDes);
+
+								if (ConfiguracionRA2.insertConfiguracionRA(configuracionRAAux, null) == 0) {
+									res = false;
+									break DUPLICADO;
+								}
+							}
+						}
+
+						//Líneas de Configuración
+						ArrayList<LineaConfiguracion> lineaConfiguracion = LineaConfiguracion.getLineasConf(idAsuntoOri, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+						if (lineaConfiguracion != null) {
+							LineaConfiguracion lineaConfiguracionAux;
+							int nLineas = lineaConfiguracion.size();
+
+							for (int i = 0; i < nLineas; i++) {
+								lineaConfiguracionAux = lineaConfiguracion.get(i);
+								lineaConfiguracionAux.setIdAsunto(idAsuntoDes);
+
+								if (LineaConfiguracion.insertLineaConf(lineaConfiguracionAux, null) == 0) {
+									res = false;
+									break DUPLICADO;
+								}
+							}
+						}
+
+					} else
+						res = false;
+
+		if (!res && idAsuntoDes != null)
+			deleteAsuntos(idAsuntoDes, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+		return res;
+	}
 } 

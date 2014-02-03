@@ -20,7 +20,7 @@
             <Menu class="javax.swing.JMenu" name="Menu2">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\page_white.png&quot;))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;page_white.png&quot;))" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Nuevo ...           "/>
                 <Property name="borderPainted" type="boolean" value="true"/>
@@ -108,17 +108,17 @@
                 </Menu>
               </SubComponents>
             </Menu>
-            <Menu class="javax.swing.JMenu" name="Menu4">
+            <Menu class="javax.swing.JMenu" name="jmAbrir">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\OpenFolder.gif&quot; ))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;OpenFolder.gif&quot; ))" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Abrir"/>
                 <Property name="borderPainted" type="boolean" value="true"/>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
               </Properties>
               <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="Asunto2">
+                <MenuItem class="javax.swing.JMenuItem" name="jmiAsunto">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Asunto"/>
                   </Properties>
@@ -126,7 +126,15 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="VAsunto"/>
                   </Events>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="Asunto4">
+                <MenuItem class="javax.swing.JMenuItem" name="jmiConfiguracion">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Configuraci&#xf3;n"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="abrirConfiguracion"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jmiParque">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Parque E&#xf3;lico"/>
                   </Properties>
@@ -134,7 +142,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="VParque"/>
                   </Events>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="Asunto5">
+                <MenuItem class="javax.swing.JMenuItem" name="jmiAerogenerador">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Aerogenerador"/>
                   </Properties>
@@ -142,7 +150,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="VAero"/>
                   </Events>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem58">
+                <MenuItem class="javax.swing.JMenuItem" name="jmiCliente">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Cliente / Usuarios Web"/>
                   </Properties>
@@ -150,7 +158,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="VCliente"/>
                   </Events>
                 </MenuItem>
-                <Menu class="javax.swing.JMenu" name="jMenu31">
+                <Menu class="javax.swing.JMenu" name="jmInsercion">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Inserci&#xf3;n"/>
                   </Properties>
@@ -170,7 +178,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="Salir">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\Exit.png&quot; ))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;Exit.png&quot; ))" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Salir"/>
               </Properties>
@@ -267,7 +275,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem75">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\logotipo.gif&quot;))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;logotipo.gif&quot;))" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Acceso clientes"/>
               </Properties>
@@ -293,7 +301,7 @@
       <Color blue="33" green="33" red="33" type="rgb"/>
     </Property>
     <Property name="iconImage" type="java.awt.Image" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-      <Connection code="new ImageIcon(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png&quot;).getImage()" type="code"/>
+      <Connection code="new ImageIcon(RA.Global.RUTA_IMAGENES + &quot;GRA.png&quot;).getImage()" type="code"/>
     </Property>
     <Property name="name" type="java.lang.String" value="Pantalla Principal" noResource="true"/>
   </Properties>
@@ -369,7 +377,7 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\logo gra final.jpg&quot; ))" type="code"/>
+              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;logo gra final.jpg&quot; ))" type="code"/>
             </Property>
             <Property name="alignmentX" type="float" value="0.5"/>
           </Properties>

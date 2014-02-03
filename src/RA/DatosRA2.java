@@ -8,13 +8,16 @@ import general.DatosIncertidumbre;
 import general.InteraccionBD;
 import general.InteraccionFic;
 import general.InteraccionXML;
+import general.MensajeApp;
 import general.PolynomialRegression;
+import general.RecogidaDatos;
 import general.ResultadoBandaCriticaFFT;
 import general.ResultadoBinFFT;
 import general.ResultadoEspectroFFT;
 import general.ResultadoIncert;
 import general.TratDecimales;
 import general.TratFechas;
+import java.awt.Component;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -26,6 +29,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -189,7 +194,7 @@ public class DatosRA2 {
     public static final HashMap<String, Double> POND_OCT_Z_TO_A = new HashMap<String, Double>() {
         {
             put("Hz10", -70.4);
-            put("Hz12.5", -63.4);
+            put("Hz12_5", -63.4);
             put("Hz16", -56.7);
             put("Hz20", -50.5);
             put("Hz25", -44.7);
@@ -227,7 +232,7 @@ public class DatosRA2 {
     public static final HashMap<String, Double> POND_OCT_Z_TO_C = new HashMap<String, Double>() {
         {
             put("Hz10", -14.3);
-            put("Hz12.5", -11.2);
+            put("Hz12_5", -11.2);
             put("Hz16", -8.5);
             put("Hz20", -6.2);
             put("Hz25", -4.4);
@@ -264,6 +269,8 @@ public class DatosRA2 {
     };
     
     private static final Double TOLERANCIA_DIFF_VZ_VD = 0.75;
+	public static final Double RES_FREC_ORI_DEF = 1.5625;
+	public static final Double RES_FREC_DES_DEF = 2.0;
     
     public DatosRA2(String tipoTabla, Integer idAsunto, Integer idDato, Long fechaHora, Integer valido, Integer rF, Double tBuje, Double pBuje) {
         this.tipoTabla = tipoTabla;
@@ -673,9 +680,8 @@ public class DatosRA2 {
     private static ConfInsercionDatos preparaDatosInsertUpdate(long desdeFecha, Integer idAsunto, Integer idSite, ArrayList<String> canalesFic, ArrayList<SerieRA2> seriesDesc, ArrayList<String> nomVariablesDesc, ArrayList<LineaConfiguracion> lineasConfTot, Boolean ponderadoA) throws SQLException, NoSuchFieldException {
         SerieRA2 serie;
         Integer idTipoRA;
-
         Integer idConfig;
-        Double cotaT, cotaP, dec, hB;
+        Double cotaT, cotaP, dec, hB, resFrecOri = null, resFrecDes = null;
         ArrayList<String> codigos = new ArrayList<String>();
         ArrayList<String> nomVariables = new ArrayList<String>();
         ArrayList<Integer> canales = new ArrayList<Integer>();
@@ -784,7 +790,7 @@ public class DatosRA2 {
 
         if (idTipoRA.equals(TipoRA.ID_TIPO_FFT)) {
             //Tratamiento especial para FFT
-            Double frecIni = null, frecFin = null, frecInf = null, frecSup = null, valor;
+            Double frecIni = null, frecFin = null, valor;
 
             ArrayList<SerieRA2> seriesFFT = SerieRA2.getSeriesRA2PorTipo(TipoRA.ID_TIPO_FFT);
             int nSeriesFFT = seriesFFT != null ? seriesFFT.size() : 0;
@@ -800,10 +806,10 @@ public class DatosRA2 {
                     frecIni = valor;
                 } else if (serie.getDescripcion().contains("Fin")) {
                     frecFin = valor;
-                } else if (serie.getDescripcion().contains("Inf")) {
-                    frecInf = valor;
-                } else if (serie.getDescripcion().contains("Sup")) {
-                    frecSup = valor;
+                } else if (serie.getDescripcion().contains("Ori")) {
+                    resFrecOri = valor;
+                } else if (serie.getDescripcion().contains("Des")) {
+                    resFrecDes = valor;
                 }
             }
 
@@ -827,25 +833,6 @@ public class DatosRA2 {
                 }
                 if (frecFin != null && frecFin < valorCanalFic) {
                     continue;
-                }
-                if (frecInf != null && valorCanalFic < 2000) {
-                    if (valorCanalFicAnt != null) {
-                        while (valorCanalFicAnt < valorCanalFic) {
-                            valorCanalFicAnt += frecInf;
-                        }
-                        if (!valorCanalFic.equals(valorCanalFicAnt)) {
-                            continue;
-                        }
-                    }
-                } else if (frecSup != null && valorCanalFic >= 2000 && valorCanalFic <= 5000) {
-                    if (valorCanalFicAnt != null) {
-                        while (valorCanalFicAnt < valorCanalFic) {
-                            valorCanalFicAnt += frecSup;
-                        }
-                        if (!valorCanalFic.equals(valorCanalFicAnt)) {
-                            continue;
-                        }
-                    }
                 }
 
                 //Si ha pasado las validaciones, añadimos a la lista de códigos
@@ -879,8 +866,66 @@ public class DatosRA2 {
         varInOut.add(dec);
         varInOut.add(hB);
 
-        return new ConfInsercionDatos(idConfig, codigos, nomVariables, canales, slopes, offsets, cotaT, cotaP, dec, hB, pondDbZtoDbA);
+        return new ConfInsercionDatos(idConfig, codigos, nomVariables, canales, slopes, offsets, cotaT, cotaP, dec, hB, pondDbZtoDbA, resFrecOri, resFrecDes);
     }
+
+	//Función para pasar de una resolución de origen a otra de menor resolución (datos cada más Hz, resoluciónDes >= resolucionOri).
+	private static LinkedHashMap<Double, Double> cambiarResolucion(LinkedHashMap<Double, Double> espectroFFT, Double resolucionOri, Double resolucionDes) {
+		LinkedHashMap<Double, Double> res = null;
+		
+		if (resolucionOri == null)
+			resolucionOri = RES_FREC_ORI_DEF;
+		if (resolucionDes == null)
+			resolucionDes = RES_FREC_DES_DEF;
+
+		if (espectroFFT != null && !resolucionOri.equals(resolucionDes)) {
+			Iterator it = espectroFFT.entrySet().iterator();
+			Entry<Double, Double> entry;
+
+			Double nivelOri, frecOri, nivelDes, frecDes, nivelAcum;
+			Double iniFrecOri, finFrecOri, iniFrecDes, finFrecDes;
+			res = new LinkedHashMap<Double, Double>();
+
+			iniFrecDes = -resolucionDes / 2.0;
+			while (it.hasNext()) {
+				entry = (Entry<Double, Double>) it.next();
+				frecOri = entry.getKey();
+				nivelOri = entry.getValue();
+
+				iniFrecOri = frecOri - resolucionOri / 2.0;
+				finFrecOri = frecOri + resolucionOri / 2.0;
+
+				while (iniFrecDes + resolucionDes <= iniFrecOri)
+					iniFrecDes += resolucionDes;
+
+				finFrecDes = iniFrecDes + resolucionDes;
+
+				frecDes = iniFrecDes + resolucionDes / 2.0;
+				nivelAcum = res.get(frecDes);
+
+				nivelDes = (nivelAcum != null ? nivelAcum : 0.0) + ((finFrecDes - iniFrecOri) / resolucionOri) * nivelOri;
+
+				if (nivelDes != null)
+					res.put(frecDes, TratDecimales.round(nivelDes, TratDecimales.DEC_VARIABLE_RA));
+
+				if (finFrecOri - finFrecDes < 0) {
+					frecDes = iniFrecDes + resolucionDes / 2.0;
+					nivelAcum = res.get(frecDes);
+				} else {
+					frecDes = finFrecDes + resolucionDes / 2.0;
+					nivelAcum = res.get(frecDes);
+				}
+
+				nivelDes = (nivelAcum != null ? nivelAcum : 0.0) + ((finFrecOri - finFrecDes) / resolucionOri) * nivelOri;
+
+				if (nivelDes != null && !finFrecOri.equals(finFrecDes))
+					res.put(frecDes, TratDecimales.round(nivelDes, TratDecimales.DEC_VARIABLE_RA));
+			}
+		} else
+			res = espectroFFT;
+		
+		return res;
+	}
 
     public static int insertDatos(String tipoTabla, Integer idAsunto, Integer idSite, Integer rF, Integer tipoVel, ArrayList<ArrayList<String>> datos, ConfInsercionDatos conf) throws SQLException, NoSuchFieldException, ParserConfigurationException, TransformerException {
         int res = 0;
@@ -899,6 +944,8 @@ public class DatosRA2 {
             Double dec = conf.getDec();
             Double hB = conf.getHB();
             HashMap<String, Double> pondDbZtoDbA = conf.getPondDbZtoDbA();
+			Double resolucionOri = conf.getResolucionOri();
+			Double resolucionDes = conf.getResolucionDes();
 
             setTabla(tipoTabla, idAsunto);
 
@@ -1044,7 +1091,7 @@ public class DatosRA2 {
                     }
 
                     if (espectroFFT != null) {//Hay datos de tipo FFT
-                        valores = InteraccionBD.anadeCampoValorTipo(valores, paramsPS, InteraccionXML.creaXml(espectroFFT), SQLXML.class.getSimpleName());
+                        valores = InteraccionBD.anadeCampoValorTipo(valores, paramsPS, InteraccionXML.creaXml(cambiarResolucion(espectroFFT, resolucionOri, resolucionDes)), SQLXML.class.getSimpleName());
                         campos.add(CAMPO_XML);
                     }
 
@@ -1149,6 +1196,43 @@ public class DatosRA2 {
         return updateDatoBasico(tipoTabla, idAsunto, idDato, null, null, null, null, null, null, null, valido, null, null, null, null);
     }
 
+    public static int setDatoValidoNorma(Integer idNorma, String tipoTabla, Integer idAsunto, Integer idSite, Integer idDato, Integer valido, Integer validoSys) throws SQLException, NoSuchFieldException {
+		int res = setDatoValido(tipoTabla, idAsunto, idSite, idDato, valido, validoSys);
+
+		if (res > 0 && idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) {
+			ArrayList<TipoSiteRA> tiposSite = null;
+			TipoSiteRA tipoSite;
+			
+			if (tipoTabla.contentEquals(Auxiliares.TIPO_SPL))
+				tiposSite = TipoSiteRA.getTiposSiteRA(null, TipoRA.ID_TIPO_OCT, null, null, Boolean.TRUE);
+			else if (tipoTabla.contentEquals(Auxiliares.TIPO_OCT))
+				tiposSite = TipoSiteRA.getTiposSiteRA(null, TipoRA.ID_TIPO_SPL, null, null, Boolean.TRUE);
+			
+			int nTipos = tiposSite != null ? tiposSite.size() : 0;
+			
+			if (nTipos > 0) {
+				DatosRA2 datoOrig, dato;
+				String tipoTablaAux;
+				datoOrig = DatosRA2.getDatoPorId(tipoTabla, idAsunto, idDato);
+				
+				for (int i = 0; i < nTipos; i++) {
+					tipoSite = tiposSite.get(i);
+
+					tipoTablaAux = TipoRA.getTipoRAPorIdSite(tipoSite.getIdSite()).getSufijo();
+
+					dato = DatosRA2.getDatoPorFecha(tipoTablaAux, idAsunto, datoOrig.getFechaHora());
+
+					if (DatosRA2.setDatoValido(tipoTablaAux, idAsunto, tipoSite.getIdSite(), dato.getIdDato(), valido, validoSys) <= 0) {
+						res = 0;
+						break;
+					}
+				}
+			}
+		}
+
+		return res;
+    }
+
     public static int setDatoXMLValido(String tipoTabla, Integer idAsunto, Integer idDato, Integer idDatoXML, Boolean valido) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
 
@@ -1192,6 +1276,8 @@ public class DatosRA2 {
             Double dec = conf.getDec();
             Double hB = conf.getHB();
             HashMap<String, Double> pondDbZtoDbA = conf.getPondDbZtoDbA();
+			Double resolucionOri = conf.getResolucionOri();
+			Double resolucionDes = conf.getResolucionDes();
 
             setTabla(tipoTabla, idAsunto);
 
@@ -1327,7 +1413,7 @@ public class DatosRA2 {
                     }
 
                     if (espectroFFT != null) {//Hay datos de tipo FFT
-                        InteraccionBD.anadeCampoValorTipo(null, paramsPS, InteraccionXML.creaXml(espectroFFT), SQLXML.class.getSimpleName());
+                        InteraccionBD.anadeCampoValorTipo(null, paramsPS, InteraccionXML.creaXml(cambiarResolucion(espectroFFT, resolucionOri, resolucionDes)), SQLXML.class.getSimpleName());
                         campos.add(CAMPO_XML);
                     }
 
@@ -1735,7 +1821,7 @@ public class DatosRA2 {
     }
     
     //Valida si puede crear y crea en caso afirmativola vista base Auxiliar de RA utilizada para el cálculo de la k
-    public static String createVistaAux(Integer idNorma, String tipoTabla, Integer idAsunto, Integer idSite, int tipoCalculoVelocidad, int tipoCalculoPot, Integer idSerie, Double densidad, long fechaIni, long fechaFin, double[] sector, double zRef, double z0Ref, double z0, boolean resAlturaBuje, boolean esMiniAero) throws SQLException, NoSuchFieldException {
+    public static String createVistaAux(Integer idNorma, String tipoTabla, Integer idAsunto, Integer idSite, int tipoCalculoVelocidad, int tipoCalculoPot, Integer idSerie, Double densidad, long fechaIni, long fechaFin, double[] sector, double zRef, double z0Ref, double z0, boolean resAlturaBuje, boolean esMiniAero, JDialog jd) throws SQLException, NoSuchFieldException {
 		String res = "";
 		InteraccionBD interBD = new InteraccionBD();
 
@@ -1934,7 +2020,10 @@ public class DatosRA2 {
 				}
 			} else {
 				pN = potNeta;
-				vHAux = "";
+				if (!regulacion)
+					vHAux = "";
+				else
+					vHAux = " * POWER(" + cte1 + ", " + TratDecimales.round(1 / 3.0, TratDecimales.DEC_POTENCIA) + ")";
 			}
 			campos.add("CONVERT(" + TIPO_DECIMAL_DEF + ", " + pN + ") AS " + CAMPO_P_N);
 
@@ -1964,8 +2053,45 @@ public class DatosRA2 {
                         columnas.add(new String[]{CAMPO_RANGO_PERMITIDO, TIPO_INT, EXTRA_NULO});
                         interBD.creaTabla(CURVA_AUX + VISTA_AUX, columnas);
 
-						Double tolerancia;
-						Integer rangoPermitido;
+						Double tolerancia = null;
+						Boolean esRangoPermitido;
+
+						curva1 = (CurvaRA) regCP.get(0)[0];
+						curva2 = (CurvaRA) regCP.get(1)[0];
+
+						if (idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) && (curva1.getIncert() == null || curva2.getIncert() == null)) {
+							ArrayList<AsuntoIncert> incertidumbres = AsuntoIncert.getAsuntoIncerts(idAsunto, null, idNorma, TipoIncert.ID_TIPO_INCERT_VEL_DERIVADA, null, null, null, Boolean.TRUE);
+							int nIncert = incertidumbres != null ? incertidumbres.size() : 0;
+							Double clase = null;
+
+							for (int j = 0; j < nIncert; j++) {
+								if (incertidumbres.get(j).getDesdeFecha() <= fechaIni) {
+									clase = incertidumbres.get(j).getValor();
+									break;
+								}
+							}
+							
+							if (clase != null) {
+								Double rango = null;
+								do {
+									RecogidaDatos rd = new RecogidaDatos("<html><center>La curva de pontencia correspondiente no contiene<br>"
+											+ "datos de incertidumbres. Introduzca el rango de<br>"
+											+ "medida de calibración de la CPA para calcular la<br>"
+											+ "tolerancia como clase * rango / 100</center>", "Rango medida cal. CPA:");
+									if (JOptionPane.showConfirmDialog(jd, rd, "Introduzca rango de medida de calibración de la CPA", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+										try {
+										rango = Double.parseDouble(rd.getCampoRecoger());
+										} catch (NumberFormatException ex) {
+											MensajeApp.muestraError(rd, null, "Debe introducir un número");
+										}
+									} else
+										return "<br>Proceso cancelado por el usuario.";
+								} while (rango == null);
+
+								tolerancia = clase * rango / 100.0;
+							}
+
+						}
                         
                         for (int i = 0; i < nRegCP - 1; i++) {
                             String valores = "";
@@ -1977,12 +2103,8 @@ public class DatosRA2 {
                             pendiente = (Double) regCP.get(i)[1];
                             offset = (Double) regCP.get(i)[2];
 
-							tolerancia = PORC_TOLERANCIA * Math.max(curva1.getPot(), curva2.getPot());
-                
-							if ((curva2.getPot() - tolerancia) - (curva1.getPot() + tolerancia) > 0)
-								rangoPermitido = 1;
-							else
-								rangoPermitido = 0;
+							//tolerancia = PORC_TOLERANCIA * Math.max(curva1.getPot(), curva2.getPot());
+							esRangoPermitido = esRangoPendientePositiva(curva1, curva2, tolerancia);
 
                             if (curva2.getPot() < curva1.getPot()) {
                                 curvaAux = curva1;
@@ -1998,7 +2120,7 @@ public class DatosRA2 {
                             camposAux.add(CAMPO_PENDIENTE);
                             valores = InteraccionBD.anadeCampoValor(valores, paramsPSAux, offset);
                             camposAux.add(CAMPO_OFFSET);
-                            valores = InteraccionBD.anadeCampoValor(valores, paramsPSAux, rangoPermitido);
+                            valores = InteraccionBD.anadeCampoValor(valores, paramsPSAux, esRangoPermitido ? 1 : 0);
                             camposAux.add(CAMPO_RANGO_PERMITIDO);
 
                             try {
@@ -2006,7 +2128,7 @@ public class DatosRA2 {
                             } catch (SQLException e) {}
                         }
                         
-                        vD = "(SELECT TOP 1 CASE WHEN 1 = 1" + (idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) ? "AND " + CAMPO_RANGO_PERMITIDO + " = 1 ": "") + " THEN ABS(" + pN + " * " + CAMPO_PENDIENTE + " + " + CAMPO_OFFSET + ") ELSE NULL END FROM " + CURVA_AUX + VISTA_AUX + " WHERE " + pN + " >= " + CAMPO_DESDE_POT + " AND " + pN + " < " + CAMPO_HASTA_POT + " ORDER BY ABS(" + vZaCP + " - ABS(" + pN + " * " + CAMPO_PENDIENTE + " + " + CAMPO_OFFSET + ")))";
+                        vD = "(SELECT TOP 1 CASE WHEN 1 = 1" + (idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) ? " AND " + CAMPO_RANGO_PERMITIDO + " = 1 ": "") + " THEN ABS(" + pN + " * " + CAMPO_PENDIENTE + " + " + CAMPO_OFFSET + ") ELSE NULL END FROM " + CURVA_AUX + VISTA_AUX + " WHERE " + pN + " >= " + CAMPO_DESDE_POT + " AND " + pN + " < " + CAMPO_HASTA_POT + " ORDER BY ABS(" + vZaCP + " - ABS(" + pN + " * " + CAMPO_PENDIENTE + " + " + CAMPO_OFFSET + ")))";
 
 						vH = "(" + vD + vHAux + ")";
 
@@ -2442,7 +2564,7 @@ public class DatosRA2 {
 				String condicion = null;
 				ArrayList<Object[]> paramsPS = null;
 				
-				if (idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) {
+				if (idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) && !tipoTabla.contentEquals(Auxiliares.TIPO_FFT)) {
 					paramsPS = new ArrayList<Object[]>();
 					condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CAMPO_L_A_EQ_1, "is not", null);
 				}
@@ -3314,82 +3436,80 @@ public class DatosRA2 {
         int bin = -1, binAnt = -1;
         
         //Preparamos los datos de RF
-        if (corregirRF) {
-            nResFFT = resFFT_RF.size();
-            espectroRF = null;
-            int nEspectrosRFBin;
+		nResFFT = resFFT_RF.size();
+		espectroRF = null;
+		int nEspectrosRFBin;
 
-            ArrayList<Double> frecEspRF;
-            int nFrecsRF;
+		ArrayList<Double> frecEspRF;
+		int nFrecsRF;
 
-            for (int i = 0; i < nResFFT; i++) {
-                bin = (Integer) resFFT_RF.get(i)[0];
+		for (int i = 0; i < nResFFT; i++) {
+			bin = (Integer) resFFT_RF.get(i)[0];
 
-                if (bin != binAnt) {
-                    //Guardamos los cambios
-                    if (i != 0) {
-                        //Calculamos el promedio energético de los espectros del bin
-                        nEspectrosRFBin = espectrosRFBin.size();
-                        if (nEspectrosRFBin > 0) {
-                            nFrecsRF = espectrosRFBin.get(0).length;
-                            espectroRF = new Double[nFrecsRF][2];
+			if (bin != binAnt) {
+				//Guardamos los cambios
+				if (i != 0) {
+					//Calculamos el promedio energético de los espectros del bin
+					nEspectrosRFBin = espectrosRFBin.size();
+					if (nEspectrosRFBin > 0) {
+						nFrecsRF = espectrosRFBin.get(0).length;
+						espectroRF = new Double[nFrecsRF][2];
 
-                            for (int j = 0; j < nFrecsRF; j++) {
-                                frecEspRF = new ArrayList<Double>();
-                                for (int k = 0; k < nEspectrosRFBin; k++) {
-                                    frecEspRF.add(espectrosRFBin.get(k)[j][1]);
-                                }
-                                espectroRF[j] = new Double[]{espectrosRFBin.get(0)[j][0], getNivelPromedioEnergetico(Auxiliares.arrayObjToDouble(frecEspRF.toArray()))};
-                            }
+						for (int j = 0; j < nFrecsRF; j++) {
+							frecEspRF = new ArrayList<Double>();
+							for (int k = 0; k < nEspectrosRFBin; k++) {
+								frecEspRF.add(espectrosRFBin.get(k)[j][1]);
+							}
+							espectroRF[j] = new Double[]{espectrosRFBin.get(0)[j][0], getNivelPromedioEnergetico(Auxiliares.arrayObjToDouble(frecEspRF.toArray()))};
+						}
 
-                            binEspectroRF.put(binAnt, espectroRF);
-                        }
-                    }
+						binEspectroRF.put(binAnt, espectroRF);
+					}
+				}
 
-                    binAnt = bin;
-                    espectrosRFBin = new ArrayList<Double[][]>();
-                }
+				binAnt = bin;
+				espectrosRFBin = new ArrayList<Double[][]>();
+			}
 
-                arrayEspectroRF = new ArrayList<Double[]>();
+			arrayEspectroRF = new ArrayList<Double[]>();
 
-                xml = (String) resFFT_RF.get(i)[1];
-                datosXML = InteraccionXML.leeXml(xml);
-                nDatosXML = datosXML.size();
+			xml = (String) resFFT_RF.get(i)[1];
+			datosXML = InteraccionXML.leeXml(xml);
+			nDatosXML = datosXML.size();
 
-                for (int j = 0; j < nDatosXML; j++) {
-                    datoXML = datosXML.get(j);
+			for (int j = 0; j < nDatosXML; j++) {
+				datoXML = datosXML.get(j);
 
-                    frec = datoXML.getFrecuencia();
-                    if (frec >= desdeFrec && frec <= hastaFrec) {  //Si es válido
-                        arrayEspectroRF.add(new Double[]{frec, datoXML.getNivel()}); //Frecuencia, nivel
-                    }
-                }
+				frec = datoXML.getFrecuencia();
+				if (frec >= desdeFrec && frec <= hastaFrec) {  //Si es válido
+					arrayEspectroRF.add(new Double[]{frec, datoXML.getNivel()}); //Frecuencia, nivel
+				}
+			}
 
-                espectroRF = Auxiliares.arrayObjToDoubleDouble(arrayEspectroRF.toArray());
+			espectroRF = Auxiliares.arrayObjToDoubleDouble(arrayEspectroRF.toArray());
 
-                espectrosRFBin.add(espectroRF);
-            }
-            //Caso de salida
-            if (nResFFT > 0) {
-                //Calculamos el promedio energético de los espectros del bin
-                nEspectrosRFBin = espectrosRFBin.size();
-                if (nEspectrosRFBin > 0) {
-                    nFrecsRF = espectrosRFBin.get(0).length;
-                    espectroRF = new Double[nFrecsRF][2];
+			espectrosRFBin.add(espectroRF);
+		}
+		//Caso de salida
+		if (nResFFT > 0) {
+			//Calculamos el promedio energético de los espectros del bin
+			nEspectrosRFBin = espectrosRFBin.size();
+			if (nEspectrosRFBin > 0) {
+				nFrecsRF = espectrosRFBin.get(0).length;
+				espectroRF = new Double[nFrecsRF][2];
 
-                    for (int j = 0; j < nFrecsRF; j++) {
-                        frecEspRF = new ArrayList<Double>();
-                        for (int k = 0; k < nEspectrosRFBin; k++) {
-                            frecEspRF.add(espectrosRFBin.get(k)[j][1]);
-                        }
+				for (int j = 0; j < nFrecsRF; j++) {
+					frecEspRF = new ArrayList<Double>();
+					for (int k = 0; k < nEspectrosRFBin; k++) {
+						frecEspRF.add(espectrosRFBin.get(k)[j][1]);
+					}
 
-                        espectroRF[j] = new Double[]{espectrosRFBin.get(0)[j][0], getNivelPromedioEnergetico(Auxiliares.arrayObjToDouble(frecEspRF.toArray()))};
-                    }
+					espectroRF[j] = new Double[]{espectrosRFBin.get(0)[j][0], getNivelPromedioEnergetico(Auxiliares.arrayObjToDouble(frecEspRF.toArray()))};
+				}
 
-                    binEspectroRF.put(binAnt, espectroRF);
-                }
-            }
-        }
+				binEspectroRF.put(binAnt, espectroRF);
+			}
+		}
         
         nResFFT = resFFT_AG.size();
         bin = -1;
@@ -3435,10 +3555,7 @@ public class DatosRA2 {
 
                     limitesBC = getLimBandaCritica(frecMax);
                     bandaCritica = getBandaCritica(espectroAG, limitesBC);
-                    if (corregirRF)
-                        bandaCriticaRF = getBandaCritica(binEspectroRF.get(bin), limitesBC);
-                    else
-                        bandaCriticaRF = null;
+					bandaCriticaRF = getBandaCritica(binEspectroRF.get(bin), limitesBC);
                     nivelMedioBC = getNivelPromedioBandaCritica(frecMax, bandaCritica);
 
                     nivelCriterio = null;
@@ -3454,7 +3571,7 @@ public class DatosRA2 {
 
                         //Si no hay tono, no nos interesa
                         if (getTipoFrecMax(bandaCriticaClasificada, frecMax).equals(TIPO_TONO)) {
-                            resBandaCritica.add(new ResultadoBandaCriticaFFT(frecMax, nivelFrecMax, limitesBC[0], limitesBC[1], nivelCriterio, nivelEnmascaramiento, bandaCriticaClasificada, bandaCriticaRF));
+                            resBandaCritica.add(new ResultadoBandaCriticaFFT(frecMax, nivelFrecMax, limitesBC[0], limitesBC[1], nivelCriterio, nivelEnmascaramiento, bandaCriticaClasificada, bandaCriticaRF, corregirRF));
                         }
                     }
                     Auxiliares.incPorcentajeProgress(jpb, porc / (nResFFT * nFrecsMax));
@@ -4140,7 +4257,7 @@ public class DatosRA2 {
                 velocidad = ((BigDecimal) fila[1]).doubleValue();
                 
                 //Aplicacmos los coeficientes
-                //Juesús comenta que el dato estimado es sobre la velocidad central del bin, no sobre cada una de las velocidades de los puntos
+                //Jesús comenta que el dato estimado es sobre la velocidad central del bin, no sobre cada una de las velocidades de los puntos
                 //res.add(funcion.getValue(velocidad));
                 res.add(funcion.getValue(Math.round(velocidad)));
             }
@@ -5649,42 +5766,17 @@ public class DatosRA2 {
      * */
 
     //Función que devuelve los rangos en que la curva de potencia mantiene una pendiente positiva
-    public static ArrayList<Double[]> getRangosPendientePositiva(Integer idAsunto, Double densidad, Double porcTolerancia) throws SQLException, NoSuchFieldException {
-        ArrayList<Double[]> res = null;
-        ArrayList<CurvaRA> curvas = CurvaRA.getCurvasPorIdAsuntoDensidad(idAsunto, densidad);
-        Double tolerancia;
-        CurvaRA curva = null, curvaSig = null;
-        
-        int nCurvas = curvas != null ? curvas.size() : 0;
-        
-        if (nCurvas > 0) {
-            res = new ArrayList<Double[]>();
-            Double iniRan = curvas.get(0).getVel();
-
-            for (int i = 0; i < nCurvas - 1; i++) {
-                curva = curvas.get(i);
-                curvaSig = curvas.get(i + 1);
-                
-                tolerancia = porcTolerancia * Math.max(curva.getPot(), curvaSig.getPot());
-                
-                if ((curvaSig.getPot() - tolerancia) - (curva.getPot() + tolerancia) <= 0) {
-                    if (iniRan != null) {
-                        if (i != 0)
-                            res.add(new Double[]{iniRan, curva.getVel()});
-                        
-                        iniRan = null;
-                    }
-
-                    continue;
-                }
-
-                if (iniRan == null)
-                    iniRan = curva.getVel();
-            }
-            
-            if (iniRan != null && curvaSig != null)
-                res.add(new Double[]{iniRan, curvaSig.getVel()});
-        }
+    public static boolean esRangoPendientePositiva(CurvaRA curva1, CurvaRA curva2, Double tolerancia) {
+		boolean res = false;
+		
+		if (curva1.getIncert() != null && curva2.getIncert() != null) {
+			res = (curva2.getPot() - curva2.getIncert()) - (curva1.getPot() + curva1.getIncert()) > 0;
+		} else {
+			if (tolerancia != null) {
+				res = (curva2.getPot() - tolerancia) - (curva1.getPot() + tolerancia) > 0;
+			} else 
+				res = false;
+		}
 
         return res;
     }
@@ -5797,4 +5889,88 @@ public class DatosRA2 {
 
         return dataset;
     }
+
+	private static Double getCoefSensibilidadCP(CurvaRA curvaAnt, CurvaRA curvaAct) {
+		Double res = null;
+
+		if (curvaAnt != null && curvaAct != null && curvaAct.getPot() - curvaAnt.getPot() != 0.0) {
+			res = Math.abs((curvaAct.getVel() - curvaAnt.getVel()) / (curvaAct.getPot() - curvaAnt.getPot()));
+		}
+
+		return res;
+	}
+
+	private static ArrayList<CurvaRA> getRangosPermitidos(ArrayList<CurvaRA> curvas) {
+		ArrayList<CurvaRA> res = null;
+		int nCurvas = curvas != null ? curvas.size() : 0;
+
+		if (nCurvas != 0) {
+			res = new ArrayList<CurvaRA>();
+
+			for (int i = 0; i < nCurvas - 1; i++) {
+				if (esRangoPendientePositiva(curvas.get(i), curvas.get(i + 1), null))
+					res.add(curvas.get(i));
+			}
+		}
+
+		return res;
+	}
+
+	public static Double calculaIncertidumbre(Component c, Integer idAsunto, Double densidad, Integer idIncert) throws SQLException, NoSuchFieldException {
+		Double res = null, coef = null;
+
+		if (idIncert.equals(TipoIncert.ID_TIPO_INCERT_VEL_DERIVADA)) {
+			Double valorRecogido = null;
+			RecogidaDatos rd;
+
+			do {
+				rd = new RecogidaDatos("Introduzca la incertidumbre de calibración de la CPA", "Incertidumbre:");
+				if (JOptionPane.showConfirmDialog(c, rd, "Recogida de datos", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+					try {
+						valorRecogido = Double.parseDouble(rd.getCampoRecoger());
+					} catch (NumberFormatException ex) {
+						MensajeApp.muestraError(rd, null, "Debe introducir un número");
+					}
+				} else {
+					MensajeApp.muestraInfo(c, "Proceso cancelado por el usuario.");
+					return res;
+				}
+			} while (valorRecogido == null);
+
+			if (valorRecogido != null) {
+				Double coefAux = null;
+				res = null;
+				
+				ArrayList<CurvaRA> curvas = getRangosPermitidos(CurvaRA.getCurvas(idAsunto, densidad, null, null, null, null, null, Boolean.TRUE));
+				int nCurvas = curvas != null ? curvas.size() : 0;
+
+				for (int i = 1; i < nCurvas; i++) {
+					coefAux = getCoefSensibilidadCP(curvas.get(i - 1), curvas.get(i));
+					
+					coef = coef == null ? coefAux : (coefAux != null ? Math.max(coef, coefAux) : null);
+				}
+
+				res = coef * valorRecogido;
+			}
+		} else if (idIncert.equals(TipoIncert.ID_TIPO_INCERT_CURVA)) {
+			Double resAux = null;
+			ArrayList<CurvaRA> curvas = getRangosPermitidos(CurvaRA.getCurvas(idAsunto, densidad, null, null, null, null, null, Boolean.TRUE));
+			int nCurvas = curvas != null ? curvas.size() : 0;
+
+			for (int i = 1; i < nCurvas; i++) {
+				coef = getCoefSensibilidadCP(curvas.get(i - 1), curvas.get(i));
+
+				resAux = coef * curvas.get(i).getIncert();
+
+				res = res == null ? resAux : (resAux != null ? Math.max(res, resAux) : null);
+			}
+		}
+
+		if (res != null)
+			res = TratDecimales.round(res, TratDecimales.DEC_VARIABLE_RA);
+		else
+			MensajeApp.muestraError(c, null, "No se puede realizar el cálculo automático. No se han establecido incertidumbres para la curva de potencia.<br>Debrá introducir la incertidumbre manualmente.");
+
+		return res;
+	}
 }

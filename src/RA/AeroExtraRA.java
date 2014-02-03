@@ -94,6 +94,17 @@ public class AeroExtraRA {
         ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
 
         condicion = getCondicion(idAero, longBuje, paramsPS);
+
+		if (campos == null) {
+			Object[] camposAero = interBD.getCamposTabla(TABLA);
+
+			campos = new ArrayList<String>();
+
+			int nCamposAero = camposAero.length;
+			for (int i = 0; i < nCamposAero; i++) {
+				campos.add(TABLA + "." + (String) camposAero[i]);
+			}
+		}
         
         //Por defecto lo devolvemos ordenado por aero
         if (sqlExtra == null || sqlExtra.trim().length() == 0) {

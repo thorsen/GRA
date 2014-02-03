@@ -4,6 +4,7 @@
  */
 package general;
 
+import RA.Global;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
@@ -26,13 +27,13 @@ public class InteraccionBD {
 
 	//La idea, una vez estén en distinto servidores sería conectar al de RA y que este a su vez tenga como Linked Server al general
     private Connection conexion;
-    public static final String URL = "jdbc:sqlserver://192.168.1.53:1433";
-    public static final String USER = "SQL_RA";
-    public static final String PASS = "Ru8865No";
+    public static final String URL = "jdbc:sqlserver://" + Global.IP_SERVER_GRA;
+    public static final String USER = Global.USER_SERVER_GRA;
+    public static final String PASS = Global.PASS_SERVER_GRA;
     
 	//Para cuando estén en servidores disintos
     //public static final String PREF_LINKED_SERVER_GRAL = "B2SOLAR.";
-    public static final String PREF_LINKED_SERVER_GRAL = "";
+    public static final String PREF_LINKED_SERVER_GRAL = Global.LINKED_SERVER_GCP;
     public static final String PREF_BD_GENERAL = PREF_LINKED_SERVER_GRAL + "Power_Curve.dbo.";
     public static final String PREF_BD_RA = "Acoustic_Noise.dbo.";
     
@@ -51,6 +52,8 @@ public class InteraccionBD {
     
     public static final String TABLA_DATOS = "Datos";
     public static final String TABLA_DESC = "Descripcion";
+
+    public static final String LEFT_JOIN = "LEFT";
     
     public static final String VISTA_DATOS = "Base";
 
@@ -638,6 +641,49 @@ public class InteraccionBD {
 
         return res;
     }
+
+    public static String anadeCampoOnJoinClausula(String onJoin, ArrayList<Object[]> paramsPS, String campo, String clausula, String operacion, Object valor) {
+        if (onJoin == null || onJoin.length() == 0) {
+			onJoin = "\nON ";
+
+            if (clausula.compareToIgnoreCase(CLAUSULA_AND) == 0) {
+                onJoin += "1=1";
+            } else {
+                onJoin += "1=0";
+            }
+        }
+        if (paramsPS == null && !operacion.contains(ASIGNACION_CAMPOS) && !operacion.contains(COND_SIN_OPERACION)) {
+            paramsPS = new ArrayList<Object[]>();
+        }
+        
+        if (operacion.contains(ASIGNACION_CAMPOS)) {
+            operacion = operacion.substring(operacion.indexOf(ASIGNACION_CAMPOS) + ASIGNACION_CAMPOS.length());
+            if (operacion.length() > 0)
+                onJoin += " " + clausula + " " + campo + " " + operacion + " " + valor;
+            else
+                onJoin += " " + clausula + " " + campo + " = " + valor;
+        } else if (operacion.contains(COND_SIN_OPERACION)) {
+            onJoin += " " + clausula + " " + campo;
+        } else {
+            onJoin += " " + clausula + " " + campo + " " + operacion + " ?";
+            paramsPS.add(paramsPS.size(), new Object[]{valor == null ? null : valor.getClass().getSimpleName(), valor});
+        }
+
+        return onJoin;
+    }
+
+	public static String anadeCampoOnJoinAnd(String condicion, ArrayList<Object[]> paramsPS, String campo, String operacion, Object valor) {
+        return anadeCampoOnJoinClausula(condicion, paramsPS, campo, CLAUSULA_AND, operacion, valor);
+    }
+
+    public static String anadeCampoOnJoinionOr(String condicion, ArrayList<Object[]> paramsPS, String campo, String operacion, Object valor) {
+        return anadeCampoOnJoinClausula(condicion, paramsPS, campo, CLAUSULA_OR, operacion, valor);
+    }
+    //Por defecto la condición es un And
+    public static String anadeCampoOnJoin(String condicion, ArrayList<Object[]> paramsPS, String campo, String operacion, Object valor) {
+        return anadeCampoOnJoinAnd(condicion, paramsPS, campo, operacion, valor);
+    }
+
     //PARA SELECT
     //Función auxiliar para ir rellenando la candena de condicion <condicion> y la lista de parámetros <paramsPS>
     //PARA UPDATE ==> Llamar anadeCampoValor y anadeCampoCondicion
@@ -799,6 +845,20 @@ public class InteraccionBD {
             tabla = tablaNueva;
         }
         return tabla;
+    }
+
+    public static String anadeJoin(String join, String tablaNueva, String tipoJoin, String onJoin) {
+        if (join != null && join.length() > 0) {
+            join = join.trim();
+
+            join += "\n";
+        } else {
+            join = "";
+        }
+
+		join += tipoJoin + " JOIN " + tablaNueva + onJoin;
+		
+        return join;
     }
 
     public static String anadeSubcondicionClausula(String condicion, String subCondicion, String clausula) {
@@ -1260,4 +1320,35 @@ public class InteraccionBD {
         
         return res;
     }
+
+	public Integer getProximaClave(String tabla, String campoClave) throws SQLException {
+		Integer res = null;
+		Connection con = null;
+
+        try {	
+			con = getConexion();
+			
+			String sqlSelAutoInc = "SELECT ISNULL(MAX(" + campoClave + "), 0) + 1 FROM " + tabla + " WITH (UPDLOCK, HOLDLOCK)";
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sqlSelAutoInc);
+
+			while (rs.next()) {
+				res = rs.getInt(1);
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException ex) {
+			if (con != null)
+                rollbackGlobal(con);
+            throw ex;
+		} finally {
+            if (con != null) {
+                cierraConexionLocal(con);
+            }
+        }
+
+		return res;
+	}
 }

@@ -1,5 +1,6 @@
 package RA;
 
+import general.Auxiliares;
 import general.InteraccionBD;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -275,14 +276,9 @@ public class AerogeneradorRA {
 
         condicion = getCondicion(idAero, modelo, hB, fabricante, dN, pNominal, vIn, vCut, lineas, regulacion, vNominal, pequeno, longBuje, paramsPS);
 
-		//Añadimos la conectividad entre tablas
-        if (longBuje != null) {
-			condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CAMPO_ID_AERO, InteraccionBD.ASIGNACION_CAMPOS, AeroExtraRA.CAMPO_ID_AERO);
-        }
-
+        String tabla = InteraccionBD.anadeTabla(null, TABLA);
 		if (campos == null || campos.isEmpty()) {
 			Object[] camposAero = interBD.getCamposTabla(TABLA);
-			Object[] camposAeroExtra = interBD.getCamposTabla(AeroExtraRA.TABLA);
 
 			campos = new ArrayList<String>();
 
@@ -291,15 +287,21 @@ public class AerogeneradorRA {
 				campos.add(TABLA + "." + (String) camposAero[i]);
 			}
 
-			int nCamposAeroExtra = camposAeroExtra.length;
-			for (int i = 0; i < nCamposAeroExtra; i++) {
-				if (!campos.contains(TABLA + "." + (String) camposAeroExtra[i])) //Si el campo ya está es porque es de interrelación
-					campos.add(AeroExtraRA.TABLA + "." + (String) camposAeroExtra[i]);
+			//Solo añadimos los campos de curvaExtra si hay algo que recoger
+			if (AeroExtraRA.getAeros(idAero, longBuje, null, null, null) != null) {
+				//Añadimos la conectividad entre tablas
+				String onJoin = InteraccionBD.anadeCampoOnJoin(null, paramsPS, CAMPO_ID_AERO, InteraccionBD.ASIGNACION_CAMPOS, AeroExtraRA.CAMPO_ID_AERO);
+
+				tabla = InteraccionBD.anadeJoin(tabla, AeroExtraRA.TABLA, InteraccionBD.LEFT_JOIN, onJoin);
+
+				Object[] camposAeroExtra = interBD.getCamposTabla(AeroExtraRA.TABLA);
+				int nCamposAeroExtra = camposAeroExtra.length;
+				for (int i = 0; i < nCamposAeroExtra; i++) {
+					if (!campos.contains(TABLA + "." + (String) camposAeroExtra[i])) //Si el campo ya está es porque es de interrelación
+						campos.add(AeroExtraRA.TABLA + "." + (String) camposAeroExtra[i]);
+				}
 			}
 		}
-
-        String tabla = InteraccionBD.anadeTabla(null, TABLA);
-        tabla = InteraccionBD.anadeTabla(tabla, AeroExtraRA.TABLA);
 
         //Por defecto lo devolvemos ordenado por aero
         if (sqlExtra == null || sqlExtra.trim().length() == 0) {
@@ -340,9 +342,9 @@ public class AerogeneradorRA {
         
         ArrayList<AerogeneradorRA> resAux = getAeros(null, modelo, hB, null, null, null, null, null, null, null, null, null, null, null, null, null);
         
-        if (resAux != null) {
-            res = resAux.get(0);
-        }
+		if (resAux != null) {
+			res = resAux.get(0);
+		}
 
         return res;
     }
@@ -402,7 +404,7 @@ public class AerogeneradorRA {
     }
 
     //Función para añadir una aero a la BD
-    public static int insertAerogenerador(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, String sqlExtra) throws SQLException {
+    public static int insertAerogenerador(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, String sqlExtra) throws SQLException, NoSuchFieldException {
         InteraccionBD interBD = new InteraccionBD();
         
         String valores = "";
@@ -416,9 +418,9 @@ public class AerogeneradorRA {
             valores = InteraccionBD.anadeCampoValor(valores, paramsPS, idAero);
             campos.add(CAMPO_ID_AERO);
         } else {    //Es campo clave, asignamos el incremento de la última
-            valores = InteraccionBD.anadeCampoValorAutoInc(valores, CAMPO_ID_AERO);
+            valores = InteraccionBD.anadeCampoValorAutoInc(valores, CAMPO_ID_AERO.substring(CAMPO_ID_AERO.lastIndexOf(".") + 1));
             campos.add(CAMPO_ID_AERO);
-            autoInc.add(CAMPO_ID_AERO);
+            autoInc.add(CAMPO_ID_AERO.substring(CAMPO_ID_AERO.lastIndexOf(".") + 1));
         }
         if (modelo != null) {
             valores = InteraccionBD.anadeCampoValor(valores, paramsPS, modelo);
@@ -454,7 +456,7 @@ public class AerogeneradorRA {
             campos.add(CAMPO_LINEAS);
         }
         if (regulacion != null) {
-            valores = InteraccionBD.anadeCampoValor(valores, paramsPS, regulacion);
+            valores = InteraccionBD.anadeCampoValor(valores, paramsPS, regulacion ? 1 : 0);
             campos.add(CAMPO_REG);
         }
         if (vNominal != null) {
@@ -462,30 +464,28 @@ public class AerogeneradorRA {
             campos.add(CAMPO_V_NOM);
         }
         if (pequeno != null) {
-            valores = InteraccionBD.anadeCampoValor(valores, paramsPS, pequeno);
+            valores = InteraccionBD.anadeCampoValor(valores, paramsPS, pequeno ? 1 : 0);
             campos.add(CAMPO_PEQ);
         }
 
-        interBD.inicioTransaccion();
         res = interBD.insertDatosTabla(TABLA, campos, valores, paramsPS, sqlExtra, autoInc, condAutoInc);
 
 		//Campos externos
-        if (longBuje != null) {
+        if (res != 0 && longBuje != null) {
+			idAero = getAeroPorModeloHb(modelo, hB).getIdAero();
 			resExtra = AeroExtraRA.insertAeroExtra(idAero, longBuje, sqlExtra);
 
 			if (res != resExtra) {
-				interBD.rollback();
+				deleteAerogeneradores(idAero, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
 				res = res * resExtra;
 			}
         }
-
-        interBD.finTransaccion();
         
         return res;
     }
     
-    public static int insertAerogenerador(AerogeneradorRA aero, String sqlExtra) throws SQLException {
+    public static int insertAerogenerador(AerogeneradorRA aero, String sqlExtra) throws SQLException, NoSuchFieldException {
         return insertAerogenerador(aero.idAero, aero.modelo, aero.hB, aero.fabricante, aero.dN, aero.pNominal, aero.vIn, aero.vCut, aero.lineas, aero.regulacion, aero.vNominal, aero.pequeno, aero.longBuje, sqlExtra);
     }
     
@@ -577,7 +577,7 @@ public class AerogeneradorRA {
     }
     
     //Función para añadir/modificar una aero a la BD
-    public static int insertOrUpdateAerogenerador(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, Integer idAeroVal, String modeloVal, Double hBVal, String fabricanteVal, Double dNVal, Double pNominalVal, Double vInVal, Double vCutVal, Integer lineasVal, Boolean regulacionVal, Double vNominalVal, Boolean pequenoVal, Double longBujeVal, String sqlExtra) throws SQLException {
+    public static int insertOrUpdateAerogenerador(Integer idAero, String modelo, Double hB, String fabricante, Double dN, Double pNominal, Double vIn, Double vCut, Integer lineas, Boolean regulacion, Double vNominal, Boolean pequeno, Double longBuje, Integer idAeroVal, String modeloVal, Double hBVal, String fabricanteVal, Double dNVal, Double pNominalVal, Double vInVal, Double vCutVal, Integer lineasVal, Boolean regulacionVal, Double vNominalVal, Boolean pequenoVal, Double longBujeVal, String sqlExtra) throws SQLException, NoSuchFieldException {
         int res;
         
         res = updateAerogenerador(idAero, modelo, hB, fabricante, dN, pNominal, vIn, vCut, lineas, regulacion, vNominal, pequeno, longBuje, idAeroVal, modeloVal, hBVal, fabricanteVal, dNVal, pNominalVal, vInVal, vCutVal, lineasVal, regulacionVal, vNominalVal, pequenoVal, longBujeVal, sqlExtra);
@@ -588,7 +588,7 @@ public class AerogeneradorRA {
         return res;
     }
     
-    public static int insertOrUpdateAerogenerador(AerogeneradorRA aeroViejo, AerogeneradorRA aeroNuevo, String sqlExtra) throws SQLException {
+    public static int insertOrUpdateAerogenerador(AerogeneradorRA aeroViejo, AerogeneradorRA aeroNuevo, String sqlExtra) throws SQLException, NoSuchFieldException {
         
         return insertOrUpdateAerogenerador(aeroViejo.idAero, aeroViejo.modelo, aeroViejo.hB, aeroViejo.fabricante, aeroViejo.dN, aeroViejo.pNominal, aeroViejo.vIn, aeroViejo.vCut, aeroViejo.lineas, aeroViejo.regulacion, aeroViejo.vNominal, aeroViejo.pequeno, aeroViejo.longBuje, aeroNuevo.idAero, aeroNuevo.modelo, aeroNuevo.hB, aeroNuevo.fabricante, aeroNuevo.dN, aeroNuevo.pNominal, aeroNuevo.vIn, aeroNuevo.vCut, aeroNuevo.lineas, aeroNuevo.regulacion, aeroNuevo.vNominal, aeroNuevo.pequeno, aeroNuevo.longBuje, sqlExtra);
     }

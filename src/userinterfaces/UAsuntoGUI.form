@@ -356,7 +356,7 @@
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\pencil.png&quot; ))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;pencil.png&quot; ))" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Actualizar campos"/>
                 <Property name="enabled" type="boolean" value="false"/>
@@ -889,7 +889,7 @@
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\Resultset_up.png&quot; ))" type="code"/>
+                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;Resultset_up.png&quot; ))" type="code"/>
                         </Property>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
@@ -903,7 +903,7 @@
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\Resultset_down.png&quot; ))" type="code"/>
+                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;Resultset_down.png&quot; ))" type="code"/>
                         </Property>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
@@ -1031,7 +1031,7 @@
                     <Component class="javax.swing.JLabel" name="jLabel33">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\lock.png&quot; ))" type="code"/>
+                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;lock.png&quot; ))" type="code"/>
                         </Property>
                       </Properties>
                     </Component>
@@ -1295,7 +1295,7 @@
                     <Component class="javax.swing.JLabel" name="jLabel34">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\lock.png&quot; ))" type="code"/>
+                          <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;lock.png&quot; ))" type="code"/>
                         </Property>
                       </Properties>
                     </Component>
@@ -1566,7 +1566,7 @@
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\OpenFolder.gif&quot; ))" type="code"/>
+                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;OpenFolder.gif&quot; ))" type="code"/>
                             </Property>
                             <Property name="toolTipText" type="java.lang.String" value="Cargar Fichero"/>
                             <Property name="enabled" type="boolean" value="false"/>
@@ -1589,7 +1589,7 @@
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\Information.png&quot; ))" type="code"/>
+                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;Information.png&quot; ))" type="code"/>
                             </Property>
                             <Property name="toolTipText" type="java.lang.String" value="Ver Formato de Fichero&#xa;"/>
                             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
@@ -1611,7 +1611,7 @@
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\Information.png&quot; ))" type="code"/>
+                              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;Information.png&quot; ))" type="code"/>
                             </Property>
                             <Property name="toolTipText" type="java.lang.String" value="Ver Formato de Fichero&#xa;"/>
                             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
@@ -1691,7 +1691,7 @@
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\lock.png&quot; ))" type="code"/>
+              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;lock.png&quot; ))" type="code"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
@@ -1725,7 +1725,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\Guardar.png&quot; ))" type="code"/>
+              <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;Guardar.png&quot; ))" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Salvar cambios"/>
           </Properties>

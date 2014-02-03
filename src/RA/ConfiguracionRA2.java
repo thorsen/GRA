@@ -32,7 +32,7 @@ public class ConfiguracionRA2 {
         this.idConfig = idConfig;
         this.fechaIni = fechaIni;
     }
-    
+
     public ConfiguracionRA2(Object[] valores, ArrayList<String> campos) throws SQLException, NoSuchFieldException {
         int nValores = valores.length;
         
@@ -63,6 +63,14 @@ public class ConfiguracionRA2 {
         this.fechaIni = fechaIni;
     }
 
+	public Integer getIdAsunto() {
+		return idAsunto;
+	}
+
+	public void setIdAsunto(Integer idAsunto) {
+		this.idAsunto = idAsunto;
+	}
+    
     public Integer getIdConfig() {
         return idConfig;
     }
@@ -253,7 +261,7 @@ public class ConfiguracionRA2 {
     }
     
     //Función para eliminar ConfiguracionesRA.que se ajustan a los limites pasados
-    public static int deleteConfiguracionesRA(Integer idAsunto, Integer idSite, Integer idConfig, Long fechaIni, String sqlExtra) throws SQLException {
+    public static int deleteConfiguracionesRA(Integer idAsunto, Integer idSite, Integer idConfig, Long fechaIni, String sqlExtra) throws SQLException, NoSuchFieldException {
         InteraccionBD interBD = new InteraccionBD();
         
         String condicion = "";
@@ -269,7 +277,7 @@ public class ConfiguracionRA2 {
         return res;
     }
     
-    public static int deleteConfiguracionesRA(ConfiguracionRA2 configuracionRA, String sqlExtra) throws SQLException {
+    public static int deleteConfiguracionesRA(ConfiguracionRA2 configuracionRA, String sqlExtra) throws SQLException, NoSuchFieldException {
         return deleteConfiguracionesRA(configuracionRA.idAsunto, configuracionRA.idSite, configuracionRA.idConfig, configuracionRA.fechaIni, sqlExtra);
     }
     

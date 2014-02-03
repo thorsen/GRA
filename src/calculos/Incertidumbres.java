@@ -1,30 +1,39 @@
 package calculos;
 
 import RA.AsuntoIncert;
+import RA.DatosRA2;
 import RA.NormaRA;
 import RA.TipoIncert;
 import general.Auxiliares;
 import general.ComboBoxObject;
 import general.DecimalFormatRenderer;
 import general.MensajeApp;
+import general.RecogidaDatos;
 import general.TratFechas;
+import java.awt.Component;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class Incertidumbres extends javax.swing.JDialog {
     private Integer idAsunto;
     private Long desdeFechaOrig;
     private Integer idNormaOrig;
+	private Double densidad;
     
-    public Incertidumbres(java.awt.Frame parent, Integer idAsunto, Long desdeFechaOrig, Integer idNorma) {
+    public Incertidumbres(java.awt.Frame parent, Integer idAsunto, Long desdeFechaOrig, Integer idNorma, Double densidad) {
         super(parent, true);
         initComponents();
         
         this.idAsunto = idAsunto;
         this.desdeFechaOrig = desdeFechaOrig;
         this.idNormaOrig = idNorma;
+        this.densidad = densidad;
     }
 
     /** This method is called from within the constructor to
@@ -239,7 +248,7 @@ public class Incertidumbres extends javax.swing.JDialog {
                     .addComponent(jpHistorico, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jpIncert, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jpClave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,12 +273,54 @@ public class Incertidumbres extends javax.swing.JDialog {
             .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-593)/2, (screenSize.height-401)/2, 593, 401);
+        setSize(new java.awt.Dimension(593, 401));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
     this.jtIncert.getColumnModel().getColumn(1).setCellRenderer(new DecimalFormatRenderer());
+
+	//Establecemos los listeners
+	ListSelectionModel cellSelectionModel = this.jtIncert.getSelectionModel();
+	cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+	cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+		public void valueChanged(ListSelectionEvent e) {
+			if (idNormaOrig.equals(NormaRA.ID_NORMA_IEC_3_0) && jtIncert.getSelectedColumnCount() != 0 && jtIncert.getSelectedRowCount() != 0 && e.getValueIsAdjusting()) {
+				int selectedRow = jtIncert.getSelectedRow();
+				int selectedColumn = jtIncert.getSelectedColumn();
+
+				if (selectedColumn == 1) { //Es un campo editable
+					try {
+						TableModel dtmIncert = jtIncert.getModel();
+						
+						String descIncert = (String) dtmIncert.getValueAt(selectedRow, 0);
+						ArrayList<TipoIncert> tiposIncert = TipoIncert.getTiposIncert(null, descIncert, null, null, null, Boolean.TRUE);
+
+						if (tiposIncert.size() > 0) {
+							Integer idIncert = tiposIncert.get(0).getIdTipoIncert();
+
+							Component parent = Auxiliares.getParentSup(jtIncert);
+							
+							if (idIncert.equals(TipoIncert.ID_TIPO_INCERT_VEL_DERIVADA) || idIncert.equals(TipoIncert.ID_TIPO_INCERT_CURVA)) {
+								RecogidaDatos rd = new RecogidaDatos("¿Desea que la aplicación calcule la incertidumbre automáticamente?", null);
+								if (JOptionPane.showConfirmDialog(parent, rd, "Cálculo", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+									Double incert = DatosRA2.calculaIncertidumbre(parent, idAsunto, densidad, idIncert);
+
+									if (incert != null)
+										dtmIncert.setValueAt(incert, selectedRow, selectedColumn);
+								}
+							}
+						}
+					} catch (SQLException ex) {
+						MensajeApp.muestraError(jtIncert.getParent(), ex, "Fallo al consultar la base de datos");
+					} catch (NoSuchFieldException ex) {
+						MensajeApp.muestraError(jtIncert.getParent(), ex, "Fallo añadiendo campo.");
+					}
+				}
+			}
+		}
+	});
 
     iniCampos();
 

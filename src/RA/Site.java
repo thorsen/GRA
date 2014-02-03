@@ -19,9 +19,9 @@ import java.sql.SQLException;
 public class Site {
 
   
-    private static String url = "jdbc:sqlserver://192.168.1.53:1433";
-    private static String user = "SQL_PwC";
-    private static String pass = "Ru8865No";
+    private static String url = "jdbc:sqlserver://" + Global.IP_SERVER_GCP;
+    private static String user = Global.USER_SERVER_GCP;
+    private static String pass = Global.PASS_SERVER_GCP;
     
     static{
         try{

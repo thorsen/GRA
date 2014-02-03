@@ -206,7 +206,7 @@ public class DescripcionRAGUI extends JDialog {
         jScrollPane4.setViewportView(jTable4);
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_next.png")));
+        jButton2.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_next.png")));
         jButton2.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -215,7 +215,7 @@ public class DescripcionRAGUI extends JDialog {
         });
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_previous.png")));
+        jButton1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_previous.png")));
         jButton1.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -316,7 +316,7 @@ public class DescripcionRAGUI extends JDialog {
         jScrollPane6.setViewportView(jTable6);
 
         jButton5.setBackground(new java.awt.Color(255, 255, 255));
-        jButton5.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_next.png")));
+        jButton5.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_next.png")));
         jButton5.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -325,7 +325,7 @@ public class DescripcionRAGUI extends JDialog {
         });
 
         jButton6.setBackground(new java.awt.Color(255, 255, 255));
-        jButton6.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_previous.png")));
+        jButton6.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_previous.png")));
         jButton6.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -426,7 +426,7 @@ public class DescripcionRAGUI extends JDialog {
         jScrollPane8.setViewportView(jTable8);
 
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
-        jButton7.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_next.png")));
+        jButton7.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_next.png")));
         jButton7.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -435,7 +435,7 @@ public class DescripcionRAGUI extends JDialog {
         });
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
-        jButton8.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_previous.png")));
+        jButton8.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_previous.png")));
         jButton8.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -535,7 +535,7 @@ public class DescripcionRAGUI extends JDialog {
         jScrollPane10.setViewportView(jTable10);
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
-        jButton9.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_next.png")));
+        jButton9.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_next.png")));
         jButton9.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -544,7 +544,7 @@ public class DescripcionRAGUI extends JDialog {
         });
 
         jButton10.setBackground(new java.awt.Color(255, 255, 255));
-        jButton10.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_previous.png")));
+        jButton10.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_previous.png")));
         jButton10.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton10.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

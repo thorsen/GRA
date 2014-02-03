@@ -23,8 +23,13 @@ public class ResultadoBandaCriticaFFT {
     private Double nivelEnmascaramiento; //L_pn,avg
     private Double[][] bandaCriticaClasificada;
     private Double[][] bandaCriticaRF;
+    private Double[][] bandaCriticaRFAux;
     
     public ResultadoBandaCriticaFFT(Double frecMax, Double nivelFrecMax, Double iniBandaCritica, Double finBandaCritica, Double nivelCriterio, Double nivelEnmascaramiento, Double[][] bandaCriticaClasificada, Double[][] bandaCriticaRF) {
+		this(frecMax, nivelFrecMax, iniBandaCritica, finBandaCritica, nivelCriterio, nivelEnmascaramiento, bandaCriticaClasificada, bandaCriticaRF, Boolean.TRUE);
+    }
+
+    public ResultadoBandaCriticaFFT(Double frecMax, Double nivelFrecMax, Double iniBandaCritica, Double finBandaCritica, Double nivelCriterio, Double nivelEnmascaramiento, Double[][] bandaCriticaClasificada, Double[][] bandaCriticaRF, Boolean corregirRF) {
         this.frecMax = frecMax;
         this.nivelFrecMax = nivelFrecMax;
         this.iniBandaCritica = iniBandaCritica;
@@ -32,7 +37,14 @@ public class ResultadoBandaCriticaFFT {
         this.nivelCriterio = nivelCriterio;
         this.nivelEnmascaramiento = nivelEnmascaramiento;
         this.bandaCriticaClasificada = bandaCriticaClasificada;
-        this.bandaCriticaRF = bandaCriticaRF;
+
+		if (corregirRF) {
+			this.bandaCriticaRF = bandaCriticaRF;
+			this.bandaCriticaRFAux = null;
+		} else {
+			this.bandaCriticaRF = null;
+			this.bandaCriticaRFAux = bandaCriticaRF;
+		}
     }
     
     public LinkedHashMap<Entry<Double, Double>, Integer> getMapBandaCriticaClasificada() {
@@ -76,6 +88,14 @@ public class ResultadoBandaCriticaFFT {
 
     public void setBandaCriticaRF(Double[][] bandaCriticaRF) {
         this.bandaCriticaRF = bandaCriticaRF;
+    }
+
+	public Double[][] getBandaCriticaRFAux() {
+        return bandaCriticaRFAux;
+    }
+
+    public void setBandaCriticaRFAux(Double[][] bandaCriticaRFAux) {
+        this.bandaCriticaRFAux = bandaCriticaRFAux;
     }
 
     public Double getFinBandaCritica() {

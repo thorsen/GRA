@@ -86,7 +86,6 @@ public class AsuntoConfRA {
             for (int i = 0; i < nCamposAux; i++) {
                 campos.add((String) camposAux[i]);                
             }
-            
         }
             
         for (int i = 0; i < nValores; i++) {
@@ -556,7 +555,7 @@ public class AsuntoConfRA {
         int res = 0;
         
         if (confVieja == null)
-            res =  insertAsuntoConf(confNueva, sqlExtra);
+            res = insertAsuntoConf(confNueva, sqlExtra);
         else
             res = insertOrUpdateAsuntoConf(confVieja.idAsunto, confVieja.perMedidoOtro, confVieja.desdeFecha, confVieja.hastaFecha, confVieja.zRef, confVieja.z0Ref, confVieja.z0, confVieja.dirEnsayo, confVieja.amplitud, confVieja.velDerMed, confVieja.medidaPot, confVieja.tipoK, confVieja.tipoKRF, confVieja.tipoCalculoVel, confVieja.desdeVel, confVieja.hastaVel, confNueva.idAsunto, confNueva.perMedidoOtro, confNueva.desdeFecha, confNueva.hastaFecha, confNueva.zRef, confNueva.z0Ref, confNueva.z0, confNueva.dirEnsayo, confNueva.amplitud, confNueva.velDerMed, confNueva.medidaPot, confNueva.tipoK, confNueva.tipoKRF, confNueva.tipoCalculoVel, confNueva.desdeVel, confNueva.hastaVel, sqlExtra);
         
@@ -564,8 +563,7 @@ public class AsuntoConfRA {
     }
     
     //Función para eliminar AsuntoConfs que se ajustan a los limites pasados
-    public static int deleteAsuntoConfs(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, Double amplitud, 
-            Character velDerMed, Character medidaPot, Character tipoK, Character tipoKRF, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel, String sqlExtra) throws SQLException {
+    public static int deleteAsuntoConfs(Integer idAsunto, Character perMedidoOtro, Long desdeFecha, Long hastaFecha, Double zRef, Double z0Ref, Double z0, Double dirEnsayo, Double amplitud, Character velDerMed, Character medidaPot, Character tipoK, Character tipoKRF, Character tipoCalculoVel, Integer desdeVel, Integer hastaVel, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         
         String condicion = "";
@@ -575,7 +573,7 @@ public class AsuntoConfRA {
         condicion = getCondicion(idAsunto, perMedidoOtro, desdeFecha, hastaFecha, zRef, z0Ref, z0, dirEnsayo, amplitud, velDerMed, medidaPot, tipoK, tipoKRF, tipoCalculoVel, desdeVel, hastaVel, paramsPS);
         
         interBD.inicioTransaccion();
-        res  = interBD.deleteDatosTabla(TABLA, condicion, paramsPS, sqlExtra);
+        res = interBD.deleteDatosTabla(TABLA, condicion, paramsPS, sqlExtra);
         interBD.finTransaccion();
         
         return res;

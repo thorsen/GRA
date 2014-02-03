@@ -8,6 +8,7 @@ import RA.Site;
 import RA.ConfiguracionRA;
 import RA.DatosRA;
 import RA.Etiqueta;
+import RA.Global;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -580,7 +581,7 @@ private void Inferior(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Inferior
         }      
         P.setLayout(new GridLayout(n, 1));
         P.setVisible(true);
-        int respuesta=JOptionPane.showConfirmDialog(this, P, "POSIBLES SERIES A GRAFICAR", JOptionPane.OK_CANCEL_OPTION,javax.swing.JOptionPane.PLAIN_MESSAGE,new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Grafico.png" )));
+        int respuesta=JOptionPane.showConfirmDialog(this, P, "POSIBLES SERIES A GRAFICAR", JOptionPane.OK_CANCEL_OPTION,javax.swing.JOptionPane.PLAIN_MESSAGE,new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "Grafico.png" )));
         if (respuesta==0){
              inferior=new ArrayList<String>();
              Component c[]=P.getComponents();
@@ -621,7 +622,7 @@ private void Superior(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Superior
         }      
         P.setLayout(new GridLayout(n, 1));
         P.setVisible(true);
-        int respuesta=JOptionPane.showConfirmDialog(this, P, "POSIBLES SERIES A GRAFICAR", JOptionPane.OK_CANCEL_OPTION,javax.swing.JOptionPane.PLAIN_MESSAGE,new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Grafico.png" )));
+        int respuesta=JOptionPane.showConfirmDialog(this, P, "POSIBLES SERIES A GRAFICAR", JOptionPane.OK_CANCEL_OPTION,javax.swing.JOptionPane.PLAIN_MESSAGE,new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "Grafico.png" )));
         if (respuesta==0){
              superior=new ArrayList<String>();
              Component c[]=P.getComponents();

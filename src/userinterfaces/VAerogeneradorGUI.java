@@ -55,7 +55,7 @@ public class VAerogeneradorGUI extends JDialog {
         setBackground(java.awt.Color.white);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "GRA.png").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
 
@@ -103,7 +103,7 @@ public class VAerogeneradorGUI extends JDialog {
             }
         });
 
-        jLabel25.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\find.png" )));
+        jLabel25.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "find.png" )));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

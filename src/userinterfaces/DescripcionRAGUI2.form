@@ -4,9 +4,6 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="title" type="java.lang.String" value="DESCRIPCI&#xd3;N"/>
-    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-      <Color blue="1e" green="1e" red="af" type="rgb"/>
-    </Property>
     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
       <Color id="Cursor Por defecto"/>
     </Property>
@@ -705,25 +702,19 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="460" max="32767" attributes="0"/>
-                      <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="0" pref="83" max="32767" attributes="0"/>
-                              <Component id="jpFFTLim" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="84" max="32767" attributes="0"/>
-                          </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="0" pref="121" max="32767" attributes="0"/>
+                          <Component id="jpFFTLim" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="121" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="407" max="32767" attributes="0"/>
-                      <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="0" pref="117" max="32767" attributes="0"/>
-                              <Component id="jpFFTLim" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="118" max="32767" attributes="0"/>
-                          </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="0" pref="87" max="32767" attributes="0"/>
+                          <Component id="jpFFTLim" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="86" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -739,10 +730,9 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jpFrecResolucion" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jlFrecIni" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -753,9 +743,11 @@
                                           <Component id="jtfFrecIni" pref="75" max="32767" attributes="1"/>
                                           <Component id="jtfFrecFin" alignment="1" pref="75" max="32767" attributes="1"/>
                                       </Group>
+                                      <EmptySpace min="0" pref="20" max="32767" attributes="0"/>
                                   </Group>
+                                  <Component id="jpFrecResolucion" alignment="0" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -786,6 +778,9 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="jtfFrecIni">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="11"/>
+                      </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jlFrecFin">
                       <Properties>
@@ -793,6 +788,9 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="jtfFrecFin">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="11"/>
+                      </Properties>
                     </Component>
                     <Container class="javax.swing.JPanel" name="jpFrecResolucion">
                       <Properties>
@@ -801,7 +799,7 @@
                         </Property>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                            <TitledBorder title="Resoluci&#xf3;n de frecuencia"/>
+                            <TitledBorder title="Resoluci&#xf3;n de frecuencia *"/>
                           </Border>
                         </Property>
                       </Properties>
@@ -809,53 +807,112 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
                               <Group type="102" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jlFrecSup" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jlFrecInf" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="jlResDes" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jlResOri" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace pref="51" max="32767" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="jtfResOri" alignment="0" max="32767" attributes="1"/>
+                                              <Component id="jtfResDes" alignment="0" min="-2" pref="75" max="-2" attributes="1"/>
+                                          </Group>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      </Group>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jtfFrecInf" alignment="0" pref="75" max="32767" attributes="1"/>
-                                      <Component id="jtfFrecSup" alignment="0" pref="75" max="32767" attributes="1"/>
-                                  </Group>
-                                  <EmptySpace max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="jlFrecInf" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jtfFrecInf" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="jlFrecSup" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jtfFrecSup" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
                                   <EmptySpace max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jlResOri" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jtfResOri" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jlResDes" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jtfResDes" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
                       </Layout>
                       <SubComponents>
-                        <Component class="javax.swing.JLabel" name="jlFrecInf">
+                        <Component class="javax.swing.JLabel" name="jlResOri">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="Frecuecias hasta 2000 Hz:"/>
+                            <Property name="text" type="java.lang.String" value="Origen:"/>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="jtfFrecInf">
-                        </Component>
-                        <Component class="javax.swing.JLabel" name="jlFrecSup">
+                        <Component class="javax.swing.JTextField" name="jtfResOri">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="Frecuecias entre 2000 y 5000 Hz:"/>
+                            <Property name="horizontalAlignment" type="int" value="11"/>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="jtfFrecSup">
+                        <Component class="javax.swing.JLabel" name="jlResDes">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Destino:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JTextField" name="jtfResDes">
+                          <Properties>
+                            <Property name="horizontalAlignment" type="int" value="11"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="jLabel1">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="*"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="jLabel2">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Si no se asigna una resoluci&#xf3;n se "/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="jLabel3">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="tomar&#xe1; por defecto 1.5625 como "/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="jLabel4">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="resoluci&#xf3;n de origen y 2.0 como "/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="jLabel5">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="destino."/>
+                          </Properties>
                         </Component>
                       </SubComponents>
                     </Container>

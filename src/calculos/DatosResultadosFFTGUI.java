@@ -43,12 +43,15 @@ import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.CategoryItemEntity;
 import org.jfree.chart.entity.ChartEntity;
+import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
 import org.jfree.chart.plot.CategoryMarker;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.Layer;
@@ -72,6 +75,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
     private LinkedHashMap<Integer, LinkedHashMap<Integer, Integer>> mapMaxPosDatos; //<Bin, <Espectro, BC>>
     
     private DefaultCategoryDataset datasetDatos;
+    private DefaultCategoryDataset datasetDatosRF;
     private HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<String, Double>>>> markersDatos; //<Bin, <Espectro, <BC, <marker, valor>>>>;
     
     private DatosBC[] datosBC; //[Bin, Espectro, numBC, BCClasificada, BCdeRF]
@@ -910,7 +914,10 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
         this.jtDatos.getTableHeader().setReorderingAllowed(false);
         
         //Creamos la gráfica
-        this.datasetDatos = crearDatasetDatos(resultados);
+		if (this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0))
+			this.datasetDatosRF = new DefaultCategoryDataset();
+					
+        this.datasetDatos = crearDatasetDatos(resultados, this.datasetDatosRF);
         if (graficar) {
             muestraGraDatos(null, null, null);
         }
@@ -966,8 +973,8 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
             }
         });
     }
-    
-    private JFreeChart crearGraficaDatos(DefaultCategoryDataset dataset) {
+
+	private JFreeChart crearGraficaDatos(DefaultCategoryDataset dataset, DefaultCategoryDataset datasetRF) {
         JFreeChart chart = ChartFactory.createBarChart(
                 "",
                 "Frecuencia (Hz)",
@@ -1138,16 +1145,49 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
             }
         }
 
+		//Mostramos el espectro combinado de RF para ver posibles tonos en los que influya
+		int nRowsRF = datasetRF.getRowCount();
+		int nColsRF = datasetRF.getColumnCount();
+		if (datasetRF != null && nRowsRF != 0 && nColsRF != 0) {
+			DefaultCategoryDataset datasetRFAux = new DefaultCategoryDataset();
+
+			//Recorremos 1º por categorías para que venga ordenado por frecuencias
+			Object[] colsKeysRF = datasetRF.getColumnKeys().toArray();
+			Arrays.sort(colsKeysRF);
+			
+			for (int i = 0; i < nColsRF; i++) {
+				for (int j = 0; j < nRowsRF; j++) {
+					rowKey = (String) datasetRF.getRowKey(j);
+				
+					rowKey = rowKey + Auxiliares.PREF_DATOS_RF;
+					valor = (Double) datasetRF.getValue(datasetRF.getRowKey(j), (Comparable) colsKeysRF[i]);
+					
+					if (valor != null) {
+						datasetRFAux.addValue(valor, rowKey, (Comparable) colsKeysRF[i]);
+					}
+				}
+			}
+		
+			plot.setDataset(1, datasetRFAux);
+			plot.mapDatasetToRangeAxis(1, 0);
+			LineAndShapeRenderer lineandshaperenderer = new LineAndShapeRenderer(true, false);
+			lineandshaperenderer.setSeriesStroke(0, new BasicStroke(2.0f));
+			lineandshaperenderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
+			plot.setRenderer(1, lineandshaperenderer);
+			plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
+		}
+		
         return chart;
     }
     
-    private DefaultCategoryDataset crearDatasetDatos(ArrayList<ResultadoBinFFT> resBin) throws Exception {
+    private DefaultCategoryDataset crearDatasetDatos(ArrayList<ResultadoBinFFT> resBin, DefaultCategoryDataset datasetRF) throws Exception {
         LinkedHashMap<Integer, Integer> mapMaxPosDatosEsp;
         Double[][] bandaCriticaClasificada = null;
+        Double[][] bandaCriticaRFAux = null;
         Double nivel, frecuencia;
         Integer tipo;
         String rowKey;
-        int nDatosBCC, nBin, nEsp, nEspAux, nBC, nDatos;
+        int nDatosBCC, nDatosBCRF, nBin, nEsp, nBC, nDatos;
         
         //Markers
         HashMap<Integer, HashMap<Integer, HashMap<String, Double>>> markersDatosEsp;
@@ -1156,7 +1196,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
         Double nivelCriterio, nivelEnmascaramiento, nivelFrecMax;
         
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        
+
         int nResBin = resBin.size();
         ArrayList<ResultadoEspectroFFT> resEsp;
         int nResEsp;
@@ -1171,7 +1211,6 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
         for (int i = 0; i < nResBin; i++) {
             nBin = resBin.get(i).getBin();
             nEsp = 0;
-            nEspAux = 0;
             
             mapMaxPosDatosEsp = new LinkedHashMap<Integer, Integer>();
             markersDatosEsp = new HashMap<Integer, HashMap<Integer, HashMap<String, Double>>>();
@@ -1182,7 +1221,6 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
             //Recorremos los resultados del bin --> Espectros
             for (int j = 0; j < nResEsp; j++) {
                 nEsp++;
-                nEspAux++;
                 nBC = 0;
                 
                 markersDatosEspBC =  new HashMap<Integer, HashMap<String, Double>>();
@@ -1215,6 +1253,20 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
                                 nDatos++;
                             }
                         }
+
+						//Cargamos el dataset para resultados de RF en IEC 3
+						if (nDatos != 0 && (bandaCriticaRFAux = resBC.get(k).getBandaCriticaRFAux()) != null) {
+							nDatosBCRF = bandaCriticaRFAux.length;
+							
+							rowKey = nBin + Auxiliares.TXT_SERIE_BIN + Auxiliares.TXT_SERIE_SEP + Auxiliares.TXT_SERIE_ESPECTRO + nEsp + Auxiliares.TXT_SERIE_SEP + Auxiliares.TXT_SERIE_BC + nBC + Auxiliares.TXT_SERIE_SEP;
+
+							for (int l = 0; l < nDatosBCRF; l++) {
+								frecuencia = bandaCriticaRFAux[l][0];
+								nivel = bandaCriticaRFAux[l][1];
+
+								datasetRF.addValue(nivel, rowKey, frecuencia);
+							}
+						}
                         
                         markers = new HashMap<String, Double>();
                         
@@ -1235,9 +1287,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
                     }
                 }
                 
-                if (nBC == 0) { //No se ha insertado nada
-                    nEspAux--;
-                } else {
+                if (nBC != 0) { //Se ha insertado algo
                     mapMaxPosDatosEsp.put(nEsp, nBC);
                     
                     if (!markersDatosEspBC.isEmpty())
@@ -1261,6 +1311,10 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
             DefaultCategoryDataset dataset = new DefaultCategoryDataset();
             DefaultCategoryDataset datasetEsp = new DefaultCategoryDataset();
             DefaultCategoryDataset datasetBC = new DefaultCategoryDataset();
+
+            DefaultCategoryDataset datasetRF = new DefaultCategoryDataset();
+            DefaultCategoryDataset datasetEspRF = new DefaultCategoryDataset();
+            DefaultCategoryDataset datasetBCRF = new DefaultCategoryDataset();
 
             if (siguiente != null) {
                 if (siguiente)
@@ -1325,6 +1379,18 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
                         if (!((String) rowKey).startsWith(valBin + Auxiliares.TXT_SERIE_BIN))
                             dataset.removeRow(rowKey);
                     }
+
+					if (this.datasetDatosRF != null) {
+						datasetRF = (DefaultCategoryDataset) this.datasetDatosRF.clone();
+						int nDatosRF = this.datasetDatosRF.getRowCount();
+
+						for (int i = 0; i < nDatosRF; i++) {
+							rowKey = this.datasetDatosRF.getRowKey(i);
+						
+							if (!((String) rowKey).startsWith(valBin + Auxiliares.TXT_SERIE_BIN))
+								datasetRF.removeRow(rowKey);
+						}
+					}
                     
                     this.jbGraDatosEspAnt.setEnabled(maxPosDatosEsp > 1);
                     this.jbGraDatosEspSig.setEnabled(maxPosDatosEsp > 1);
@@ -1349,6 +1415,16 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
                             if (!((String) rowKey).contains(Auxiliares.TXT_SERIE_ESPECTRO + valEsp + Auxiliares.TXT_SERIE_SEP))
                                 datasetEsp.removeRow(rowKey);
                         }
+
+						datasetEspRF = (DefaultCategoryDataset) datasetRF.clone();
+                        int nDatosEspRF = datasetRF.getRowCount();
+
+                        for (int i = 0; i < nDatosEspRF; i++) {
+                            rowKey = datasetRF.getRowKey(i);
+
+                            if (!((String) rowKey).contains(Auxiliares.TXT_SERIE_ESPECTRO + valEsp + Auxiliares.TXT_SERIE_SEP))
+                                datasetEspRF.removeRow(rowKey);
+                        }
                         
                         this.jbGraDatosEspBCAnt.setEnabled(maxPosDatosEspBC > 1);
                         this.jbGraDatosEspBCSig.setEnabled(maxPosDatosEspBC > 1);
@@ -1369,6 +1445,16 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
                             if (!((String) rowKey).contains(Auxiliares.TXT_SERIE_BC + valEspBC + Auxiliares.TXT_SERIE_SEP))
                                 datasetBC.removeRow(rowKey);
                         }
+
+						datasetBCRF = (DefaultCategoryDataset) datasetEspRF.clone();
+                        int nDatosBCRF = datasetEspRF.getRowCount();
+
+                        for (int i = 0; i < nDatosBCRF; i++) {
+                            rowKey = datasetEspRF.getRowKey(i);
+
+                            if (!((String) rowKey).contains(Auxiliares.TXT_SERIE_BC + valEspBC + Auxiliares.TXT_SERIE_SEP))
+                                datasetBCRF.removeRow(rowKey);
+                        }
                     } else {
                         if (siguienteBC == null)
                             siguienteBC = true;
@@ -1385,7 +1471,7 @@ public class DatosResultadosFFTGUI extends JDialog implements ChartMouseListener
             if (datasetBC.getRowCount() == 0 || datasetBC.getColumnCount() == 0) //Si no hay nada que mostrar, mostramos el siguiente (anterior)
                 muestraGraDatos(siguiente, siguienteEsp, siguienteBC);
             else {
-                Auxiliares.asignaPanelGrafica(this, this.jpGraficaAnalisis, crearGraficaDatos(datasetBC), true, this);
+                Auxiliares.asignaPanelGrafica(this, this.jpGraficaAnalisis, crearGraficaDatos(datasetBC, datasetBCRF), true, this);
                 this.update(this.getGraphics());
             }
         }

@@ -25,8 +25,10 @@ public class ConfInsercionDatos {
     private Double dec;
     private Double hB;
     private HashMap<String, Double> pondDbZtoDbA;
+	private Double resolucionOri;
+	private Double resolucionDes;
     
-    public ConfInsercionDatos(Integer idConfig, ArrayList<String> codigos, ArrayList<String> nomVariables, ArrayList<Integer> canales, ArrayList<Double> slopes, ArrayList<Double> offsets, Double cotaT, Double cotaP, Double dec, Double hB, HashMap<String, Double> pondDbZtoDbA) {
+    public ConfInsercionDatos(Integer idConfig, ArrayList<String> codigos, ArrayList<String> nomVariables, ArrayList<Integer> canales, ArrayList<Double> slopes, ArrayList<Double> offsets, Double cotaT, Double cotaP, Double dec, Double hB, HashMap<String, Double> pondDbZtoDbA, Double resolucionOri, Double resolucionDes) {
         this.idConfig = idConfig;
         this.codigos = codigos;
         this.nomVariables = nomVariables;
@@ -38,6 +40,8 @@ public class ConfInsercionDatos {
         this.dec = dec;
         this.hB = hB;
         this.pondDbZtoDbA = pondDbZtoDbA;
+        this.resolucionOri = resolucionOri;
+        this.resolucionDes = resolucionDes;
     }
     
     public ArrayList<Integer> getCanales() {
@@ -118,6 +122,22 @@ public class ConfInsercionDatos {
 
     public void setPondDbZtoDbA(HashMap<String, Double> pondDbZtoDbA) {
         this.pondDbZtoDbA = pondDbZtoDbA;
+    }
+	
+    public Double getResolucionDes() {
+        return resolucionDes;
+    }
+
+    public void setResolucionDes(Double resolucionDes) {
+        this.resolucionDes = resolucionDes;
+    }
+
+    public Double getResolucionOri() {
+        return resolucionOri;
+    }
+
+    public void setResolucionOri(Double resolucionOri) {
+        this.resolucionOri = resolucionOri;
     }
 
     public ArrayList<Double> getSlopes() {

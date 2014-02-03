@@ -1,6 +1,7 @@
 package userinterfaces;
 
 
+import RA.Global;
 import calculos.CalculoAnguloLibre;
 import calculos.DatosLimitesGUI;
 import general.LoginRA;
@@ -26,32 +27,39 @@ public class GRA extends JFrame {
     }
     
     public static final String HELLO_MESSAGE = "OnlyOne is already running";
-    public static final int PORT = 7778;
+    public static final int PORT = 7779;
     private static JFrame frame;
     private static JTextField textField;
       
     // Inicia la pantalla GRA
     public GRA() {
-        initComponents();   
-    }
-    
+		initComponents();   
+	}
+		
     // Lanza la primera parte de la aplicación (INICIO)
     public static void main(String args[]) throws ClassNotFoundException, InstantiationException {
-        frame = new JFrame("INICIO");
-        textField = new JTextField("Iniciando...", 40);
-        textField.setEditable(false);
-        frame.getContentPane().add(textField);
-        frame.pack();
-        frame.setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(false);
-        new Thread() {
-            @Override
-            public void run() {
-                listen();
-            }
-        }.start();
+		try {
+			Global.cargaConfiguracionGlobal();
+
+			frame = new JFrame("INICIO");
+			textField = new JTextField("Iniciando...", 40);
+			textField.setEditable(false);
+			frame.getContentPane().add(textField);
+			frame.pack();
+			frame.setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "GRA.png").getImage());
+			frame.setLocationRelativeTo(null);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setVisible(false);
+			new Thread() {
+				@Override
+				public void run() {
+					listen();
+				}
+			}.start();
+		} catch (IOException ex) {
+			MensajeApp.muestraError(null, ex, "Error leyendo fichero de configuración global.");
+			System.exit(0);
+		}
     }
     
     public static void listen() {
@@ -155,12 +163,13 @@ public class GRA extends JFrame {
         jMenu34 = new javax.swing.JMenu();
         Datos5 = new javax.swing.JMenuItem();
         Datos6 = new javax.swing.JMenuItem();
-        Menu4 = new javax.swing.JMenu();
-        Asunto2 = new javax.swing.JMenuItem();
-        Asunto4 = new javax.swing.JMenuItem();
-        Asunto5 = new javax.swing.JMenuItem();
-        jMenuItem58 = new javax.swing.JMenuItem();
-        jMenu31 = new javax.swing.JMenu();
+        jmAbrir = new javax.swing.JMenu();
+        jmiAsunto = new javax.swing.JMenuItem();
+        jmiConfiguracion = new javax.swing.JMenuItem();
+        jmiParque = new javax.swing.JMenuItem();
+        jmiAerogenerador = new javax.swing.JMenuItem();
+        jmiCliente = new javax.swing.JMenuItem();
+        jmInsercion = new javax.swing.JMenu();
         jMenuItem88 = new javax.swing.JMenuItem();
         Salir = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -181,7 +190,7 @@ public class GRA extends JFrame {
         setBackground(new java.awt.Color(51, 51, 51));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(51, 51, 51));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "GRA.png").getImage());
         setName("Pantalla Principal"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -200,7 +209,7 @@ public class GRA extends JFrame {
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Comic Sans MS", 2, 11)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\logo gra final.jpg" )));
+        jLabel1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "logo gra final.jpg" )));
         jLabel1.setAlignmentX(0.5F);
 
         javax.swing.GroupLayout PanelLayout = new javax.swing.GroupLayout(Panel);
@@ -223,7 +232,7 @@ public class GRA extends JFrame {
         Nuevo.setText("Archivo ");
         Nuevo.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
 
-        Menu2.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\page_white.png")));
+        Menu2.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "page_white.png")));
         Menu2.setText("Nuevo ...           ");
         Menu2.setBorderPainted(true);
         Menu2.setContentAreaFilled(false);
@@ -306,44 +315,52 @@ public class GRA extends JFrame {
 
         Nuevo.add(Menu2);
 
-        Menu4.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\OpenFolder.gif" )));
-        Menu4.setText("Abrir");
-        Menu4.setBorderPainted(true);
-        Menu4.setContentAreaFilled(false);
+        jmAbrir.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "OpenFolder.gif" )));
+        jmAbrir.setText("Abrir");
+        jmAbrir.setBorderPainted(true);
+        jmAbrir.setContentAreaFilled(false);
 
-        Asunto2.setText("Asunto");
-        Asunto2.addActionListener(new java.awt.event.ActionListener() {
+        jmiAsunto.setText("Asunto");
+        jmiAsunto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 VAsunto(evt);
             }
         });
-        Menu4.add(Asunto2);
+        jmAbrir.add(jmiAsunto);
 
-        Asunto4.setText("Parque Eólico");
-        Asunto4.addActionListener(new java.awt.event.ActionListener() {
+        jmiConfiguracion.setText("Configuración");
+        jmiConfiguracion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                abrirConfiguracion(evt);
+            }
+        });
+        jmAbrir.add(jmiConfiguracion);
+
+        jmiParque.setText("Parque Eólico");
+        jmiParque.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 VParque(evt);
             }
         });
-        Menu4.add(Asunto4);
+        jmAbrir.add(jmiParque);
 
-        Asunto5.setText("Aerogenerador");
-        Asunto5.addActionListener(new java.awt.event.ActionListener() {
+        jmiAerogenerador.setText("Aerogenerador");
+        jmiAerogenerador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 VAero(evt);
             }
         });
-        Menu4.add(Asunto5);
+        jmAbrir.add(jmiAerogenerador);
 
-        jMenuItem58.setText("Cliente / Usuarios Web");
-        jMenuItem58.addActionListener(new java.awt.event.ActionListener() {
+        jmiCliente.setText("Cliente / Usuarios Web");
+        jmiCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 VCliente(evt);
             }
         });
-        Menu4.add(jMenuItem58);
+        jmAbrir.add(jmiCliente);
 
-        jMenu31.setText("Inserción");
+        jmInsercion.setText("Inserción");
 
         jMenuItem88.setText("Histórico fichero / datos");
         jMenuItem88.addActionListener(new java.awt.event.ActionListener() {
@@ -351,13 +368,13 @@ public class GRA extends JFrame {
                 Insercion(evt);
             }
         });
-        jMenu31.add(jMenuItem88);
+        jmInsercion.add(jMenuItem88);
 
-        Menu4.add(jMenu31);
+        jmAbrir.add(jmInsercion);
 
-        Nuevo.add(Menu4);
+        Nuevo.add(jmAbrir);
 
-        Salir.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Exit.png" )));
+        Salir.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "Exit.png" )));
         Salir.setText("Salir");
         Salir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -439,7 +456,7 @@ public class GRA extends JFrame {
 
         jMenu29.setText("Web");
 
-        jMenuItem75.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\logotipo.gif")));
+        jMenuItem75.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "logotipo.gif")));
         jMenuItem75.setText("Acceso clientes");
         jMenuItem75.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -474,8 +491,7 @@ public class GRA extends JFrame {
 
 private void AbrirVentana(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_AbrirVentana
    //new UsuarioGUI(this).setVisible(true);
-   new UsuarioRAGUI(this).setVisible(true);
-   
+	   new UsuarioRAGUI(this).setVisible(true);
 }//GEN-LAST:event_AbrirVentana
 
 private void CerrarVentana(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_CerrarVentana
@@ -552,7 +568,7 @@ private void NCP(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NCP
 }//GEN-LAST:event_NCP
 
 private void NConfiguracion(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NConfiguracion
-    new ConfiguracionRAGUI(this).setVisible(true);
+    new ConfiguracionRAGUI(this, ConfiguracionRAGUI.MODO_NUEVO).setVisible(true);
 }//GEN-LAST:event_NConfiguracion
 
 private void NDescripcion(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NDescripcion
@@ -575,17 +591,17 @@ private void calcSectorValido(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
 private void calcAnguloMicroAero(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcAnguloMicroAero
     new CalculoAnguloLibre(this).setVisible(true);
 }//GEN-LAST:event_calcAnguloMicroAero
+
+    private void abrirConfiguracion(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirConfiguracion
+		new ConfiguracionRAGUI(this, ConfiguracionRAGUI.MODO_VER).setVisible(true);
+    }//GEN-LAST:event_abrirConfiguracion
        
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem Asunto2;
-    private javax.swing.JMenuItem Asunto4;
-    private javax.swing.JMenuItem Asunto5;
     private javax.swing.JMenuItem Datos1;
     private javax.swing.JMenuItem Datos5;
     private javax.swing.JMenuItem Datos6;
     private javax.swing.JMenuBar Menu1;
     private javax.swing.JMenu Menu2;
-    private javax.swing.JMenu Menu4;
     private javax.swing.JMenu Nuevo;
     private javax.swing.JPanel Panel;
     private javax.swing.JMenuItem Salir;
@@ -594,13 +610,11 @@ private void calcAnguloMicroAero(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu29;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu31;
     private javax.swing.JMenu jMenu34;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem158;
     private javax.swing.JMenuItem jMenuItem26;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem58;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem75;
@@ -608,9 +622,16 @@ private void calcAnguloMicroAero(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
     private javax.swing.JMenuItem jMenuItem81;
     private javax.swing.JMenuItem jMenuItem88;
     private javax.swing.JMenuItem jMenuItem96;
+    private javax.swing.JMenu jmAbrir;
     private javax.swing.JMenu jmCalcular;
+    private javax.swing.JMenu jmInsercion;
+    private javax.swing.JMenuItem jmiAerogenerador;
+    private javax.swing.JMenuItem jmiAsunto;
     private javax.swing.JMenuItem jmiCalcAngulos;
     private javax.swing.JMenuItem jmiCalcGenerico;
+    private javax.swing.JMenuItem jmiCliente;
+    private javax.swing.JMenuItem jmiConfiguracion;
+    private javax.swing.JMenuItem jmiParque;
     private javax.swing.JMenuItem jmiSectorValido;
     // End of variables declaration//GEN-END:variables
     public static int Id;

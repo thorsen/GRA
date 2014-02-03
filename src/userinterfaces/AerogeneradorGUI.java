@@ -2,8 +2,10 @@
 package userinterfaces;
 
 
-import RA.Aerogenerador;
+import RA.AerogeneradorRA;
+import RA.Global;
 import RA.Numero;
+import general.MensajeApp;
 import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -42,6 +44,9 @@ public class AerogeneradorGUI extends JDialog {
         jTextField12 = new javax.swing.JTextField();
         jComboBox7 = new javax.swing.JComboBox();
         jLabel23 = new javax.swing.JLabel();
+        jlLongBuje = new javax.swing.JLabel();
+        jtfLongBuje = new javax.swing.JTextField();
+        jcbMiniAero = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jTextField13 = new javax.swing.JTextField();
@@ -53,7 +58,7 @@ public class AerogeneradorGUI extends JDialog {
         setBackground(java.awt.Color.white);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "GCPMini.jpg").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
 
@@ -67,16 +72,16 @@ public class AerogeneradorGUI extends JDialog {
         });
 
         closeButton2.setText("OK");
-        closeButton2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                GuardarAero(evt);
+        closeButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarAero(evt);
             }
         });
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("VALORES NOMINALES / CARACTERÍSTICAS");
 
         jLabel15.setText("  Dn [m]: ");
@@ -136,6 +141,17 @@ public class AerogeneradorGUI extends JDialog {
 
         jLabel23.setText("  Control de potencia :");
 
+        jlLongBuje.setText("  Longitud de Buje (m) :");
+
+        jtfLongBuje.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jtfLongBuje.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfLongBujeValidarVcut(evt);
+            }
+        });
+
+        jcbMiniAero.setText("Mini Aerogenerador");
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -143,30 +159,38 @@ public class AerogeneradorGUI extends JDialog {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(143, 143, 143)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(78, 78, 78)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14)
-                            .addComponent(jLabel15)
-                            .addComponent(jLabel16)
-                            .addComponent(jLabel22)
-                            .addComponent(jLabel17)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel23)
-                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(56, 56, 56)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(143, 143, 143)
-                        .addComponent(jLabel1)))
-                .addContainerGap(66, Short.MAX_VALUE))
+                            .addComponent(jcbMiniAero)
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel7Layout.createSequentialGroup()
+                                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel14)
+                                        .addComponent(jLabel15)
+                                        .addComponent(jLabel16)
+                                        .addComponent(jLabel22)
+                                        .addComponent(jLabel17)
+                                        .addComponent(jLabel18)
+                                        .addComponent(jLabel23)
+                                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(56, 56, 56)
+                                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel7Layout.createSequentialGroup()
+                                    .addComponent(jlLongBuje)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jtfLongBuje, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,18 +229,24 @@ public class AerogeneradorGUI extends JDialog {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel19)
                     .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addGap(9, 9, 9)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlLongBuje)
+                    .addComponent(jtfLongBuje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jcbMiniAero)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel20.setText("Modelo: ");
 
         jTextField13.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel21.setText("Hb [m]:");
 
         jTextField14.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -290,58 +320,16 @@ public class AerogeneradorGUI extends JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-566)/2, (screenSize.height-430)/2, 566, 430);
+        setSize(new java.awt.Dimension(566, 455));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void Cancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cancelar
         dispose();
 }//GEN-LAST:event_Cancelar
-
-    private void GuardarAero(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarAero
-    
-    if ((this.jTextField13.getText().length()==0) |(this.jTextField10.getText().length()==0) |(this.jTextField9.getText().length()==0)|(this.jTextField12.getText().length()==0)|(this.jTextField14.getText().length()==0)| (this.jTextField11.getText().length()==0)| (this.jComboBox6.getSelectedIndex()==0) | (this.jComboBox7.getSelectedIndex()==0)){
-        JOptionPane.showMessageDialog(this,"Por favor, introduzca los campos obligatorios (*)","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-    } else {
-       
-            String modelo=this.jTextField13.getText();
-            double hb=Double.parseDouble(this.jTextField14.getText());
-            int lineas=Integer.parseInt((String)this.jComboBox6.getSelectedItem());
-            String fabricante=null;
-            if (this.jTextField8.getText().length()!=0){
-                fabricante=this.jTextField8.getText();
-            }
-            double Vn=0;
-            if (this.jTextField15.getText().length()!=0){
-                Vn=Double.parseDouble(this.jTextField15.getText());
-            }
-            double vin=Double.parseDouble(this.jTextField9.getText());
-            double vcut=Double.parseDouble(this.jTextField12.getText());
-            double pn=Double.parseDouble(this.jTextField10.getText());
-            double dn=Double.parseDouble(this.jTextField11.getText());
-            int reg=1;
-            if (this.jComboBox7.getSelectedIndex()==2){
-                reg=0;
-            }
-            try {
-                Aerogenerador Ae=new Aerogenerador();
-                boolean salida=Ae.NuevoAerogenerador(modelo, fabricante, hb, dn, pn, vin, vcut, lineas, reg,Vn);
-                if (!salida){
-                    JOptionPane.showMessageDialog(this, "Aerogenerador insertado correctamente","INFORMACIÓN",JOptionPane.INFORMATION_MESSAGE);
-                }else{
-                    JOptionPane.showMessageDialog(this, "El aerogenerador ya existe","MENSAJE DE ERROR",JOptionPane.ERROR_MESSAGE);  
-                }
-            } catch (SQLException e) {
-                    e.printStackTrace();
-            }
-        }   
-    
-}//GEN-LAST:event_GuardarAero
 
 private void ValidarHb(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ValidarHb
 Numero N=new Numero();
@@ -400,6 +388,70 @@ if (!N.isNumeric(this.jTextField11.getText()) & (this.jTextField11.getText().len
     JOptionPane.showMessageDialog(this, "Dn debe ser un campo numérico","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
 }
 }//GEN-LAST:event_ValidarDn
+
+    private void jtfLongBujeValidarVcut(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfLongBujeValidarVcut
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfLongBujeValidarVcut
+
+    private void guardarAero(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarAero
+        // TODO add your handling code here:
+		if ((this.jTextField13.getText().length()==0) |(this.jTextField10.getText().length()==0) |(this.jTextField9.getText().length()==0)|(this.jTextField12.getText().length()==0)|(this.jTextField14.getText().length()==0)| (this.jTextField11.getText().length()==0)| (this.jComboBox6.getSelectedIndex()==0) | (this.jComboBox7.getSelectedIndex()==0)){
+			JOptionPane.showMessageDialog(this,"Por favor, introduzca los campos obligatorios (*)","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+		} else {
+			try {
+				String modelo=this.jTextField13.getText();
+				double hb=Double.parseDouble(this.jTextField14.getText());
+				int lineas=Integer.parseInt((String)this.jComboBox6.getSelectedItem());
+				String fabricante=null;
+				if (this.jTextField8.getText().length()!=0){
+					fabricante=this.jTextField8.getText();
+				}
+				double Vn=0;
+				if (this.jTextField15.getText().length()!=0){
+					Vn=Double.parseDouble(this.jTextField15.getText());
+				}
+				double vin=Double.parseDouble(this.jTextField9.getText());
+				double vcut=Double.parseDouble(this.jTextField12.getText());
+				double pn=Double.parseDouble(this.jTextField10.getText());
+				double dn=Double.parseDouble(this.jTextField11.getText());
+				int reg=1;
+				if (this.jComboBox7.getSelectedIndex()==2){
+					reg=0;
+				}
+
+				//Modificaicones Longitud de buje
+				/*
+				try {
+					Aerogenerador Ae=new Aerogenerador();
+					boolean salida=Ae.NuevoAerogenerador(modelo, fabricante, hb, dn, pn, vin, vcut, lineas, reg,Vn);
+					if (!salida){
+						JOptionPane.showMessageDialog(this, "Aerogenerador insertado correctamente","INFORMACIÓN",JOptionPane.INFORMATION_MESSAGE);
+					}else{
+						JOptionPane.showMessageDialog(this, "El aerogenerador ya existe","MENSAJE DE ERROR",JOptionPane.ERROR_MESSAGE);  
+					}
+				} catch (SQLException e) {
+						e.printStackTrace();
+				}
+				*/
+				Double longBuje = Double.parseDouble(this.jtfLongBuje.getText());
+				Boolean pequeno = this.jcbMiniAero.isSelected();
+				Boolean regulacion = (reg == 1);
+
+				int res = AerogeneradorRA.insertAerogenerador(null, modelo, hb, fabricante, dn, pn, vin, vcut, lineas, regulacion, Vn, pequeno, longBuje, null);
+
+				if (res > 0)
+					MensajeApp.muestraInfo(this, "Aerogenerador añadido correctamente");
+				else
+					MensajeApp.muestraError(this, null, "Fallo añadiendo aerogenerador");
+			} catch (NoSuchFieldException ex) {
+				MensajeApp.muestraError(this, ex, "Error añadiendo aerogenerador");
+			} catch (NumberFormatException ex) {
+				MensajeApp.muestraError(this, ex, "Error parseando número");
+			} catch (SQLException ex) {
+				MensajeApp.muestraError(this, ex, "Error añadiendo aerogenerador");
+			}
+        }   
+    }//GEN-LAST:event_guardarAero
    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -429,6 +481,9 @@ if (!N.isNumeric(this.jTextField11.getText()) & (this.jTextField11.getText().len
     private javax.swing.JTextField jTextField15;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JCheckBox jcbMiniAero;
+    private javax.swing.JLabel jlLongBuje;
+    private javax.swing.JTextField jtfLongBuje;
     // End of variables declaration//GEN-END:variables
  
     

@@ -234,7 +234,7 @@ public class DatosLimitesGUI extends JDialog {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "GRA.png").getImage());
         setLocationByPlatform(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -1731,7 +1731,7 @@ private void previsualizar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pr
                             Auxiliares.bloqueaDialog(this, true);
                             jpb = Auxiliares.muestraProgress(this, 100 * 1000, "Creando vistas auxiliares...");
                             
-                            valiCrea = DatosRA2.createVistaAux(idNorma, tipoTabla, idAsunto, sitesTipo.get(i), calculoVel, calculoPot, ID_SERIE_DEF, DENSIDAD_DEF, fechaIniPer, fechaFinPer, sector, zRef, z0Ref, z0, resAlturaBuje, esMiniAero);
+                            valiCrea = DatosRA2.createVistaAux(idNorma, tipoTabla, idAsunto, sitesTipo.get(i), calculoVel, calculoPot, ID_SERIE_DEF, DENSIDAD_DEF, fechaIniPer, fechaFinPer, sector, zRef, z0Ref, z0, resAlturaBuje, esMiniAero, this);
                             if (valiCrea.length() == 0) {
                                 Auxiliares.incPorcentajeProgress(jpb, 0.5);
                                 ArrayList<Object> ajustes = new ArrayList<Object>(); //Variable para recoger los ajustes
@@ -1904,7 +1904,7 @@ private void establecerIncerts(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
         desdeFecha = this.jsPerDes.getTimeInMillis();
     
     Integer idNorma = (Integer) ComboBoxObject.getClaveSelCombo(this.jcbNorma);
-    new Incertidumbres((Frame) this.getParent(), idAsunto, desdeFecha, idNorma).setVisible(true);
+    new Incertidumbres((Frame) this.getParent(), idAsunto, desdeFecha, idNorma, DENSIDAD_DEF).setVisible(true);
 }//GEN-LAST:event_establecerIncerts
 
 private void jpNuevoModoFuncAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jpNuevoModoFuncAncestorAdded

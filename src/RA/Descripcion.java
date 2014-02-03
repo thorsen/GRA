@@ -2,7 +2,9 @@ package RA;
 
 import general.Auxiliares;
 import general.InteraccionBD;
+import general.TratDecimales;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -80,7 +82,11 @@ public class Descripcion {
         } else if (campo.compareTo(CAMPO_ID_SERIE) == 0) {
             this.idSerie = (Integer) valor;
         } else if (campo.compareTo(CAMPO_VALOR) == 0) {
-            this.valor = (Double) valor;
+			if (valor != null) {
+                this.valor = TratDecimales.round(((BigDecimal) valor).doubleValue(), TratDecimales.DEC_VARIABLE_RA);
+            } else {
+                this.valor = null;
+            }
         } else {
             //throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
 			System.out.println("No existe el campo <" + campo + "> en la clase " + this.getClass().getSimpleName());
@@ -164,7 +170,7 @@ public class Descripcion {
         }
         if (valor != null) {
             valores = InteraccionBD.anadeCampoValor(valores, paramsPS, valor);
-            campos.add(CAMPO_ID_SERIE);
+            campos.add(CAMPO_VALOR);
         }
 
         interBD.inicioTransaccion();
@@ -207,7 +213,7 @@ public class Descripcion {
             
             codVarNoAcus.add(serie.getCodigo());
 
-            insertOrUpdateDescripcion(idAsunto, idSerie, (Double) entry.getValue(), idAsunto, idSerie, (Double) entry.getValue(), null);
+            res += insertOrUpdateDescripcion(idAsunto, idSerie, (Double) entry.getValue(), idAsunto, idSerie, (Double) entry.getValue(), null);
         }
         
         while (itAcus.hasNext()) {
@@ -234,15 +240,15 @@ public class Descripcion {
                 codVarFFT.add(serie.getCodigo());
             }
 
-            insertOrUpdateDescripcion(idAsunto, idSerie, (Double) entry.getValue(), idAsunto, idSerie, (Double) entry.getValue(), null);
+            res += insertOrUpdateDescripcion(idAsunto, idSerie, (Double) entry.getValue(), idAsunto, idSerie, (Double) entry.getValue(), null);
         }
 
         if (codVarSPL != null)
-            DatosRA2.createDatos(Auxiliares.TIPO_SPL, idAsunto, codVarNoAcus, codVarSPL, false, sqlExtra);
+            res += DatosRA2.createDatos(Auxiliares.TIPO_SPL, idAsunto, codVarNoAcus, codVarSPL, false, sqlExtra);
         if (codVarOCT != null)
-            DatosRA2.createDatos(Auxiliares.TIPO_OCT, idAsunto, codVarNoAcus, codVarOCT, false, sqlExtra);
+            res += DatosRA2.createDatos(Auxiliares.TIPO_OCT, idAsunto, codVarNoAcus, codVarOCT, false, sqlExtra);
         if (codVarFFT != null)
-            DatosRA2.createDatos(Auxiliares.TIPO_FFT, idAsunto, codVarNoAcus, codVarFFT, false, sqlExtra); //No creamos índices XML porque, en principio, no nos harán falta -- Mejora eficiencia
+            res += DatosRA2.createDatos(Auxiliares.TIPO_FFT, idAsunto, codVarNoAcus, codVarFFT, false, sqlExtra); //No creamos índices XML porque, en principio, no nos harán falta -- Mejora eficiencia
             //DatosRA2.createDatos(Auxiliares.TIPO_FFT, idAsunto, codVarNoAcus, codVarFFT, true, sqlExtra);
 
         interBD.finTransaccion();

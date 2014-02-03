@@ -157,7 +157,7 @@
       <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
     </Property>
     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-      <Color id="Cursor predeterminado"/>
+      <Color id="Cursor Por defecto"/>
     </Property>
     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="0" green="0" red="ff" type="rgb"/>
@@ -177,6 +177,7 @@
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
@@ -327,7 +328,7 @@
                           <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextField2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="104" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -461,7 +462,7 @@
             <Component class="javax.swing.JLabel" name="jLabel23">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\find.png&quot; ))" type="code"/>
+                  <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;find.png&quot; ))" type="code"/>
                 </Property>
               </Properties>
             </Component>
@@ -633,7 +634,7 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\printer.png&quot; ))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;printer.png&quot; ))" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value="Imprimir posiciones"/>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
@@ -647,7 +648,7 @@
                 <Component class="javax.swing.JLabel" name="jLabel59">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(&quot;\\\\B2solar\\Datos\\Curva\\Imagenes\\parque.png&quot; ))" type="code"/>
+                      <Connection code="new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + &quot;parque.png&quot; ))" type="code"/>
                     </Property>
                   </Properties>
                 </Component>

@@ -22,9 +22,9 @@ import java.util.GregorianCalendar;
 
 public class Asunto {
     
-    private static String url = "jdbc:sqlserver://192.168.1.53:1433";
-    private static String user = "SQL_PwC";
-    private static String pass = "Ru8865No";
+    private static String url = "jdbc:sqlserver://" + Global.IP_SERVER_GCP;
+    private static String user = Global.USER_SERVER_GCP;
+    private static String pass = Global.PASS_SERVER_GCP;
     
     static{
         try{
@@ -132,17 +132,17 @@ public class Asunto {
                }
                
                // Se crea el directorio asociado
-               folder=new File("\\\\B2solar\\Datos\\Curva\\Asuntos\\"+codigo+"."+nombre);
+               folder=new File(RA.Global.RUTA_DATOS + "Curva\\Asuntos\\"+codigo+"."+nombre);
                folder.mkdir();
-               folder=new File("\\\\B2solar\\Datos\\Curva\\Asuntos\\"+codigo+"."+nombre+"\\Insercion");
+               folder=new File(RA.Global.RUTA_DATOS + "Curva\\Asuntos\\"+codigo+"."+nombre+"\\Insercion");
                folder.mkdir();
-               folder=new File("\\\\B2solar\\Datos\\Curva\\Asuntos\\"+codigo+"."+nombre+"\\Edicion");
+               folder=new File(RA.Global.RUTA_DATOS + "Curva\\Asuntos\\"+codigo+"."+nombre+"\\Edicion");
                folder.mkdir();
-               folder=new File("\\\\B2solar\\Datos\\Curva\\Asuntos\\"+codigo+"."+nombre+"\\Revision");
+               folder=new File(RA.Global.RUTA_DATOS + "Curva\\Asuntos\\"+codigo+"."+nombre+"\\Revision");
                folder.mkdir();
-               folder=new File("\\\\B2solar\\Datos\\Curva\\Asuntos\\"+codigo+"."+nombre+"\\Informes");
+               folder=new File(RA.Global.RUTA_DATOS + "Curva\\Asuntos\\"+codigo+"."+nombre+"\\Informes");
                folder.mkdir();
-               folder=new File("\\\\B2solar\\Datos\\Curva\\Asuntos\\"+codigo+"."+nombre+"\\Correccion");
+               folder=new File(RA.Global.RUTA_DATOS + "Curva\\Asuntos\\"+codigo+"."+nombre+"\\Correccion");
                folder.mkdir();
 
            }
@@ -393,8 +393,8 @@ public class Asunto {
             String codigo_antiguo=this.getCodigo(asunto);
             String nombre_antiguo=this.getNombre(asunto);
             
-            File folder=new File("\\\\B2solar\\Datos\\Curva\\Asuntos\\"+codigo_antiguo+"."+nombre_antiguo);
-            FileWriter fw= new FileWriter("\\\\B2solar\\Datos\\Curva\\Asuntos\\"+codigo_antiguo+"."+nombre_antiguo+"\\Edicion\\update-"+asunto+".log",true);
+            File folder=new File(RA.Global.RUTA_DATOS + "Curva\\Asuntos\\"+codigo_antiguo+"."+nombre_antiguo);
+            FileWriter fw= new FileWriter(RA.Global.RUTA_DATOS + "Curva\\Asuntos\\"+codigo_antiguo+"."+nombre_antiguo+"\\Edicion\\update-"+asunto+".log",true);
             fw.write("--------------------------------------------------------------------------------\n");
             fw.write("\n");
             
@@ -510,9 +510,9 @@ public class Asunto {
             }
             fw.close();
            
-            System.out.println("\\\\B2solar\\Datos\\Curva\\Asuntos\\"+codigo_antiguo+"."+nombre_antiguo);
-            System.out.println("\\\\B2solar\\Datos\\Curva\\Asuntos\\"+codigo+"."+nombre);
-            File foldern=new File("\\\\B2solar\\Datos\\Curva\\Asuntos\\"+codigo+"."+nombre);
+            System.out.println(RA.Global.RUTA_DATOS + "Curva\\Asuntos\\"+codigo_antiguo+"."+nombre_antiguo);
+            System.out.println(RA.Global.RUTA_DATOS + "Curva\\Asuntos\\"+codigo+"."+nombre);
+            File foldern=new File(RA.Global.RUTA_DATOS + "Curva\\Asuntos\\"+codigo+"."+nombre);
             folder.renameTo(foldern);
    
             con.commit();

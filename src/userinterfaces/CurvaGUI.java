@@ -7,6 +7,8 @@ import RA.FicheroRA;
 import RA.Login;
 import RA.Numero;
 import Informacion.Formato_CPGUI;
+import RA.CurvaRA;
+import general.InteraccionFic;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -32,6 +34,8 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 
 public class CurvaGUI extends JDialog {
+
+	private static String SEP_CURVA_POT = ";";
     
  
     public CurvaGUI(java.awt.Frame parent,int id) {
@@ -67,7 +71,7 @@ public class CurvaGUI extends JDialog {
         setBackground(java.awt.Color.white);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "GCPMini.jpg").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
 
@@ -76,11 +80,11 @@ public class CurvaGUI extends JDialog {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));
         jLabel1.setText("  CURVA DE POTENCIA   ");
 
-        jLabel11.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Information.png" )));
+        jLabel11.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "Information.png" )));
         jLabel11.setToolTipText("Información de Formato");
         jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -115,13 +119,13 @@ public class CurvaGUI extends JDialog {
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setText("+");
         jButton3.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NuevaCurva(evt);
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel4.setText("Densidad:");
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
@@ -141,7 +145,7 @@ public class CurvaGUI extends JDialog {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 401, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -214,7 +218,7 @@ public class CurvaGUI extends JDialog {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder()));
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("Asunto:");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
@@ -307,8 +311,8 @@ public class CurvaGUI extends JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-674)/2, (screenSize.height-680)/2, 674, 680);
+        setSize(new java.awt.Dimension(674, 680));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 private void Limpiar(){
@@ -327,41 +331,6 @@ private void Poner(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Poner
 private void Quitar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Quitar
     L.dispose();
 }//GEN-LAST:event_Quitar
-
-private void NuevaCurva(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NuevaCurva
-if (this.jButton3.isEnabled()) {   
-    this.jComboBox2.setSelectedIndex(0);
-    try {
-       JTextField jtfS = new JTextField();
-       JOptionPane.showMessageDialog(this, jtfS,"Seleccione la densidad", JOptionPane.QUESTION_MESSAGE);
-       double densidad=Double.parseDouble(jtfS.getText());
-       if (densidades.indexOf(densidad)==-1){
-            // Se lee la curva
-           String u=Login.getUsuario();
-           JFileChooser fileChooser = new JFileChooser("Z:\\"+u+"\\PRIVADA\\CALIDAD\\ASUNTOS");
-           int seleccion = fileChooser.showOpenDialog(this);
-           if (seleccion == JFileChooser.APPROVE_OPTION){
-               File fichero = fileChooser.getSelectedFile();
-               String ruta=fichero.getPath();
-               curva_nueva = F.LeerCP(ruta);
-               this.jComboBox2.insertItemAt(densidad,densidades.size()+1);      
-               this.jComboBox2.setSelectedIndex(densidades.size()+1);
-               this.CargarCurva(curva_nueva);
-               this.Graficar(curva_nueva);    
-               // Se deshabilita
-               this.jComboBox2.setEnabled(false);
-               this.jButton3.setEnabled(false);
-           }
-       } else{
-            JOptionPane.showMessageDialog(this, "La densidad introducida ya existe","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-       }
-    
-    } catch (Exception e){
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Fallo al leer la nurva curva","ERROR",JOptionPane.ERROR_MESSAGE);
-    }    
-}
-}//GEN-LAST:event_NuevaCurva
 
 private void CargarCurva(ArrayList<double[]> curva){
     int n=curva.size();
@@ -457,6 +426,52 @@ if (this.jButton2.isEnabled()){
     }
 }
 }//GEN-LAST:event_CambioDensidad
+
+    private void NuevaCurva(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NuevaCurva
+		if (this.jButton3.isEnabled()) {   
+			this.jComboBox2.setSelectedIndex(0);
+			try {
+			   JTextField jtfS = new JTextField();
+			   JOptionPane.showMessageDialog(this, jtfS,"Seleccione la densidad", JOptionPane.QUESTION_MESSAGE);
+			   double densidad=Double.parseDouble(jtfS.getText());
+			   if (densidades.indexOf(densidad)==-1){
+					// Se lee la curva
+				   String u=Login.getUsuario();
+				   JFileChooser fileChooser = new JFileChooser("Z:\\"+u+"\\PRIVADA\\CALIDAD\\ASUNTOS");
+				   int seleccion = fileChooser.showOpenDialog(this);
+				   if (seleccion == JFileChooser.APPROVE_OPTION){
+					   File fichero = fileChooser.getSelectedFile();
+					   String ruta=fichero.getPath();
+					   //curva_nueva = F.LeerCP(ruta);
+
+					   InteraccionFic interFic = new InteraccionFic(ruta, InteraccionFic.READ);
+						ArrayList<ArrayList<String>> datosCurvaAux = interFic.leeCamposSep(SEP_CURVA_POT, null);
+						CurvaRA.insertCurvaValoresIncert(asunto, densidad, datosCurvaAux, null);
+
+						curva_nueva = new ArrayList<double[]>();
+						int nDatosCurva = datosCurvaAux.size();
+
+						for (int i = 0; i < nDatosCurva; i++)
+							curva_nueva.add(new double[]{Double.parseDouble(datosCurvaAux.get(i).get(0)), Double.parseDouble(datosCurvaAux.get(i).get(1))});
+					   
+					   this.jComboBox2.insertItemAt(densidad,densidades.size()+1);      
+					   this.jComboBox2.setSelectedIndex(densidades.size()+1);
+					   this.CargarCurva(curva_nueva);
+					   this.Graficar(curva_nueva);    
+					   // Se deshabilita
+					   this.jComboBox2.setEnabled(false);
+					   this.jButton3.setEnabled(false);
+				   }
+			   } else{
+					JOptionPane.showMessageDialog(this, "La densidad introducida ya existe","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+			   }
+			
+			} catch (Exception e){
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(this, "Fallo al leer la nurva curva","ERROR",JOptionPane.ERROR_MESSAGE);
+			}    
+		}
+    }//GEN-LAST:event_NuevaCurva
 
 public JPanel createPanel() {
      ArrayList<double[]> curva=new ArrayList<double[]>();

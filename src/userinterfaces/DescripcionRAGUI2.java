@@ -2,6 +2,7 @@
 package userinterfaces;
 
 import RA.AsuntoRA;
+import RA.DatosRA2;
 import RA.Descripcion;
 import RA.SerieRA2;
 import RA.TipoRA;
@@ -67,15 +68,19 @@ public class DescripcionRAGUI2 extends JDialog {
         jlFrecFin = new javax.swing.JLabel();
         jtfFrecFin = new javax.swing.JTextField();
         jpFrecResolucion = new javax.swing.JPanel();
-        jlFrecInf = new javax.swing.JLabel();
-        jtfFrecInf = new javax.swing.JTextField();
-        jlFrecSup = new javax.swing.JLabel();
-        jtfFrecSup = new javax.swing.JTextField();
+        jlResOri = new javax.swing.JLabel();
+        jtfResOri = new javax.swing.JTextField();
+        jlResDes = new javax.swing.JLabel();
+        jtfResDes = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jbAceptar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("DESCRIPCIÓN");
-        setBackground(new java.awt.Color(175, 30, 30));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
         setLocationByPlatform(true);
@@ -475,42 +480,82 @@ public class DescripcionRAGUI2 extends JDialog {
 
         jlFrecIni.setText("Frecuencia de Inicio:");
 
+        jtfFrecIni.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+
         jlFrecFin.setText("Frecuencia de Final:");
 
+        jtfFrecFin.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+
         jpFrecResolucion.setBackground(new java.awt.Color(255, 255, 255));
-        jpFrecResolucion.setBorder(javax.swing.BorderFactory.createTitledBorder("Resolución de frecuencia"));
+        jpFrecResolucion.setBorder(javax.swing.BorderFactory.createTitledBorder("Resolución de frecuencia *"));
 
-        jlFrecInf.setText("Frecuecias hasta 2000 Hz:");
+        jlResOri.setText("Origen:");
 
-        jlFrecSup.setText("Frecuecias entre 2000 y 5000 Hz:");
+        jtfResOri.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+
+        jlResDes.setText("Destino:");
+
+        jtfResDes.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+
+        jLabel1.setText("*");
+
+        jLabel2.setText("Si no se asigna una resolución se ");
+
+        jLabel3.setText("tomará por defecto 1.5625 como ");
+
+        jLabel4.setText("resolución de origen y 2.0 como ");
+
+        jLabel5.setText("destino.");
 
         javax.swing.GroupLayout jpFrecResolucionLayout = new javax.swing.GroupLayout(jpFrecResolucion);
         jpFrecResolucion.setLayout(jpFrecResolucionLayout);
         jpFrecResolucionLayout.setHorizontalGroup(
             jpFrecResolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpFrecResolucionLayout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jpFrecResolucionLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpFrecResolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlFrecSup)
-                    .addComponent(jlFrecInf))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpFrecResolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jtfFrecInf, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                    .addComponent(jtfFrecSup, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jpFrecResolucionLayout.createSequentialGroup()
+                        .addGroup(jpFrecResolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlResDes)
+                            .addComponent(jlResOri))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                        .addGroup(jpFrecResolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jtfResOri)
+                            .addComponent(jtfResDes, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jpFrecResolucionLayout.createSequentialGroup()
+                        .addGroup(jpFrecResolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jpFrecResolucionLayout.setVerticalGroup(
             jpFrecResolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpFrecResolucionLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jpFrecResolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlFrecInf)
-                    .addComponent(jtfFrecInf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jlResOri)
+                    .addComponent(jtfResOri, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpFrecResolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlFrecSup)
-                    .addComponent(jtfFrecSup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jlResDes)
+                    .addComponent(jtfResDes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpFrecResolucionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5))
         );
 
         javax.swing.GroupLayout jpFFTLimLayout = new javax.swing.GroupLayout(jpFFTLim);
@@ -520,7 +565,6 @@ public class DescripcionRAGUI2 extends JDialog {
             .addGroup(jpFFTLimLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpFFTLimLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jpFrecResolucion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jpFFTLimLayout.createSequentialGroup()
                         .addGroup(jpFFTLimLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jlFrecIni)
@@ -528,8 +572,10 @@ public class DescripcionRAGUI2 extends JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jpFFTLimLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jtfFrecIni, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                            .addComponent(jtfFrecFin, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jtfFrecFin, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+                        .addGap(0, 20, Short.MAX_VALUE))
+                    .addComponent(jpFrecResolucion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jpFFTLimLayout.setVerticalGroup(
             jpFFTLimLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -551,21 +597,17 @@ public class DescripcionRAGUI2 extends JDialog {
         jpFFT.setLayout(jpFFTLayout);
         jpFFTLayout.setHorizontalGroup(
             jpFFTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 460, Short.MAX_VALUE)
-            .addGroup(jpFFTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jpFFTLayout.createSequentialGroup()
-                    .addGap(0, 83, Short.MAX_VALUE)
-                    .addComponent(jpFFTLim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 84, Short.MAX_VALUE)))
+            .addGroup(jpFFTLayout.createSequentialGroup()
+                .addGap(0, 121, Short.MAX_VALUE)
+                .addComponent(jpFFTLim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 121, Short.MAX_VALUE))
         );
         jpFFTLayout.setVerticalGroup(
             jpFFTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 407, Short.MAX_VALUE)
-            .addGroup(jpFFTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jpFFTLayout.createSequentialGroup()
-                    .addGap(0, 117, Short.MAX_VALUE)
-                    .addComponent(jpFFTLim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 118, Short.MAX_VALUE)))
+            .addGroup(jpFFTLayout.createSequentialGroup()
+                .addGap(0, 87, Short.MAX_VALUE)
+                .addComponent(jpFFTLim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 86, Short.MAX_VALUE))
         );
 
         jtpDatos.addTab("", jpFFT);
@@ -627,8 +669,10 @@ private void limpiarCampos() {
     ((DefaultTableModel)this.jtOCTInsertar.getModel()).setRowCount(0);
     this.jtfFrecIni.setText(null);
     this.jtfFrecFin.setText(null);
-    this.jtfFrecInf.setText(null);
-    this.jtfFrecSup.setText(null);
+
+	//Inicializamos por defecto las resoluciones de origen y destino
+	this.jtfResOri.setText(DatosRA2.RES_FREC_ORI_DEF.toString());
+	this.jtfResDes.setText(DatosRA2.RES_FREC_DES_DEF.toString());
     
     this.jbNoAcusAnade.setEnabled(false);
     this.jbNoAcusQuita.setEnabled(false);
@@ -736,10 +780,10 @@ private void cambioAsunto(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cam
                         this.jtfFrecIni.setText(descFFT.getValor().toString());
                     else if (serie.getDescripcion().contains("Fin"))
                         this.jtfFrecFin.setText(descFFT.getValor().toString());
-                    else if (serie.getDescripcion().contains("Inf"))
-                        this.jtfFrecInf.setText(descFFT.getValor().toString());
-                    else if (serie.getDescripcion().contains("Sup"))
-                        this.jtfFrecSup.setText(descFFT.getValor().toString());
+                    else if (serie.getDescripcion().contains("Ori"))
+                        this.jtfResOri.setText(descFFT.getValor().toString());
+                    else if (serie.getDescripcion().contains("Des"))
+                        this.jtfResDes.setText(descFFT.getValor().toString());
                 }
             }
             
@@ -767,40 +811,57 @@ private void aceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptar
         //Todos los campos deben de ser válidos 
         if (Auxiliares.validaCampos(this) && JOptionPane.showConfirmDialog(this, "Este proceso eliminará los datos almacenados con anterioridad\n¿Desea continuar?", "Aviso", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION) {
             Auxiliares.bloqueaDialog(this, true);
-            Integer idAsunto = (Integer) ComboBoxObject.getClaveSelCombo(this.jcbAsunto);
 
-            LinkedHashMap<String, Double> nomVarNoAcusticas = new LinkedHashMap<String, Double>();
-            LinkedHashMap<String, Double> nomVarAcusticas = new LinkedHashMap<String, Double>();
+			Double resFrecOri, resFrecDes;
 
-            anadirLinkedHashMapNomVar(nomVarNoAcusticas, this.jtNoAcusInsertar);
-            anadirLinkedHashMapNomVar(nomVarAcusticas, this.jtSPLInsertar);
-            anadirLinkedHashMapNomVar(nomVarAcusticas, this.jtOCTInsertar);
-            
-            //Caso especial FFT
-            ArrayList<SerieRA2> seriesFFT = SerieRA2.getSeriesRA2PorTipo(TipoRA.ID_TIPO_FFT);
-            int nSeriesFFT = seriesFFT != null ? seriesFFT.size() : 0;
-            
-            SerieRA2 serie;
-            Double valor;
-            for (int i = 0; i < nSeriesFFT; i++) {
-                serie = seriesFFT.get(i);
-                valor = null;
-                
-                if (serie.getDescripcion().contains("Ini") && !this.jtfFrecIni.getText().isEmpty())
-                    valor = Double.parseDouble(this.jtfFrecIni.getText());
-                else if (serie.getDescripcion().contains("Fin") && !this.jtfFrecFin.getText().isEmpty())
-                    valor = Double.parseDouble(this.jtfFrecFin.getText());
-                else if (serie.getDescripcion().contains("Inf") && !this.jtfFrecInf.getText().isEmpty())
-                    valor = Double.parseDouble(this.jtfFrecInf.getText());
-                else if (serie.getDescripcion().contains("Sup") && !this.jtfFrecSup.getText().isEmpty())
-                    valor = Double.parseDouble(this.jtfFrecSup.getText());
-                
-                nomVarAcusticas.put(serie.getDescripcion(), valor);
-            }
+			if (!this.jtfResOri.getText().isEmpty())
+				resFrecOri = Double.parseDouble(this.jtfResOri.getText());
+			else
+				resFrecOri = DatosRA2.RES_FREC_ORI_DEF;
 
-            Descripcion.insertDescripcionCreateDatos(idAsunto, nomVarNoAcusticas, nomVarAcusticas, null);
-            
-            MensajeApp.muestraInfo(this, Auxiliares.PROCESS_OK);
+			if (!this.jtfResDes.getText().isEmpty())
+				resFrecDes = Double.parseDouble(this.jtfResDes.getText());
+			else
+				resFrecDes = DatosRA2.RES_FREC_DES_DEF;
+
+			if (resFrecDes < resFrecOri) {
+				MensajeApp.muestraError(this, null, "La frecuencia de destino (" + resFrecDes +") no puede tener mayor resolución (valores cada menos frecuencia) que la de origen (" + resFrecOri + ").");
+			} else {
+				Integer idAsunto = (Integer) ComboBoxObject.getClaveSelCombo(this.jcbAsunto);
+
+				LinkedHashMap<String, Double> nomVarNoAcusticas = new LinkedHashMap<String, Double>();
+				LinkedHashMap<String, Double> nomVarAcusticas = new LinkedHashMap<String, Double>();
+
+				anadirLinkedHashMapNomVar(nomVarNoAcusticas, this.jtNoAcusInsertar);
+				anadirLinkedHashMapNomVar(nomVarAcusticas, this.jtSPLInsertar);
+				anadirLinkedHashMapNomVar(nomVarAcusticas, this.jtOCTInsertar);
+				
+				//Caso especial FFT
+				ArrayList<SerieRA2> seriesFFT = SerieRA2.getSeriesRA2PorTipo(TipoRA.ID_TIPO_FFT);
+				int nSeriesFFT = seriesFFT != null ? seriesFFT.size() : 0;
+				
+				SerieRA2 serie;
+				Double valor;
+				for (int i = 0; i < nSeriesFFT; i++) {
+					serie = seriesFFT.get(i);
+					valor = null;
+					
+					if (serie.getDescripcion().contains("Ini") && !this.jtfFrecIni.getText().isEmpty())
+						valor = Double.parseDouble(this.jtfFrecIni.getText());
+					else if (serie.getDescripcion().contains("Fin") && !this.jtfFrecFin.getText().isEmpty())
+						valor = Double.parseDouble(this.jtfFrecFin.getText());
+					else if (serie.getDescripcion().contains("Ori"))
+						valor = resFrecOri;
+					else if (serie.getDescripcion().contains("Des"))
+						valor = resFrecDes;
+
+					nomVarAcusticas.put(serie.getDescripcion(), valor);
+				}
+
+				Descripcion.insertDescripcionCreateDatos(idAsunto, nomVarNoAcusticas, nomVarAcusticas, null);
+				
+				MensajeApp.muestraInfo(this, Auxiliares.PROCESS_OK);
+			}
         } else
             MensajeApp.muestraInfo(this, Auxiliares.PROCESS_CANCELED);
     } catch (SQLException e) {
@@ -816,7 +877,13 @@ private void aceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptar
 
 private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
     try {
-        Auxiliares.bloqueaDialog(this, true);
+        //Establecemos las pestañas de JTabbedPane
+        Auxiliares.setTitulosJTabbedPane(this.jtpDatos, new String[]{"NO ACÚSTICAS", "SPL", "1/3 OCTAVA", "FFT"});
+
+        //Maximizamos las pestañas
+        Auxiliares.maximizaTitulosJTabbedPane(this.jtpDatos);
+
+        //Auxiliares.bloqueaDialog(this, true);
         Auxiliares.cargaAsuntosTipo(this.jcbAsunto, AsuntoRA.TIPO_ASUNTO_RA);
 
         //Establecemos iconos de los botones
@@ -830,20 +897,14 @@ private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
         //Añadimos los verificadores de los campos de entrada
         this.jtfFrecIni.setInputVerifier(new IVExtendido(this, IVExtendido.TIPO_DOUBLE, true, false));
         this.jtfFrecFin.setInputVerifier(new IVExtendido(this, IVExtendido.TIPO_DOUBLE, true, false));
-        this.jtfFrecInf.setInputVerifier(new IVExtendido(this, IVExtendido.TIPO_DOUBLE, true, false));
-        this.jtfFrecSup.setInputVerifier(new IVExtendido(this, IVExtendido.TIPO_DOUBLE, true, false));
-
-        //Establecemos las pestañas de JTabbedPane
-        Auxiliares.setTitulosJTabbedPane(this.jtpDatos, new String[]{"NO ACÚSTICAS", "SPL", "1/3 OCTAVA", "FFT"});
-
-        //Maximizamos las pestañas
-        Auxiliares.maximizaTitulosJTabbedPane(this.jtpDatos);
+        this.jtfResOri.setInputVerifier(new IVExtendido(this, IVExtendido.TIPO_DOUBLE, true, false));
+        this.jtfResDes.setInputVerifier(new IVExtendido(this, IVExtendido.TIPO_DOUBLE, true, false));
     } catch (SQLException e) {//GEN-LAST:event_formWindowOpened
         MensajeApp.muestraError(this, e, "Fallo al consultar la base de datos");
     } catch (NoSuchFieldException e) {
         MensajeApp.muestraError(this, e, "Fallo añadiendo campo");
     } finally {
-        Auxiliares.bloqueaDialog(this, false);
+        //Auxiliares.bloqueaDialog(this, false);
     }
 }                                 
 
@@ -925,6 +986,11 @@ private void jtSPLPosiblesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIR
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLSPLInsertar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JButton jbAceptar;
     private javax.swing.JButton jbNoAcusAnade;
     private javax.swing.JButton jbNoAcusQuita;
@@ -935,13 +1001,13 @@ private void jtSPLPosiblesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIR
     private javax.swing.JComboBox jcbAsunto;
     private javax.swing.JLabel jlAsunto;
     private javax.swing.JLabel jlFrecFin;
-    private javax.swing.JLabel jlFrecInf;
     private javax.swing.JLabel jlFrecIni;
-    private javax.swing.JLabel jlFrecSup;
     private javax.swing.JLabel jlNoAcusInsertar;
     private javax.swing.JLabel jlNoAcusPosibles;
     private javax.swing.JLabel jlOCTInsertar;
     private javax.swing.JLabel jlOCTPosibles;
+    private javax.swing.JLabel jlResDes;
+    private javax.swing.JLabel jlResOri;
     private javax.swing.JLabel jlSPLPosibles;
     private javax.swing.JPanel jpClave;
     private javax.swing.JPanel jpFFT;
@@ -964,9 +1030,9 @@ private void jtSPLPosiblesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIR
     private javax.swing.JTable jtSPLInsertar;
     private javax.swing.JTable jtSPLPosibles;
     private javax.swing.JTextField jtfFrecFin;
-    private javax.swing.JTextField jtfFrecInf;
     private javax.swing.JTextField jtfFrecIni;
-    private javax.swing.JTextField jtfFrecSup;
+    private javax.swing.JTextField jtfResDes;
+    private javax.swing.JTextField jtfResOri;
     private javax.swing.JTabbedPane jtpDatos;
     // End of variables declaration//GEN-END:variables
 }

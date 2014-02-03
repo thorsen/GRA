@@ -1,6 +1,7 @@
 package RA;
 
 import general.InteraccionBD;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -9,19 +10,21 @@ public class CurvaRA {
     private Double densidad;
     private Double vel;
     private Double pot;
+	private Double incert;
     
     public static final String BD = InteraccionBD.PREF_BD_GENERAL;
     public static final String TABLA = BD + "Curva";
-    public static final String CAMPO_ID_ASUNTO = "Asunto";
-    public static final String CAMPO_DENSIDAD = "Densidad";
-    public static final String CAMPO_VEL = "V";
-    public static final String CAMPO_POT = "P";
+    public static final String CAMPO_ID_ASUNTO = TABLA + "." + "Asunto";
+    public static final String CAMPO_DENSIDAD = TABLA + "." + "Densidad";
+    public static final String CAMPO_VEL = TABLA + "." + "V";
+    public static final String CAMPO_POT = TABLA + "." + "P";
 
-    public CurvaRA(Integer idAsunto, Double densidad, Double vel, Double pot) {
+    public CurvaRA(Integer idAsunto, Double densidad, Double vel, Double pot, Double incert) {
         this.idAsunto = idAsunto;
         this.densidad = densidad;
         this.vel = vel;
         this.pot = pot;
+        this.incert = incert;
     }
     
     public CurvaRA(Object[] valores, ArrayList<String> campos) throws SQLException, NoSuchFieldException {
@@ -60,6 +63,14 @@ public class CurvaRA {
 
     public void setIdAsunto(Integer idAsunto) {
         this.idAsunto = idAsunto;
+    }
+
+    public Double getIncert() {
+        return incert;
+    }
+
+    public void setIncert(Double incert) {
+        this.incert = incert;
     }
 
     public Double getPot() {
@@ -120,13 +131,18 @@ public class CurvaRA {
             this.vel = (Double) valor;
         } else if (campo.compareTo(CAMPO_POT) == 0) {
             this.pot = (Double) valor;
+        } else if (campo.compareTo(CurvaExtraRA.CAMPO_INCERT) == 0) {
+			if (valor != null)
+				this.incert = ((BigDecimal) valor).doubleValue();
+			else
+				this.incert = null;
         } else {
             //throw new NoSuchFieldException("No existe el campo en la clase " + this.getClass().getSimpleName());
 			System.out.println("No existe el campo <" + campo + "> en la clase " + this.getClass().getSimpleName());
         }
     }
     
-    private static String getCondicion(Integer idAsunto, Double densidad, Double vel, Double pot, ArrayList<Object[]> paramsPS) {
+    private static String getCondicion(Integer idAsunto, Double densidad, Double vel, Double pot, Double incert, ArrayList<Object[]> paramsPS) {
         String condicion = "";
         
         if (idAsunto != null) {
@@ -141,29 +157,63 @@ public class CurvaRA {
         if (pot != null) {
             condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CAMPO_POT, "=", pot);
         }
+
+		//Campos externos
+        if (incert != null) {
+            condicion = InteraccionBD.anadeCampoCondicion(condicion, paramsPS, CurvaExtraRA.CAMPO_INCERT, "=", incert);
+        }
         
         return condicion;
     }
 
     //Función para obtener la colección de Curvas que se ajustan a los limites pasados
-    public static ArrayList<CurvaRA> getCurvas(Integer idAsunto, Double densidad, Double vel, Double pot,
-            ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
+    public static ArrayList<CurvaRA> getCurvas(Integer idAsunto, Double densidad, Double vel, Double pot, Double incert, ArrayList<String> campos, String sqlExtra, Boolean distinct) throws SQLException, NoSuchFieldException {
         InteraccionBD interBD = new InteraccionBD();
         
         ArrayList<CurvaRA> res = null;
         String condicion = "";
         ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
 
-        condicion = getCondicion(idAsunto, densidad, vel, pot, paramsPS);
-                
+        condicion = getCondicion(idAsunto, densidad, vel, pot, incert, paramsPS);
+
+        String tabla = InteraccionBD.anadeTabla(null, TABLA);
+		if (campos == null || campos.isEmpty()) {
+			Object[] camposCurva = interBD.getCamposTabla(TABLA);
+
+			campos = new ArrayList<String>();
+
+			int nCamposCurva = camposCurva.length;
+			for (int i = 0; i < nCamposCurva; i++) {
+				campos.add(TABLA + "." + (String) camposCurva[i]);
+			}
+
+			//Solo añadimos los campos de curvaExtra si hay algo que recoger
+			if (CurvaExtraRA.getCurvas(idAsunto, densidad, vel, incert, null, null, null) != null) {
+				//Añadimos la conectividad entre tablas
+				String onJoin = InteraccionBD.anadeCampoOnJoin(null, paramsPS, CAMPO_ID_ASUNTO, InteraccionBD.ASIGNACION_CAMPOS, CurvaExtraRA.CAMPO_ID_ASUNTO);
+				onJoin = InteraccionBD.anadeCampoOnJoin(onJoin, paramsPS, CAMPO_DENSIDAD, InteraccionBD.ASIGNACION_CAMPOS, CurvaExtraRA.CAMPO_DENSIDAD);
+				onJoin = InteraccionBD.anadeCampoOnJoin(onJoin, paramsPS, CAMPO_VEL, InteraccionBD.ASIGNACION_CAMPOS, CurvaExtraRA.CAMPO_VEL);
+
+				tabla = InteraccionBD.anadeJoin(tabla, CurvaExtraRA.TABLA, InteraccionBD.LEFT_JOIN, onJoin);
+
+				Object[] camposCurvaExtra = interBD.getCamposTabla(CurvaExtraRA.TABLA);
+				int nCamposCurvaExtra = camposCurvaExtra.length;
+				for (int i = 0; i < nCamposCurvaExtra; i++) {
+					if (!campos.contains(TABLA + "." + (String) camposCurvaExtra[i])) //Si el campo ya está es porque es de interrelación
+						campos.add(CurvaExtraRA.TABLA + "." + (String) camposCurvaExtra[i]);
+				}
+			}
+		}
+
         //Por defecto lo devolvemos ordenado por asunto, velocidad
         if (sqlExtra == null || sqlExtra.trim().length() == 0) {
             String sqlOrderBy = InteraccionBD.anadeCampoOrderBy(null, CAMPO_ID_ASUNTO);
+            sqlOrderBy = InteraccionBD.anadeCampoOrderBy(sqlOrderBy, CAMPO_DENSIDAD);
             sqlOrderBy = InteraccionBD.anadeCampoOrderBy(sqlOrderBy, CAMPO_VEL);
             sqlExtra = InteraccionBD.anadeSqlExtra(null, sqlOrderBy);
         }
 
-        ArrayList<Object[]> resAux = interBD.getDatosTabla(TABLA, campos, condicion, paramsPS, sqlExtra, distinct);
+        ArrayList<Object[]> resAux = interBD.getDatosTabla(tabla, campos, condicion, paramsPS, sqlExtra, distinct);
 
         if (resAux != null) {
             int n = resAux.size();
@@ -179,7 +229,7 @@ public class CurvaRA {
     
     //Función para obtener la colección de Curvas que se ajustan a los limites pasados
     public static ArrayList<CurvaRA> getCurvasPorIdAsuntoDensidad(Integer idAsunto, Double densidad) throws SQLException, NoSuchFieldException {
-        return getCurvas(idAsunto, densidad, null, null, null, null, null);
+        return getCurvas(idAsunto, densidad, null, null, null, null, null, null);
     }
     
     //Función para obtener las densidades
@@ -195,7 +245,7 @@ public class CurvaRA {
         String sqlOrderBy = InteraccionBD.anadeCampoOrderBy(null, CAMPO_DENSIDAD);
         String sqlExtra = InteraccionBD.anadeSqlExtra(null, sqlOrderBy);
         
-        ArrayList<CurvaRA> resAux = getCurvas(idAsunto, null, null, null, campos, sqlExtra, true);
+        ArrayList<CurvaRA> resAux = getCurvas(idAsunto, null, null, null, null, campos, sqlExtra, true);
         
         if (resAux != null) {
             int n = resAux.size();
@@ -233,7 +283,7 @@ public class CurvaRA {
     }
 
     //Función para añadir una curva a la BD
-    public static int insertCurva(Integer idAsunto, Double densidad, Double vel, Double pot, String sqlExtra) throws SQLException {
+    public static int insertCurva(Integer idAsunto, Double densidad, Double vel, Double pot, Double incert, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         
         String valores = "";
@@ -258,15 +308,24 @@ public class CurvaRA {
             campos.add(CAMPO_POT);
         }
         
-        interBD.inicioTransaccion();
         res = interBD.insertDatosTabla(TABLA, campos, valores, paramsPS, sqlExtra);
-        interBD.finTransaccion();
+
+		//Campos externos
+        if (res != 0 && incert != null) {
+			int resExtra = CurvaExtraRA.insertCurvaExtra(idAsunto, densidad, vel, incert, null);
+
+			if (res != resExtra) {
+				deleteCurvas(idAsunto, densidad, null, null, null, null);
+
+				res = res * resExtra;
+			}
+        }
         
         return res;
     }
     
     public static int insertCurva(CurvaRA curva, String sqlExtra) throws SQLException {
-        return insertCurva(curva.idAsunto, curva.densidad, curva.vel, curva.pot, sqlExtra);
+        return insertCurva(curva.idAsunto, curva.densidad, curva.vel, curva.pot, curva.incert, sqlExtra);
     }
     
     //Función para añadir una curva a la BD
@@ -278,7 +337,7 @@ public class CurvaRA {
             int nVelPot = velPot.size();
             
             for (int i = 0; i < nVelPot; i++) {
-                curvaAux = new CurvaRA(idAsunto, densidad, velPot.get(i)[0], velPot.get(i)[1]);
+                curvaAux = new CurvaRA(idAsunto, densidad, velPot.get(i)[0], velPot.get(i)[1], null);
                 
                 res += insertCurva(curvaAux, sqlExtra);
             }
@@ -286,10 +345,33 @@ public class CurvaRA {
         
         return res;
     }
+	
+    //Función para añadir una curva a la BD
+    public static int insertCurvaValoresIncert(Integer idAsunto, Double densidad, ArrayList<ArrayList<String>> velPotIncert, String sqlExtra) throws SQLException {
+        int res = 0;
+        
+        if (velPotIncert != null) {
+            CurvaRA curvaAux;
+            int nVelPot = velPotIncert.size();
+            
+            for (int i = 0; i < nVelPot; i++) {
+                curvaAux = new CurvaRA(idAsunto, densidad, Double.parseDouble(velPotIncert.get(i).get(0)), Double.parseDouble(velPotIncert.get(i).get(1)), Double.parseDouble(velPotIncert.get(i).get(2)));
+                
+                if(insertCurva(curvaAux, sqlExtra) != 0) {
+					res++;
+				} else {
+					res = 0;
+					deleteCurvas(idAsunto, densidad, null, null, null, null);
+					break;
+				}
+            }
+        }
+        
+        return res;
+    }
     
     //Función para añadir una curva a la BD
-    public static int updateCurva(Integer idAsunto, Double densidad, Double vel, Double pot,
-            Integer idAsuntoVal, Double densidadVal, Double velVal, Double potVal, String sqlExtra) throws SQLException {
+    public static int updateCurva(Integer idAsunto, Double densidad, Double vel, Double pot, Double incert, Integer idAsuntoVal, Double densidadVal, Double velVal, Double potVal, Double incertVal, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         
         String condicion = "";
@@ -315,48 +397,54 @@ public class CurvaRA {
         }
         
         //Condiciones de actualización
-        condicion = getCondicion(idAsunto, densidad, vel, pot, paramsPS);
+        condicion = getCondicion(idAsunto, densidad, vel, pot, incert, paramsPS);
         
         interBD.inicioTransaccion();
         res = interBD.updateDatosTabla(TABLA, campos, condicion, paramsPS, sqlExtra);
+		//Campos extermos
+        if (incertVal != null && !incertVal.equals(incert)) {
+			int resExtra = CurvaExtraRA.updateCurvaExtra(idAsunto, densidad, vel, incert, idAsuntoVal, densidadVal, velVal, incertVal, sqlExtra);
+
+			if (res != resExtra) {
+				interBD.rollback();
+
+				res = res * resExtra;
+			}
+        }
         interBD.finTransaccion();
         
         return res;
     }
     
     public static int updateCurva(CurvaRA curvaVieja, CurvaRA curvaNueva, String sqlExtra) throws SQLException {
-        return updateCurva(curvaVieja.idAsunto, curvaVieja.densidad, curvaVieja.vel, curvaVieja.pot, 
-            curvaNueva.idAsunto, curvaNueva.densidad, curvaNueva.vel, curvaNueva.pot, sqlExtra);
+        return updateCurva(curvaVieja.idAsunto, curvaVieja.densidad, curvaVieja.vel, curvaVieja.pot, curvaVieja.incert, curvaNueva.idAsunto, curvaNueva.densidad, curvaNueva.vel, curvaNueva.pot, curvaNueva.incert, sqlExtra);
     }
     
     //Función para añadir/modificar una curva a la BD
-    public static int insertOrUpdateCurva(Integer idAsunto, Double densidad, Double vel, Double pot,
-            Integer idAsuntoVal, Double densidadVal, Double velVal, Double potVal, String sqlExtra) throws SQLException {
+    public static int insertOrUpdateCurva(Integer idAsunto, Double densidad, Double vel, Double pot, Double incert, Integer idAsuntoVal, Double densidadVal, Double velVal, Double potVal, Double incertVal, String sqlExtra) throws SQLException {
         int res;
         
-        res = updateCurva(idAsunto, densidad, vel, pot, idAsuntoVal, densidadVal, velVal, potVal, sqlExtra);
+        res = updateCurva(idAsunto, densidad, vel, pot, incert, idAsuntoVal, densidadVal, velVal, potVal, incertVal, sqlExtra);
         
         if (res < 0)
-            res = insertCurva(idAsuntoVal, densidadVal, velVal, potVal, sqlExtra);
+            res = insertCurva(idAsuntoVal, densidadVal, velVal, potVal, incertVal, sqlExtra);
 
         return res;
     }
     
     public static int insertOrUpdateCurva(CurvaRA curvaVieja, CurvaRA curvaNueva, String sqlExtra) throws SQLException {
-        
-        return insertOrUpdateCurva(curvaVieja.idAsunto, curvaVieja.densidad, curvaVieja.vel, curvaVieja.pot, 
-            curvaNueva.idAsunto, curvaNueva.densidad, curvaNueva.vel, curvaNueva.pot, sqlExtra);
+        return insertOrUpdateCurva(curvaVieja.idAsunto, curvaVieja.densidad, curvaVieja.vel, curvaVieja.pot, curvaVieja.incert, curvaNueva.idAsunto, curvaNueva.densidad, curvaNueva.vel, curvaNueva.pot, curvaNueva.incert, sqlExtra);
     }
     
     //Función para eliminar Curvas que se ajustan a los limites pasados
-    public static int deleteCurvas(Integer idAsunto, Double densidad, Double vel, Double pot, String sqlExtra) throws SQLException {
+    public static int deleteCurvas(Integer idAsunto, Double densidad, Double vel, Double pot, Double incert, String sqlExtra) throws SQLException {
         InteraccionBD interBD = new InteraccionBD();
         
         String condicion = "";
         ArrayList<Object[]> paramsPS = new ArrayList<Object[]>();
         int res = 0;
 
-        condicion = getCondicion(idAsunto, densidad, vel, pot, paramsPS);
+        condicion = getCondicion(idAsunto, densidad, vel, pot, incert, paramsPS);
         
         interBD.inicioTransaccion();
         res  = interBD.deleteDatosTabla(TABLA, condicion, paramsPS, sqlExtra);
@@ -366,11 +454,11 @@ public class CurvaRA {
     }
     
     public static int deleteCurvas(CurvaRA curva, String sqlExtra) throws SQLException {
-        return deleteCurvas(curva.idAsunto, curva.densidad, curva.vel, curva.pot, sqlExtra);
+        return deleteCurvas(curva.idAsunto, curva.densidad, curva.vel, curva.pot, curva.incert, sqlExtra);
     }
     
     public Object[] toObject() {
-        return new Object[]{this.idAsunto, this.densidad, this.vel, this.pot};
+        return new Object[]{this.idAsunto, this.densidad, this.vel, this.pot, this.incert};
     }
   
     public static Object[] getCamposTabla() throws SQLException {
@@ -431,7 +519,7 @@ public class CurvaRA {
                  pAjustada = vAjustada * pendiente + origen;
                  
                  //res.add(new double[]{v, pAjustada});
-                 res.add(new CurvaRA(curva.get(i).getIdAsunto(), densidad2, v, pAjustada));
+                 res.add(new CurvaRA(curva.get(i).getIdAsunto(), densidad2, v, pAjustada, curva.get(i).getIncert()));
              }
          }
         

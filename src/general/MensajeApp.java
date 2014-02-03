@@ -48,7 +48,6 @@ public class MensajeApp {
 
             JOptionPane.showMessageDialog(c, new JLabel(desc), "Error en la aplicación", JOptionPane.ERROR_MESSAGE);
         } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
         }
     }
     

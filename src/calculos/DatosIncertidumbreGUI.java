@@ -37,8 +37,8 @@ public class DatosIncertidumbreGUI extends JDialog {
         
         this.modoSalida = modoSalida; //variable para control de llamadas entre diálogos
 
-	this.idNorma = idNorma;
-        
+		this.idNorma = idNorma;
+
         try {
             this.jtfAsunto.setText(AsuntoRA.getAsuntoPorId(idAsunto).getNombreCompleto());
         } catch (SQLException e) {
@@ -246,41 +246,43 @@ public class DatosIncertidumbreGUI extends JDialog {
             }
         }
         
-        columns = !this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) ? new Object[3 * maxPos + 1] : new Object[maxPos + 1];
+        columns = (!this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) || this.tipoTabla.contentEquals(Auxiliares.TIPO_FFT)) ? new Object[3 * maxPos + 1] : new Object[maxPos + 1];
         columns[0] = "Bin";
         
         it = this.datosIncertidumbre.get(keyMax).keySet().iterator();
         
         int pos = 1;
         Object col;
-	if (!this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) {
-	    while (it.hasNext()) {
-		col = it.next();
-		columns[pos++] = "<html>" + col + " - U<sub>A</sub></html>";
-		columns[pos++] = "<html>" + col + " - U<sub>B9</sub></html>";
-		columns[pos++] = "<html>" + col + " - U<sub>C</sub></html>";
-	    }
-	} else {
-	    if (this.tipoTabla.contentEquals(Auxiliares.TIPO_OCT)) {
-		while (it.hasNext()) {
-		    col = it.next();
-		    columns[pos++] = "<html>" + col + " - u<sub>c,i,k</sub></html>";
+		if (!this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) || this.tipoTabla.contentEquals(Auxiliares.TIPO_FFT)) {
+			while (it.hasNext()) {
+				col = it.next();
+				columns[pos++] = "<html>" + col + " - U<sub>A</sub></html>";
+				if (!this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0))
+					columns[pos++] = "<html>" + col + " - U<sub>B9</sub></html>";
+				else
+					columns[pos++] = "<html>" + col + " - U<sub>B</sub></html>";
+				columns[pos++] = "<html>" + col + " - U<sub>C</sub></html>";
+			}
+		} else {
+			if (this.tipoTabla.contentEquals(Auxiliares.TIPO_OCT)) {
+				while (it.hasNext()) {
+					col = it.next();
+					columns[pos++] = "<html>" + col + " - u<sub>c,i,k</sub></html>";
+				}
+			} else if (this.tipoTabla.contentEquals(Auxiliares.TIPO_SPL)) {
+				while (it.hasNext()) {
+					col = it.next();
+					columns[pos++] = "<html>" + col + " - u<sub>L<sub>WA,k</sub></sub></html>";
+				}
+			}
 		}
-	    } else if (this.tipoTabla.contentEquals(Auxiliares.TIPO_SPL)) {
-		while (it.hasNext()) {
-		    col = it.next();
-		    columns[pos++] = "<html>" + col + " - u<sub>L<sub>WA,k</sub></sub></html>";
-		}
-	    }
-	}
          
         this.jtIncertidumbres.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{}, columns) {
-
-            @Override
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                //return canEdit[columnIndex];
-                return false;
-            }
+			@Override
+			public boolean isCellEditable(int rowIndex, int columnIndex) {
+				//return canEdit[columnIndex];
+				return false;
+			}
         });
 
         this.jtIncertidumbres.getTableHeader().setReorderingAllowed(false);
@@ -308,21 +310,24 @@ public class DatosIncertidumbreGUI extends JDialog {
             
             fila.add(entryBin.getKey());
             
-	    if (!this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) {
-		while (itSubClase.hasNext()) {
-		    entrySubClase = (Entry<Object, DatosIncertidumbre>) itSubClase.next();
-		    
-		    fila.add(entrySubClase.getValue().getUA());
-		    fila.add(entrySubClase.getValue().getUB9());
-		    fila.add(entrySubClase.getValue().getUC());
-		}
-	    } else {
-		while (itSubClase.hasNext()) {
-		    entrySubClase = (Entry<Object, DatosIncertidumbre>) itSubClase.next();
-		    
-		    fila.add(entrySubClase.getValue().getUCorreccionRF());
-		}
-	    }
+			if (!this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) || this.tipoTabla.contentEquals(Auxiliares.TIPO_FFT)) {
+				while (itSubClase.hasNext()) {
+					entrySubClase = (Entry<Object, DatosIncertidumbre>) itSubClase.next();
+					
+					fila.add(entrySubClase.getValue().getUA());
+					if (!this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0))
+						fila.add(entrySubClase.getValue().getUB9());
+					else
+						fila.add(Math.sqrt(entrySubClase.getValue().getSumaCuadraticaIncert(this.idNorma)));
+					fila.add(entrySubClase.getValue().getUC());
+				}
+			} else {
+				while (itSubClase.hasNext()) {
+					entrySubClase = (Entry<Object, DatosIncertidumbre>) itSubClase.next();
+					
+					fila.add(entrySubClase.getValue().getUCorreccionRF());
+				}
+			}
             
             dtmIncertidumbre.addRow(fila.toArray());
             Auxiliares.incPorcentajeProgress(jpb, 1.0/nDatos);

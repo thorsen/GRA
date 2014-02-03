@@ -5,23 +5,9 @@
 
 package RA;
 
-import RA.FechaRA;
-import RA.FicheroRA;
-import RA.ConfiguracionRA;
-import RA.DatosRA;
 import java.security.MessageDigest;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-
-
 
 public class Main {
-    
-     private static String url = "jdbc:sqlserver://192.168.1.53:1433";
-    //private static String url = "jdbc:sqlserver://localhost";
-    private static String user = "SQL_PwC";
-    private static String pass = "Ru8865No";
     
     static{
         try{

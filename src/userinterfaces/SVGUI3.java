@@ -223,7 +223,7 @@ public class SVGUI3 extends JDialog {
         setTitle("SECTOR VALIDO");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "GRA.png").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
         setResizable(false);
@@ -261,7 +261,7 @@ public class SVGUI3 extends JDialog {
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
-        jButton7.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\rosa.png" )));
+        jButton7.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "rosa.png" )));
         jButton7.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -534,7 +534,7 @@ public class SVGUI3 extends JDialog {
         jLabel15.setText("  OBSTÁCULOS CONSIDERADOS");
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\printer.png" )));
+        jButton2.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "printer.png" )));
         jButton2.setToolTipText("Imprimir");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -624,7 +624,7 @@ public class SVGUI3 extends JDialog {
         jLabel13.setText("NO VALIDOS");
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
-        jButton8.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\printer.png" )));
+        jButton8.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "printer.png" )));
         jButton8.setToolTipText("Imprimir");
         jButton8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -729,7 +729,7 @@ public class SVGUI3 extends JDialog {
         jLabel10.setText("NO VALIDOS");
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
-        jButton9.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\printer.png" )));
+        jButton9.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "printer.png" )));
         jButton9.setToolTipText("Imprimir");
         jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -868,7 +868,7 @@ public class SVGUI3 extends JDialog {
 
         jLabel7.setText("FREC.");
 
-        jLabel17.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Information.png" )));
+        jLabel17.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "Information.png" )));
         jLabel17.setToolTipText("Información de Formato");
         jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

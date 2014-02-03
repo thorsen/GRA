@@ -138,9 +138,18 @@ public class DatosIncertidumbre {
             setUB9(uB9);
         }
         
-        int nIncerts = this.incertidumbresB != null ? this.incertidumbresB.size() : 0;
+        Double sumaCuad = getSumaCuadraticaIncert(idNorma);
+
+        if (this.uA != null && sumaCuad != null)
+            this.uC = Math.sqrt(Math.pow(this.uA, 2.0) + sumaCuad);
         
-        Double sumaCuad = null;
+        return this.uC;
+    }
+
+	public Double getSumaCuadraticaIncert(Integer idNorma) {
+		Double sumaCuad = null;
+
+		int nIncerts = this.incertidumbresB != null ? this.incertidumbresB.size() : 0;
         
         if (nIncerts > 0) {
             Long fechaIni = idNorma.equals(NormaRA.ID_NORMA_IEC_3_0) ? null : this.incertidumbresB.get(0).getDesdeFecha();
@@ -151,7 +160,7 @@ public class DatosIncertidumbre {
             for (int i = 0; i < nIncerts; i++) {
                 asuntoIncert = this.incertidumbresB.get(i);
                 
-                //Nos quedaremos solo con la primera configuración de incertidumbres establecida (excepto para IEC 3.0
+                //Nos quedaremos solo con la primera configuración de incertidumbres establecida (excepto para IEC 3.0)
                 if (fechaIni != null && !fechaIni.equals(asuntoIncert.getDesdeFecha()))
                         break;
                
@@ -160,12 +169,9 @@ public class DatosIncertidumbre {
                     sumaCuad += Math.pow(valor, 2.0);
             }
         }
-        
-        if (this.uA != null && sumaCuad != null)
-            this.uC = Math.sqrt(Math.pow(this.uA, 2.0) + sumaCuad);
-        
-        return this.uC;
-    }
+
+		return sumaCuad;
+	}
     
     public Double getIncertidumbreEstandar(Double value) {
         return value / Math.sqrt(3);

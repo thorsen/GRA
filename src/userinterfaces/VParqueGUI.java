@@ -2,6 +2,7 @@
 package userinterfaces;
 
 import RA.Aerogenerador;
+import RA.Global;
 import RA.Parque;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -293,7 +294,7 @@ public class VParqueGUI extends JDialog {
             }
         });
 
-        jLabel23.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\find.png" )));
+        jLabel23.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "find.png" )));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -369,7 +370,7 @@ public class VParqueGUI extends JDialog {
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
         jButton9.setForeground(new java.awt.Color(255, 255, 255));
-        jButton9.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\printer.png" )));
+        jButton9.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "printer.png" )));
         jButton9.setToolTipText("Imprimir posiciones");
         jButton9.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -378,7 +379,7 @@ public class VParqueGUI extends JDialog {
             }
         });
 
-        jLabel59.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\parque.png" )));
+        jLabel59.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "parque.png" )));
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);

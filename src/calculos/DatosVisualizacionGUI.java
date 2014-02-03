@@ -546,6 +546,8 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
         jpDatos.setBackground(new java.awt.Color(255, 255, 255));
         jpDatos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        jtpDatos.setName(""); // NOI18N
+
         jpBaseNeta.setBackground(new java.awt.Color(255, 255, 255));
         jpBaseNeta.setName(Auxiliares.TIPO_GEN + "_BaseNeta");
 
@@ -2133,9 +2135,9 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
             dtmAjustes.setRowCount(0);
 
             if (this.valorK != null)
-                dtmAjustes.addRow(new Object[]{"K", this.valorK});
+                dtmAjustes.addRow(new Object[]{"<html>k<sub>AG</sub></html>", this.valorK});
             if (this.valorKRF != null)
-                dtmAjustes.addRow(new Object[]{"K RF", this.valorKRF});
+                dtmAjustes.addRow(new Object[]{"<html>k<sub>RF</sub></html>", this.valorKRF});
             if (this.regVelMedida != null)
                 dtmAjustes.addRow(new Object[]{"Reg. Vel. Medida", DatosRA2.getRectaCoef(this.regVelMedida)});
             if (this.regVelMedidaRF != null)
@@ -2545,9 +2547,10 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
 		}
 
 		Object[][] posVelObj = Auxiliares.arrayObjToObjObj(posVel.toArray());
-		Arrays.sort(posVelObj, PosVelComparator);
 
-		int nPosVel = posVelObj.length;
+		int nPosVel = posVelObj != null ? posVelObj.length : 0;
+		if (nPosVel != 0)
+			Arrays.sort(posVelObj, PosVelComparator);
 		for (int i = 0; i < nPosVel; i++) {
 			if (posVelObj[i][1] != null)
 				serieVelDerCP.add(i, (Double) posVelObj[i][1]);
@@ -2816,15 +2819,21 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
             rellenarBaseNeta(jpb, this.tipoTabla.compareTo(Auxiliares.TIPO_FFT) == 0);
             rellenarCompletitud(jpb);
             
-            //SPL
             if (!this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) {
+				//SPL
 				if (this.tipoTabla.compareTo(Auxiliares.TIPO_SPL) == 0) {
 					rellenarCoefAjPol(jpb);
 					rellenarCoefAjLin(jpb);
 				}
+				//OCT
+				if (this.tipoTabla.compareTo(Auxiliares.TIPO_OCT) == 0) {
+					rellenarAnalisisOCT(jpb);
+				}
             } else {
-				Auxiliares.asignaPanelGrafica(this, this.jpGraficaNivelVel, crearGraficaNivelVel(crearDatasetNivelVel()), false, null);
-				Auxiliares.asignaPanelGrafica(this, this.jpGraficaNivelPot, crearGraficaNivelPot(crearDatasetNivelPot()), false, null);
+				if (this.tipoTabla.contentEquals(Auxiliares.TIPO_SPL) || this.tipoTabla.contentEquals(Auxiliares.TIPO_OCT)) {
+					Auxiliares.asignaPanelGrafica(this, this.jpGraficaNivelVel, crearGraficaNivelVel(crearDatasetNivelVel()), true, this);
+					Auxiliares.asignaPanelGrafica(this, this.jpGraficaNivelPot, crearGraficaNivelPot(crearDatasetNivelPot()), true, this);
+				}
 
 				if (this.tipoCalculo.equals(DatosRA2.VEL_DERIVADA_CP)) {
 					Auxiliares.asignaPanelGrafica(this, this.jpGraficaCompVelAG, crearGraficaCompVel(crearDatasetCompVel(0)), false, null);
@@ -2832,10 +2841,6 @@ public class DatosVisualizacionGUI extends JDialog implements ChartMouseListener
 				}
 			}
             
-            //OCT
-            if (this.tipoTabla.compareTo(Auxiliares.TIPO_OCT) == 0) {
-                rellenarAnalisisOCT(jpb);
-            }
             //FFT
             if (this.tipoTabla.compareTo(Auxiliares.TIPO_FFT) == 0) {
                 int opcionGraficar = JOptionPane.showOptionDialog(this, "¿Qué espectros desea graficar? Esto podría incrementar el tiempo de proceso", "Aviso", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new String[]{"Todos", "Solo los validos", "Ninguno"}, "Solo los validos");
@@ -2904,10 +2909,13 @@ private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
             this.jtpDatos.remove(i);
 		else {
 			if (this.idNorma.equals(NormaRA.ID_NORMA_IEC_3_0)) { //Si es IEC3 también quitamos las pestañas de ajustes lineales y polinomiales
-				if (nombre.startsWith(Auxiliares.TIPO_SPL))
+				if (nombre.startsWith(Auxiliares.TIPO_SPL) || nombre.startsWith(Auxiliares.TIPO_OCT))
 					this.jtpDatos.remove(i);
 
 				if (nombre.contains("CompVel") && !this.tipoCalculo.equals(DatosRA2.VEL_DERIVADA_CP)) //Quitamos las comparativas si la velocidad no ha sido derivada de CP
+					this.jtpDatos.remove(i);
+
+				if (nombre.contains("Nivel") && this.tipoTabla.contentEquals(Auxiliares.TIPO_FFT))
 					this.jtpDatos.remove(i);
 			} else {
 				if (nombre.contains(Auxiliares.TIPO_IEC_3_0)) 
@@ -2935,7 +2943,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
                         validoAnt = (Integer) this.idValiDatosModif.get(i)[1];
                         validoSysAnt = (Integer) this.idValiDatosModif.get(i)[2];
                         
-                        DatosRA2.setDatoValido(this.tipoTabla, this.idAsunto, this.idSite, idDato, validoAnt, validoSysAnt);
+                        DatosRA2.setDatoValidoNorma(this.idNorma, this.tipoTabla, this.idAsunto, this.idSite, idDato, validoAnt, validoSysAnt);
                     }
                     
                     //Y salimos del diálogo
@@ -2951,7 +2959,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
                     validoAnt = (Integer)this.idValiDatosModif.get(i)[1];
 					validoSysAnt = (Integer) this.idValiDatosModif.get(i)[2];
 
-                    DatosRA2.setDatoValido(this.tipoTabla, this.idAsunto, this.idSite, idDato, validoAnt, validoSysAnt);
+                    DatosRA2.setDatoValidoNorma(this.idNorma, this.tipoTabla, this.idAsunto, this.idSite, idDato, validoAnt, validoSysAnt);
                 }
             }
             
@@ -2960,6 +2968,8 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
         }
     } catch (SQLException e) {
         MensajeApp.muestraError(this, e, "Fallo al consultar la base de datos");
+	} catch (NoSuchFieldException e) {
+		MensajeApp.muestraError(this, e, "Fallo añadiendo campo");
     }
 }//GEN-LAST:event_formWindowClosing
 
@@ -2973,7 +2983,7 @@ private void deshacerModificacion(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
             validoAnt = this.idValiDatosModif.get(nDatos - 1)[1];
 			validoSysAnt = this.idValiDatosModif.get(nDatos - 1)[2];
 
-            if (DatosRA2.setDatoValido(this.tipoTabla, this.idAsunto, this.idSite, idDato, validoAnt, validoSysAnt) > 0) {
+            if (DatosRA2.setDatoValidoNorma(this.idNorma, this.tipoTabla, this.idAsunto, this.idSite, idDato, validoAnt, validoSysAnt) > 0) {
                 this.idValiDatosModif.remove(nDatos - 1);
 
                 if (nDatos - 1 == 0)
@@ -2986,6 +2996,8 @@ private void deshacerModificacion(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
         }
     } catch (SQLException e) {
         MensajeApp.muestraError(this, e, "Fallo al consultar la base de datos");
+	} catch (NoSuchFieldException e) {
+		MensajeApp.muestraError(this, e, "Fallo añadiendo campo");
     }
 }//GEN-LAST:event_deshacerModificacion
 
@@ -3500,6 +3512,10 @@ private Integer localizaDatoEspectro(XYItemEntity item) {
                 idDato = localizaDatoSPL(item);
             else if (item != null && this.jpGraficaAjPol.getComponentCount() > 0 && chart.equals(((ChartPanel)this.jpGraficaAjPol.getComponent(0)).getChart()))
                 idDato = localizaDatoSPL(item);
+            else if (item != null && this.jpGraficaNivelVel.getComponentCount() > 0 && chart.equals(((ChartPanel)this.jpGraficaNivelVel.getComponent(0)).getChart()))
+                idDato = localizaDatoSPL(item);
+            else if (item != null && this.jpGraficaNivelPot.getComponentCount() > 0 && chart.equals(((ChartPanel)this.jpGraficaNivelPot.getComponent(0)).getChart()))
+                idDato = localizaDatoSPL(item);
 
             if (idDato != null) {
                 cambiarDatoValido(idDato);
@@ -3510,15 +3526,27 @@ private Integer localizaDatoEspectro(XYItemEntity item) {
     private Integer cambiarDatoValido(Integer idDato) {
         Integer valido = null, validoAct = null;
         Integer validoSys = null, validoSysAct = null;
-        this.jlPregunta.setText("¿Desea modificar la validez del dato <" + idDato + ">?");
+		DefaultTableModel dtm = (DefaultTableModel) this.jtBaseNeta.getModel();
+		int nFilas = dtm.getRowCount();
+
+		int colIdDato = dtm.findColumn(DatosRA2.CAMPO_ID_DATO);
+		int colFecha = dtm.findColumn(DatosRA2.CAMPO_FECHA_HORA);
+
+		String fecha = null;
+
+		for (int i = 0; i < nFilas; i++) {
+			if (((Integer) dtm.getValueAt(i, colIdDato)).equals(idDato)) {
+				fecha = (String) dtm.getValueAt(i, colFecha);
+				break;
+			}
+		}
+		
+        this.jlPregunta.setText("¿Desea modificar la validez del dato <" + idDato + ">" + (fecha != null ? " de fecha <" + fecha + ">" : "") + "?");
 
         try {
             if (JOptionPane.showConfirmDialog(this, this.jpObs, "Modificar dato seleccionado", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
                 //Obtenemos la validez actual del dato
-                DefaultTableModel dtm = (DefaultTableModel) this.jtBaseNeta.getModel();
-                int nFilas = dtm.getRowCount();
                 
-                int colIdDato = dtm.findColumn(DatosRA2.CAMPO_ID_DATO);
                 int colValido = dtm.findColumn(DatosRA2.CAMPO_VALIDO);
                 int colValidoSys = dtm.findColumn(DatosRA2.CAMPO_VALIDO_SYS);
                 
@@ -3538,15 +3566,15 @@ private Integer localizaDatoEspectro(XYItemEntity item) {
                     }
                 }
                 
-                if (DatosRA2.setDatoValido(this.tipoTabla, this.idAsunto, this.idSite, idDato, valido, validoSys) > 0) {
-                    //Añadimos a la lista temporal de datos modificados con el valor de antes de la modificación
-                    this.idValiDatosModif.add(new Integer[]{idDato, validoAct, validoSysAct});
+                if (DatosRA2.setDatoValidoNorma(this.idNorma, this.tipoTabla, this.idAsunto, this.idSite, idDato, valido, validoSys) > 0) {
+					//Añadimos a la lista temporal de datos modificados con el valor de antes de la modificación
+					this.idValiDatosModif.add(new Integer[]{idDato, validoAct, validoSysAct});
 
-                    if (!this.jbDeshacer.isEnabled())
-                        this.jbDeshacer.setEnabled(true);
+					if (!this.jbDeshacer.isEnabled())
+						this.jbDeshacer.setEnabled(true);
 
-                    //Refrescamos información
-                    cargaDatos();
+					//Refrescamos información
+					cargaDatos();
                 } else
                     MensajeApp.muestraError(this, null, "Fallo al realizar acción");
             }

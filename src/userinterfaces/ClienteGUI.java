@@ -2,6 +2,7 @@
 package userinterfaces;
 
 import RA.Cliente;
+import RA.Global;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -53,7 +54,7 @@ public class ClienteGUI extends JDialog {
         setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "GRA.png").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
         setResizable(false);

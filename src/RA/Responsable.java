@@ -20,10 +20,10 @@ import java.util.Date;
 
 public class Responsable {
 
-    private static String url = "jdbc:sqlserver://192.168.1.53:1433";
+    private static String url = "jdbc:sqlserver://" + Global.IP_SERVER_GCP;
     //private static String url = "jdbc:sqlserver://localhost";
-    private static String user = "SQL_PwC";
-    private static String pass = "Ru8865No";
+    private static String user = Global.USER_SERVER_GCP;
+    private static String pass = Global.PASS_SERVER_GCP;
     
     static{
         try{
@@ -96,7 +96,7 @@ public class Responsable {
         try{
             con = DriverManager.getConnection(url, user, pass);
             con.setAutoCommit(false);
-            FileWriter fw= new FileWriter("\\\\B2solar\\Datos\\Curva\\Usuarios\\update.log",true);
+            FileWriter fw= new FileWriter(RA.Global.RUTA_DATOS + "Curva\\Usuarios\\update.log",true);
             fw.write("--------------------------------------------------------------------------------\n");
             fw.write("\n");
             Date hoy= new Date();

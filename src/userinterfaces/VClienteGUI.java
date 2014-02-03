@@ -2,6 +2,7 @@
 package userinterfaces;
 
 import RA.Cliente;
+import RA.Global;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
@@ -54,7 +55,7 @@ public class VClienteGUI extends JDialog {
         setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "GRA.png").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
         setResizable(false);
@@ -84,9 +85,9 @@ public class VClienteGUI extends JDialog {
         jTextField6.setEditable(false);
         jTextField6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jLabel6.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\world.png" )));
+        jLabel6.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "world.png" )));
 
-        jLabel8.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\telephone.png" )));
+        jLabel8.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "telephone.png" )));
 
         jLabel5.setText("__________________________________________________________________________________");
 

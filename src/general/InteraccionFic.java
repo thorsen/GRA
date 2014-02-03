@@ -210,7 +210,7 @@ public class InteraccionFic {
     }
     
     //Función que devuelve los campos leído de un fichero, separados por <sep> y con un número de campos esperados <nCamposEsp>
-    public ArrayList<ArrayList<String>> leeCamposSep(String sep, int nCamposEsp) throws IOException {
+    public ArrayList<ArrayList<String>> leeCamposSep(String sep, Integer nCamposEsp) throws IOException {
         ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>>();
         ArrayList<String> fila;
         String[] campos;
@@ -227,7 +227,7 @@ public class InteraccionFic {
             nCampos = campos.length;
             
             //Si no existen exactamente los campos buscados, se para el bucle y devuelve únicamente una fila de error
-            if (nCampos != nCamposEsp) {
+            if (nCamposEsp != null && nCampos != nCamposEsp) {
                 res.clear();
                 
                 for (int i = 0; i < nCamposEsp; i++) {

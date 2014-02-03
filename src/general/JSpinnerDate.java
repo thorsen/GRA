@@ -19,6 +19,12 @@ import javax.swing.SpinnerDateModel;
 public class JSpinnerDate extends JSpinner {
     private String formato;
 
+	public static String DMA_HMS = "dd/MM/yyyy HH:mm:ss.SSS";
+	public static String HMS = "HH:mm:ss.SSS";
+	public static String HMS_SIMPLE = "HH:mm:ss";
+	public static String MS = "mm:ss.SSS";
+	public static String MS_SIMPLE = "mm:ss";
+
     public JSpinnerDate(String dateFormat) {
         super(new SpinnerDateModel());
         
@@ -29,9 +35,9 @@ public class JSpinnerDate extends JSpinner {
     }
     
     public JSpinnerDate() {
-        this("dd/MM/yyyy HH:mm:ss.SSS");
+        this(DMA_HMS);
     }
-   
+
     public void setText(String fecha) {
         try {
             SimpleDateFormat sdfIn = new SimpleDateFormat(this.formato);
@@ -47,10 +53,17 @@ public class JSpinnerDate extends JSpinner {
     }
     
     public long getTimeInMillis() {
+		long res = 0;
+
         GregorianCalendar gCal1 = new GregorianCalendar();
-        gCal1.setTime((Date) this.getValue());
+		gCal1.setTime((Date) this.getValue());
+
+		if (!this.formato.contentEquals(DMA_HMS)) {
+			res = (((gCal1.get(GregorianCalendar.HOUR_OF_DAY) * 60 + gCal1.get(GregorianCalendar.MINUTE)) * 60) + gCal1.get(GregorianCalendar.SECOND)) * 1000 + gCal1.get(GregorianCalendar.MILLISECOND);
+		} else
+			res = gCal1.getTimeInMillis();
         
-        return gCal1.getTimeInMillis();
+        return res;
     }
     
     public String getText() {

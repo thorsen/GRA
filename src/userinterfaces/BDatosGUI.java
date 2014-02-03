@@ -6,6 +6,7 @@ import RA.Login;
 import RA.Site;
 import RA.ConfiguracionRA;
 import RA.DatosRA;
+import RA.Global;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.sql.SQLException;
@@ -51,7 +52,7 @@ public class BDatosGUI extends JDialog {
         setBackground(new java.awt.Color(175, 30, 30));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "GRA.png").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
 

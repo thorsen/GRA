@@ -7,6 +7,7 @@ import RA.AsuntoPosicionRA;
 import RA.AsuntoRA;
 import RA.Cliente;
 import RA.FicheroRA;
+import RA.Global;
 import RA.Norma;
 import RA.Numero;
 import RA.Parque;
@@ -32,8 +33,6 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -335,7 +334,7 @@ public class AsuntoGUI extends JDialog {
         setTitle("ASUNTO");
         setBackground(new java.awt.Color(204, 204, 204));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GCPMini.jpg").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "GRA.png").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -461,7 +460,7 @@ public class AsuntoGUI extends JDialog {
         jComboBox10.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jComboBox10.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Castellano", "Inglés" }));
 
-        jLabel57.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\user.png" )));
+        jLabel57.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "user.png" )));
 
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("*");
@@ -611,15 +610,15 @@ public class AsuntoGUI extends JDialog {
         jTextField3.setEditable(false);
         jTextField3.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel58.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\user_suit.png" )));
+        jLabel58.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "user_suit.png" )));
 
-        jLabel42.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\telephone.png" )));
+        jLabel42.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "telephone.png" )));
 
         jLabel7.setText("  Teléfono: ");
 
-        jLabel11.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\email.png" )));
+        jLabel11.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "email.png" )));
 
-        jLabel45.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\vcard.png" )));
+        jLabel45.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "vcard.png" )));
 
         jLabel46.setText("  Nombre: ");
 
@@ -708,7 +707,7 @@ public class AsuntoGUI extends JDialog {
         jComboBox11.setEnabled(false);
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_down.png" )));
+        jButton1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_down.png" )));
         jButton1.setEnabled(false);
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -717,7 +716,7 @@ public class AsuntoGUI extends JDialog {
         });
 
         jButton13.setBackground(new java.awt.Color(255, 255, 255));
-        jButton13.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\resultset_up.png" )));
+        jButton13.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_up.png" )));
         jButton13.setEnabled(false);
         jButton13.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -852,7 +851,7 @@ public class AsuntoGUI extends JDialog {
             }
         });
 
-        jLabel60.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\aero.png" )));
+        jLabel60.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "aero.png" )));
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -978,7 +977,7 @@ public class AsuntoGUI extends JDialog {
         jLabel37.setText("*");
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
-        jButton3.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Guardar.png" )));
+        jButton3.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "Guardar.png" )));
         jButton3.setToolTipText("Guardar Aerogenerador");
         jButton3.setEnabled(false);
         jButton3.setMargin(new java.awt.Insets(2, 2, 2, 2));
@@ -1223,7 +1222,7 @@ public class AsuntoGUI extends JDialog {
             }
         });
 
-        jLabel59.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\parque.png" )));
+        jLabel59.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "parque.png" )));
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -1324,7 +1323,7 @@ public class AsuntoGUI extends JDialog {
         jPanel12.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jButton5.setBackground(new java.awt.Color(255, 255, 255));
-        jButton5.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\OpenFolder.gif" )));
+        jButton5.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "OpenFolder.gif" )));
         jButton5.setToolTipText("Cargar Fichero");
         jButton5.setEnabled(false);
         jButton5.setMargin(new java.awt.Insets(2, 2, 2, 2));
@@ -1337,7 +1336,7 @@ public class AsuntoGUI extends JDialog {
         jLabel30.setText("LOAD FICHERO");
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
-        jButton8.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Information.png" )));
+        jButton8.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "Information.png" )));
         jButton8.setToolTipText("Ver Formato de Fichero\n");
         jButton8.setEnabled(false);
         jButton8.setMargin(new java.awt.Insets(2, 2, 2, 2));
@@ -1350,7 +1349,7 @@ public class AsuntoGUI extends JDialog {
         jLabel31.setText("VER FORMATO");
 
         jButton12.setBackground(new java.awt.Color(255, 255, 255));
-        jButton12.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\printer.png" )));
+        jButton12.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "printer.png" )));
         jButton12.setToolTipText("Imprimir posiciones");
         jButton12.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton12.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1402,7 +1401,7 @@ public class AsuntoGUI extends JDialog {
         );
 
         jButton4.setBackground(new java.awt.Color(255, 255, 255));
-        jButton4.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Guardar.png" )));
+        jButton4.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "Guardar.png" )));
         jButton4.setToolTipText("Guardar Parque");
         jButton4.setEnabled(false);
         jButton4.setMargin(new java.awt.Insets(2, 2, 2, 2));
@@ -1557,7 +1556,7 @@ public class AsuntoGUI extends JDialog {
         jpBotonesPosRA.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jbCargarFicPosRA.setBackground(new java.awt.Color(255, 255, 255));
-        jbCargarFicPosRA.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\OpenFolder.gif" )));
+        jbCargarFicPosRA.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "OpenFolder.gif" )));
         jbCargarFicPosRA.setToolTipText("Cargar Fichero");
         jbCargarFicPosRA.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jbCargarFicPosRA.addActionListener(new java.awt.event.ActionListener() {
@@ -1569,7 +1568,7 @@ public class AsuntoGUI extends JDialog {
         jlCargarFicPosRA.setText("CARGAR FICHERO");
 
         jbVerFormatoPosRA.setBackground(new java.awt.Color(255, 255, 255));
-        jbVerFormatoPosRA.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Information.png" )));
+        jbVerFormatoPosRA.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "Information.png" )));
         jbVerFormatoPosRA.setToolTipText("Ver Formato de Fichero\n");
         jbVerFormatoPosRA.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jbVerFormatoPosRA.addActionListener(new java.awt.event.ActionListener() {
@@ -1581,7 +1580,7 @@ public class AsuntoGUI extends JDialog {
         jlVerFormatoPosRA.setText("VER FORMATO");
 
         jbVisualizarPosRA.setBackground(new java.awt.Color(255, 255, 255));
-        jbVisualizarPosRA.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Information.png" )));
+        jbVisualizarPosRA.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "Information.png" )));
         jbVisualizarPosRA.setToolTipText("Ver Formato de Fichero\n");
         jbVisualizarPosRA.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jbVisualizarPosRA.addActionListener(new java.awt.event.ActionListener() {
@@ -1820,7 +1819,6 @@ if (this.jButton5.isEnabled()){
                 JOptionPane.showMessageDialog(this, "Formato de fichero no válido","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
             }
         } catch (Exception e){
-            e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al leer las posiciones","ERROR",JOptionPane.ERROR_MESSAGE);
         }
   }
@@ -1873,7 +1871,6 @@ private void NuevoParque(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nuev
             }
             Centrar(this.jTable1,0,5);
    }catch (SQLException ex) {
-        ex.printStackTrace();
         JOptionPane.showMessageDialog(this, "Error al consultar parque","ERROR",JOptionPane.ERROR_MESSAGE);
    }
 }
@@ -1949,7 +1946,6 @@ private void CargarDatosAero(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
          
           
       }catch (SQLException e){
-        e.printStackTrace();
         JOptionPane.showMessageDialog(this, "Error al consultar el aerogenerador","ERROR",JOptionPane.ERROR_MESSAGE);
       }
 } else {
@@ -1993,7 +1989,6 @@ private void NuevoModeloAero(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
          this.jComboBox9.setSelectedIndex(0);
          this.jComboBox9.setEnabled(true);
       }catch (SQLException ex) {
-         ex.printStackTrace();
          JOptionPane.showMessageDialog(this, "Error al consultar el aerogenerador","ERROR",JOptionPane.ERROR_MESSAGE);
       }
       this.jComboBox9.setEnabled(true);
@@ -2054,7 +2049,6 @@ if (this.jButton3.isEnabled()){
                     JOptionPane.showMessageDialog(this, "El aerogenerador ya existe","MENSAJE DE ERROR",JOptionPane.ERROR_MESSAGE);   
                 }
             } catch (SQLException e) {
-                    e.printStackTrace();
                     JOptionPane.showMessageDialog(this, "Fallo en la inserción","ERROR",JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -2160,7 +2154,6 @@ if (this.jButton4.isEnabled()){
                 JOptionPane.showMessageDialog(this, "Fallo en la inserción. El parque ya existe","ERROR",JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Fallo en la inserción","ERROR",JOptionPane.ERROR_MESSAGE);
         }
     } else{
@@ -2239,7 +2232,7 @@ try {
         JOptionPane.showMessageDialog(this, "Fallo en la impresión", "ERROR", JOptionPane.ERROR_MESSAGE);      
     }
 } catch (PrinterException e) {
-       e.printStackTrace();
+	JOptionPane.showMessageDialog(this, "Fallo en la impresión", "ERROR", JOptionPane.ERROR_MESSAGE);      
 }
 }//GEN-LAST:event_Print
 
@@ -2297,10 +2290,8 @@ private void ValidarCodigo(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_Val
         }
         
     } catch (SQLException e){
-        e.printStackTrace();
         JOptionPane.showMessageDialog(this, "Fallo al consultar la base de datos","ERROR",JOptionPane.ERROR_MESSAGE);
     }	catch (NoSuchFieldException e) {
-        e.printStackTrace();
         JOptionPane.showMessageDialog(this, "Fallo al consultar la base de datos","ERROR",JOptionPane.ERROR_MESSAGE);
 	}
     
@@ -2331,7 +2322,6 @@ if (this.jComboBox3.getSelectedIndex()!=0){
         this.jButton1.setEnabled(true);
         this.jButton13.setEnabled(true);
     } catch (SQLException e){
-        e.printStackTrace();
         JOptionPane.showMessageDialog(this, "Error al consultar el cliente","ERROR",JOptionPane.ERROR_MESSAGE);
     }    
 } 
@@ -2361,7 +2351,6 @@ private void CargarPersona(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Car
            this.jTextField4.setText(datos.get(4));
        }
     } catch (SQLException e){
-        e.printStackTrace();
         JOptionPane.showMessageDialog(this, "Error al consultar el cliente","ERROR",JOptionPane.ERROR_MESSAGE);
     }
 }//GEN-LAST:event_CargarPersona
@@ -2481,9 +2470,11 @@ private void cargarPosicionesRA(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
             } else
                 MensajeApp.muestraWarning(this, "Fichero sin contenido");
         }
-    } catch (Exception e) {
-        MensajeApp.muestraError(this, e, "Error al leer las posiciones");
-    }
+    }	catch (IOException e) {
+		MensajeApp.muestraError(this, e, "Error al leer las posiciones");
+	} catch (NumberFormatException e) {
+		MensajeApp.muestraError(this, e, "Error al leer las posiciones");
+	}
 }//GEN-LAST:event_cargarPosicionesRA
 
 private void verInfoPosRA(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verInfoPosRA
@@ -2611,15 +2602,16 @@ private void guardarAsunto(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gu
                 JOptionPane.showMessageDialog(this,"Por favor, introduzca los campos obligatorios antes de guardar", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
         }
     } catch (SQLException e) {
-        e.printStackTrace();
         JOptionPane.showMessageDialog(this, "Fallo en la inserción", "ERROR", JOptionPane.ERROR_MESSAGE);
     } catch (ClassNotFoundException e) {//GEN-LAST:event_guardarAsunto
-        e.printStackTrace();
         JOptionPane.showMessageDialog(this, "Fallo en la inserción", "ERROR", JOptionPane.ERROR_MESSAGE);
     } catch (IOException e) {
-        e.printStackTrace();
         JOptionPane.showMessageDialog(this, "Fallo en la inserción", "ERROR", JOptionPane.ERROR_MESSAGE);
-    }
+    }	catch (NumberFormatException e) {
+		JOptionPane.showMessageDialog(this, "Fallo en la inserción", "ERROR", JOptionPane.ERROR_MESSAGE);
+	} catch (NoSuchFieldException e) {
+		JOptionPane.showMessageDialog(this, "Fallo en la inserción", "ERROR", JOptionPane.ERROR_MESSAGE);
+	}
 }
 
 private void redibujaLimitesMicros(ChartPanel chartPanel) {

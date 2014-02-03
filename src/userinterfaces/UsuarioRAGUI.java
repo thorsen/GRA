@@ -2,6 +2,7 @@
 package userinterfaces;
 
 import general.Auxiliares;
+import general.Encriptacion;
 import general.IVExtendido;
 import general.InteraccionFic;
 import general.LoginRA;
@@ -43,7 +44,7 @@ public UsuarioRAGUI(java.awt.Frame parent) {
         setTitle("ACCESO USUARIO");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\key.png").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "key.png").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
         setResizable(false);
@@ -196,7 +197,7 @@ private void cargaConfiguracion() {
 		if (f.exists()) {
 			InteraccionFic interfic = new InteraccionFic(FIC_CONF, InteraccionFic.READ);
 			String user = interfic.leeLinea().trim();
-			String passwd = Auxiliares.decrypt(interfic.leeLinea().trim());
+			String passwd = Encriptacion.decrypt(interfic.leeLinea().trim());
 			String guardar = interfic.leeLinea();
 			interfic.finOpFichero();
 
@@ -216,7 +217,7 @@ private void guardaConfiguracion() {
 		String passwd = "";
 
 		if (this.jcbGuardar.isSelected())
-			passwd = Auxiliares.encrypt(String.valueOf(this.jpfPassword.getPassword()));
+			passwd = Encriptacion.encrypt(String.valueOf(this.jpfPassword.getPassword()));
 
 		interfic.escribeLineaFic(user);
 		interfic.escribeLineaFic(passwd);

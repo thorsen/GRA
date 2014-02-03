@@ -3,6 +3,7 @@ package userinterfaces;
 import RA.AsuntoRA;
 import RA.ConfiguracionRA2;
 import RA.Declinacion;
+import RA.Global;
 import RA.LineaConfiguracion;
 import RA.SerieRA2;
 import RA.TipoRA;
@@ -29,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
  */
 
 public class ConfiguracionRAGUI extends JDialog {
+	private Integer modoEntrada;
 
     private final int CANALES_MAX = 40;
 
@@ -43,11 +45,15 @@ public class ConfiguracionRAGUI extends JDialog {
     private final String COL_OFFSET_P = "Offset [P]";
     private final String COL_ORIENTACION = "O [º]";
 
+	public static final Integer MODO_NUEVO = 0;
+	public static final Integer MODO_VER = 1;
 
-    public ConfiguracionRAGUI(java.awt.Frame parent) {
+    public ConfiguracionRAGUI(java.awt.Frame parent, Integer modoEntrada) {
         super(parent, true);
         initComponents();
         this.setLocationRelativeTo(parent);
+
+		this.modoEntrada = modoEntrada;
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -139,7 +145,7 @@ public class ConfiguracionRAGUI extends JDialog {
                 .addComponent(jlSite)
                 .addGap(18, 18, 18)
                 .addComponent(jcbSite, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         jpCabeceraLayout.setVerticalGroup(
             jpCabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,7 +238,7 @@ public class ConfiguracionRAGUI extends JDialog {
         jlTitLineas.setText("LÍNEAS DE CONFIGURACIÓN");
         jlTitLineas.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jbAnadir.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Down.gif" )));
+        jbAnadir.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "Down.gif" )));
         jbAnadir.setToolTipText("Añadir Línea de Configuración");
         jbAnadir.setAlignmentX(0.5F);
         jbAnadir.setEnabled(false);
@@ -244,7 +250,7 @@ public class ConfiguracionRAGUI extends JDialog {
             }
         });
 
-        jbEliminar.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Up.gif" )));
+        jbEliminar.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "Up.gif" )));
         jbEliminar.setToolTipText("Eliminar Línea de Configuración");
         jbEliminar.setAlignmentX(0.5F);
         jbEliminar.setEnabled(false);
@@ -261,7 +267,7 @@ public class ConfiguracionRAGUI extends JDialog {
         jlSepNueva.setText("__________________________________________________");
 
         jbImprimirTabla.setBackground(new java.awt.Color(255, 255, 255));
-        jbImprimirTabla.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\printer.png" )));
+        jbImprimirTabla.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "printer.png" )));
         jbImprimirTabla.setToolTipText("Imprime la tabla de la configuracion seleccionada");
         jbImprimirTabla.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jbImprimirTabla.addActionListener(new java.awt.event.ActionListener() {
@@ -294,7 +300,7 @@ public class ConfiguracionRAGUI extends JDialog {
             }
         });
 
-        jbActualizar.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\arrow_refresh.png" )));
+        jbActualizar.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "arrow_refresh.png" )));
         jbActualizar.setToolTipText("Actualizar Línea de Configuración");
         jbActualizar.setAlignmentX(0.5F);
         jbActualizar.setEnabled(false);
@@ -311,74 +317,68 @@ public class ConfiguracionRAGUI extends JDialog {
         jpDatosLayout.setHorizontalGroup(
             jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpDatosLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
                 .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpDatosLayout.createSequentialGroup()
+                    .addGroup(jpDatosLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jspLineasConf, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jbImprimirTabla, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpDatosLayout.createSequentialGroup()
+                                    .addGap(4, 4, 4)
+                                    .addComponent(jlSerie)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jcbSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jlCanal)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jcbCanal, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel8)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jbAnadir, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jbEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jbActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jlSepHistorico, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jlTitHistorico, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpDatosLayout.createSequentialGroup()
+                                    .addComponent(jlFechaIniMed)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jsFechaIniMed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jspHistorico, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                    .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jpDatosLayout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addComponent(jlSerie)
-                                .addGap(18, 18, 18)
-                                .addComponent(jcbSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jlCanal)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jcbCanal, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel8)
-                                .addGap(8, 8, 8)
-                                .addComponent(jbAnadir, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jbEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jbActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18))
+                                .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jlFechaIniNueva)
+                                    .addComponent(jlDeclinacion))
+                                .addGap(22, 22, 22)
+                                .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jsFechaIniNueva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jpDatosLayout.createSequentialGroup()
+                                        .addComponent(jtfDeclinacion, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jlGrados, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jrbDecEste)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jrbDecOeste))))
+                            .addComponent(jlTitNueva)
+                            .addComponent(jlSepNueva)
+                            .addComponent(jbCargarLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jpDatosLayout.createSequentialGroup()
-                                .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jspHistorico, 0, 0, Short.MAX_VALUE)
-                                    .addGroup(jpDatosLayout.createSequentialGroup()
-                                        .addComponent(jlFechaIniMed)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jsFechaIniMed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jlSepHistorico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jlTitHistorico))
-                                .addGap(120, 120, 120)
-                                .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jpDatosLayout.createSequentialGroup()
-                                        .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jlFechaIniNueva)
-                                            .addComponent(jlDeclinacion))
-                                        .addGap(22, 22, 22)
-                                        .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jsFechaIniNueva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jpDatosLayout.createSequentialGroup()
-                                                .addComponent(jtfDeclinacion, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jlGrados, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jrbDecEste)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jrbDecOeste))))
-                                    .addComponent(jlTitNueva)
-                                    .addComponent(jlSepNueva)
-                                    .addComponent(jbCargarLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(142, 142, 142))
-                    .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jspLineasConf, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jbImprimirTabla, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(152, 152, 152))
-            .addGroup(jpDatosLayout.createSequentialGroup()
-                .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpDatosLayout.createSequentialGroup()
-                        .addGap(209, 209, 209)
-                        .addComponent(jTitConfiguraciones, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpDatosLayout.createSequentialGroup()
-                        .addGap(212, 212, 212)
-                        .addComponent(jlTitLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpDatosLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jsSep, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(209, 209, 209)
+                                .addComponent(jTitConfiguraciones, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jpDatosLayout.createSequentialGroup()
+                                .addGap(212, 212, 212)
+                                .addComponent(jlTitLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jpDatosLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jsSep, javax.swing.GroupLayout.PREFERRED_SIZE, 731, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpDatosLayout.setVerticalGroup(
@@ -397,15 +397,14 @@ public class ConfiguracionRAGUI extends JDialog {
                 .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpDatosLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jlFechaIniMed))
+                        .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlFechaIniMed)
+                            .addComponent(jsFechaIniMed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jpDatosLayout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jlFechaIniNueva)
-                            .addComponent(jsFechaIniNueva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jpDatosLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jsFechaIniMed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jsFechaIniNueva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jpDatosLayout.createSequentialGroup()
@@ -453,7 +452,7 @@ public class ConfiguracionRAGUI extends JDialog {
         });
 
         jbGuardar.setBackground(new java.awt.Color(255, 255, 255));
-        jbGuardar.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Guardar.png" )));
+        jbGuardar.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "Guardar.png" )));
         jbGuardar.setToolTipText("Guardar Configuración");
         jbGuardar.setEnabled(false);
         jbGuardar.setMaximumSize(new java.awt.Dimension(11, 9));
@@ -470,14 +469,16 @@ public class ConfiguracionRAGUI extends JDialog {
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jpCabecera, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpPrincipalLayout.createSequentialGroup()
-                            .addComponent(jbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jbGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jpDatos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 774, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jpDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jpPrincipalLayout.createSequentialGroup()
+                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jpCabecera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jpPrincipalLayout.createSequentialGroup()
+                                .addComponent(jbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jbGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jpPrincipalLayout.setVerticalGroup(
@@ -489,8 +490,8 @@ public class ConfiguracionRAGUI extends JDialog {
                 .addComponent(jpDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jbGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jbCancelar)
+                    .addComponent(jbGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -498,11 +499,11 @@ public class ConfiguracionRAGUI extends JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -904,6 +905,21 @@ private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event
 
         //Carga inicial de Asuntos
         Auxiliares.cargaAsuntosTipo(this.jcbAsunto, AsuntoRA.TIPO_ASUNTO_RA);
+
+		if (this.modoEntrada.equals(MODO_VER)) {
+			this.jlTitNueva.setVisible(false);
+			this.jlSepNueva.setVisible(false);
+			this.jlFechaIniNueva.setVisible(false);
+			this.jsFechaIniNueva.setVisible(false);
+			this.jlDeclinacion.setVisible(false);
+			this.jtfDeclinacion.setVisible(false);
+			this.jlGrados.setVisible(false);
+			this.jrbDecEste.setVisible(false);
+			this.jrbDecOeste.setVisible(false);
+
+			this.jbCargarLineas.setVisible(false);
+			this.jbGuardar.setVisible(false);
+		}
     } catch (SQLException e) {
         MensajeApp.muestraError(this, e, "Fallo al consultar la base de datos");
     } catch (NoSuchFieldException e) {
@@ -1007,7 +1023,7 @@ private void cargarCodigos(Integer idAsunto, Integer idTipoRA) {
     } catch (SQLException e) {
         MensajeApp.muestraError(this, e, "Fallo al consultar la base de datos");
     } catch (NoSuchFieldException e) {
-        MensajeApp.muestraError(this, e, "Fallo añadiendo campo");
+		MensajeApp.muestraError(this, e, "Fallo añadiendo campo");
     }
 }
 

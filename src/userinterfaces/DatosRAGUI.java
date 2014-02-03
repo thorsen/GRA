@@ -22,6 +22,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 public class DatosRAGUI extends JDialog {
+
+	private static boolean EDITABLE_POND_A = true;
     
     public DatosRAGUI(java.awt.Frame parent) {
         super(parent, true);
@@ -64,7 +66,7 @@ public class DatosRAGUI extends JDialog {
         setBackground(new java.awt.Color(175, 30, 30));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GCPMini.jpg").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "GRA.png").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -82,7 +84,7 @@ public class DatosRAGUI extends JDialog {
         jLabel3.setText("Selector de Mediciones ");
 
         jbSelRuta.setBackground(new java.awt.Color(255, 255, 255));
-        jbSelRuta.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\OpenFolder.gif" )));
+        jbSelRuta.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "OpenFolder.gif" )));
         jbSelRuta.setToolTipText("Seleccionar fichero de datos");
         jbSelRuta.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jbSelRuta.setPreferredSize(new java.awt.Dimension(65, 20));
@@ -112,7 +114,14 @@ public class DatosRAGUI extends JDialog {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                boolean res = false;
+
+                if (columnIndex != 1)
+                    res = canEdit [columnIndex];
+                else
+                    res = EDITABLE_POND_A;
+
+                return res;
             }
         });
         jtFicheros.getTableHeader().setReorderingAllowed(false);
@@ -414,18 +423,20 @@ private void cambioSite(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambi
 
         //Cargamos las fechas
         if (idSite != null) {
-            Integer idAsunto = (Integer) ComboBoxObject.getClaveSelCombo(this.jcbAsunto);
+			Integer idAsunto = (Integer) ComboBoxObject.getClaveSelCombo(this.jcbAsunto);
         
             TipoRA tipoRA = TipoRA.getTipoRAPorIdSite(idSite);
             
             ArrayList<String> codigos = SerieRA2.getCodigosPorIdAsuntoTipo(idAsunto, tipoRA.getIdTipoRA());
     
-            if (codigos == null || codigos.size() == 0) {
+            if (codigos == null || codigos.isEmpty()) {
                 MensajeApp.muestraWarning(this, "Antes de insertar datos debe insertar una descripción al ensayo");
                 
                 this.jcbSite.setSelectedIndex(0);
             } else {
                 actualizaFechas(tipoRA.getSufijo(), idAsunto);
+
+				EDITABLE_POND_A = !tipoRA.getSufijo().equals(Auxiliares.TIPO_SPL);
 
                 habilitaDatos();
             }
@@ -500,7 +511,7 @@ private void insertar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserta
         }
         
         //Actualizamos las fecha por si han cambiado
-        actualizaFechas (tipoTabla, idAsunto);
+        actualizaFechas(tipoTabla, idAsunto);
 
         if (ficError.length() > 0)
             ficError = "<br><b>Error importando: </b>" + ficError.substring(0, ficError.length()-2);
@@ -547,11 +558,21 @@ private void seleccionarRuta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File[] ficheros = fc.getSelectedFiles();           
             int n = ficheros.length;
+
+			Integer idSite = (Integer) ComboBoxObject.getClaveSelCombo(this.jcbSite);
+			boolean esSPL = false;
+			try {
+				esSPL = TipoRA.getTipoRAPorIdSite(idSite).getSufijo().equals(Auxiliares.TIPO_SPL);
+			} catch (SQLException e) {
+				MensajeApp.muestraError(this, e, "Fallo al consultar la base de datos");
+			} catch (NoSuchFieldException e) {
+				MensajeApp.muestraError(this, e, "Fallo añadiendo campo");
+			}
             
             dtmFicheros.setRowCount(0);
             
             for (int i = 0; i < n; i++)
-                dtmFicheros.addRow(new Object[]{ficheros[i].getName(), ficheros[i].getName().toUpperCase().contains("PONDA"), ficheros[i].getName().toUpperCase().contains("RF"), false, ficheros[i].getPath()});
+                dtmFicheros.addRow(new Object[]{ficheros[i].getName(), ficheros[i].getName().toUpperCase().contains("PONDA") || esSPL, ficheros[i].getName().toUpperCase().contains("RF"), false, ficheros[i].getPath()});
         }
 }//GEN-LAST:event_seleccionarRuta
    

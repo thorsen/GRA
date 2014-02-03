@@ -20,10 +20,10 @@ public class Login {
     public static int rol;
     private static int id;
     
-    private static String url = "jdbc:sqlserver://192.168.1.53:1433";
+    private static String url = "jdbc:sqlserver://" + Global.IP_SERVER_GCP;
     //private static String url = "jdbc:sqlserver://localhost";
-    private static String user = "SQL_PwC";
-    private static String pass = "Ru8865No";
+    private static String user = Global.USER_SERVER_GCP;
+    private static String pass = Global.PASS_SERVER_GCP;
     
     static{
         try{

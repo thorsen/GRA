@@ -278,9 +278,17 @@ public class Incidencia {
 
         interBD.inicioTransaccion();
         //Validamos los datos que haya podido invalidar la incidencia
-        DatosRA2.setTabla(TipoRA.getTipoRAPorIdSite(idSite).getSufijo(), idAsunto);
-        DatosRA2.updateDatosIncidencias(DatosRA2.getTabla(), idAsunto, idSite, 1);
-        
+		ArrayList<Incidencia> incidencias = getIncidencias(idAsunto, idSite, fechaD, fechaH, null, sqlExtra, Boolean.TRUE);
+		int nIncidencias = incidencias != null ? incidencias.size() : 0;
+
+		for (int i = 0; i < nIncidencias; i++) {
+			idAsunto = incidencias.get(i).getIdAsunto();
+			idSite = incidencias.get(i).getIdSite();
+			
+			DatosRA2.setTabla(TipoRA.getTipoRAPorIdSite(idSite).getSufijo(), idAsunto);
+			DatosRA2.updateDatosIncidencias(DatosRA2.getTabla(), idAsunto, idSite, 1);
+		}
+			
         res  = interBD.deleteDatosTabla(TABLA, condicion, paramsPS, sqlExtra);
         interBD.finTransaccion();
         

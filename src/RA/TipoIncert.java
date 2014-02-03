@@ -20,7 +20,8 @@ public class TipoIncert {
     public static final Integer ID_TIPO_INCERT_VEL_MEDIDA = 8;
     public static final Integer ID_TIPO_INCERT_VEL_DERIVADA = 9;
     public static final Integer ID_TIPO_INCERT_RF = 11;
-    
+    public static final Integer ID_TIPO_INCERT_CURVA = 17;
+
     public TipoIncert(Integer idTipoIncert, String descripcion) {
         this.idTipoIncert = idTipoIncert;
         this.descripcion = descripcion;

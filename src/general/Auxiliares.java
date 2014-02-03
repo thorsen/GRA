@@ -46,7 +46,6 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.XYPlot;
 import userinterfaces.GRA;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 /**
  *
  * @author Victor Fernandez
@@ -71,10 +70,9 @@ public class Auxiliares {
     public static final String RUTA_RAIZ = "Z:";
     public static final String RUTA_DIR = "\\PRIVADA\\CALIDAD\\ASUNTOS";
     
-    public static final String RUTA_IMAGENES = "\\\\B2solar\\Datos\\Curva\\Imagenes";
-    public static final ImageIcon ICONO_CAPTURA = new ImageIcon(Toolkit.getDefaultToolkit().getImage(RUTA_IMAGENES + "\\camera.png"));
-    public static final ImageIcon ICONO_PREV = new ImageIcon(Toolkit.getDefaultToolkit().getImage(RUTA_IMAGENES + "\\resultset_previous.png"));
-    public static final ImageIcon ICONO_NEXT = new ImageIcon(Toolkit.getDefaultToolkit().getImage(RUTA_IMAGENES + "\\resultset_next.png"));
+    public static final ImageIcon ICONO_CAPTURA = new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "camera.png"));
+    public static final ImageIcon ICONO_PREV = new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_previous.png"));
+    public static final ImageIcon ICONO_NEXT = new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "resultset_next.png"));
     
     public static final String TXT_SERIE_BC = "BC ";
     public static final String TXT_SERIE_ESPECTRO = "Esp. ";
@@ -100,8 +98,6 @@ public class Auxiliares {
     public static final Color JTP_TIT_FONDO = new Color(102, 102, 102);
     
     public static final Integer NUM_D_FIN_PERTURBACION_RA = 10; //La pertubación de sector por un obstáculo desaparece a 10D
-
-	private static final String CLAVE_ENCRYPT = "25dmlw9LCOdH9WZUL1cq";
     
     public static String dameRutaDefecto(Component c) {
         LoginRA login = obtenerLogin(c);
@@ -1111,33 +1107,5 @@ public class Auxiliares {
     
     public static Double getAnguloDecimal(Double anguloRadianes) {
         return anguloRadianes != null ? TratDecimales.round(anguloRadianes * 180/Math.PI, TratDecimales.DEC_SECTOR) : null;
-    }
-
-	public static String encrypt(String cadena,String clave) { 
-        StandardPBEStringEncryptor s = new StandardPBEStringEncryptor(); 
-        s.setPassword(clave); 
-		
-        return s.encrypt(cadena); 
-    } 
- 
-    public static String encrypt(String cadena) { 
-        return encrypt(cadena, CLAVE_ENCRYPT); 
-    }
-	
-	public static String decrypt(String cadena, String clave) { 
-        StandardPBEStringEncryptor s = new StandardPBEStringEncryptor(); 
-        s.setPassword(clave); 
-        String res = ""; 
-		
-        try { 
-            res = s.decrypt(cadena); 
-        } catch (Exception e) { 
-        } 
-
-        return res; 
-    } 
-	
-    public static String decrypt(String cadena) { 
-        return decrypt(cadena, CLAVE_ENCRYPT); 
     }
 }

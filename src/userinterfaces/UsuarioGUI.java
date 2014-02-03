@@ -39,7 +39,7 @@ public UsuarioGUI(java.awt.Frame parent) {
         setTitle("ACCESO USUARIO");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\key.png").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "key.png").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
         setResizable(false);
@@ -47,7 +47,7 @@ public UsuarioGUI(java.awt.Frame parent) {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel5.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\LogoFeder.jpg" )));
+        jLabel5.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "LogoFeder.jpg" )));
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("forma parte del proyecto INTEGRA. Proyecto financiado con fondos FEDER. ");
@@ -74,18 +74,16 @@ public UsuarioGUI(java.awt.Frame parent) {
 
         jLabel1.setText("Usuario:");
 
-        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 8));
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
 
         jLabel2.setText("Contraseña:");
 
-        jTextField1.setText("Ruth");
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 Validar3(evt);
             }
         });
 
-        jPasswordField1.setText("Ru8865No");
         jPasswordField1.setToolTipText("");
         jPasswordField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -96,11 +94,11 @@ public UsuarioGUI(java.awt.Frame parent) {
             }
         });
 
-        jLabel37.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel37.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel37.setForeground(new java.awt.Color(51, 51, 255));
         jLabel37.setText("*");
 
-        jLabel38.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel38.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel38.setForeground(new java.awt.Color(51, 51, 255));
         jLabel38.setText("*");
 
@@ -198,8 +196,8 @@ public UsuarioGUI(java.awt.Frame parent) {
             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-444)/2, (screenSize.height-230)/2, 444, 230);
+        setSize(new java.awt.Dimension(444, 230));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 private void Validar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Validar

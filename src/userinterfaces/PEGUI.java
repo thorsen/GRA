@@ -57,7 +57,7 @@ public class PEGUI extends JDialog {
         setBackground(new java.awt.Color(175, 30, 30));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 0, 0));
-        setIconImage(new ImageIcon("\\\\B2solar\\Datos\\Curva\\Imagenes\\GRA.png").getImage());
+        setIconImage(new ImageIcon(RA.Global.RUTA_IMAGENES + "GRA.png").getImage());
         setLocationByPlatform(true);
         setName("Cliente"); // NOI18N
 
@@ -97,7 +97,7 @@ public class PEGUI extends JDialog {
         jLabel29.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
-        jButton7.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\Information.png" )));
+        jButton7.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "Information.png" )));
         jButton7.setToolTipText("Ver formato");
         jButton7.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -107,7 +107,7 @@ public class PEGUI extends JDialog {
         });
 
         jButton5.setBackground(new java.awt.Color(255, 255, 255));
-        jButton5.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\OpenFolder.gif" )));
+        jButton5.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "OpenFolder.gif" )));
         jButton5.setToolTipText("Cargar fichero");
         jButton5.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -117,7 +117,7 @@ public class PEGUI extends JDialog {
         });
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
-        jButton9.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\printer.png" )));
+        jButton9.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "printer.png" )));
         jButton9.setToolTipText("Imprimir posiciones");
         jButton9.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -126,7 +126,7 @@ public class PEGUI extends JDialog {
             }
         });
 
-        jLabel59.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage("\\\\B2solar\\Datos\\Curva\\Imagenes\\parque.png" )));
+        jLabel59.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RA.Global.RUTA_IMAGENES + "parque.png" )));
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);

@@ -20,9 +20,9 @@ import jxl.format.BorderLineStyle;
 
 public class Archivo {
 
-    private static String url = "jdbc:sqlserver://192.168.1.53:1433";
-    private static String user = "SQL_PwC";
-    private static String pass = "Ru8865No";
+    private static String url = "jdbc:sqlserver://" + Global.IP_SERVER_GCP;
+    private static String user = Global.USER_SERVER_GCP;
+    private static String pass = Global.PASS_SERVER_GCP;
     
     static{
         try{
@@ -157,7 +157,7 @@ public class Archivo {
         Workbook wbook=null;
         try {
             String archivo="";
-            archivo="\\\\B2Solar\\Datos\\Curva\\Archivos\\SV.xls";
+            archivo=RA.Global.RUTA_DATOS + "Curva\\Archivos\\SV.xls";
             InputStream in=new FileInputStream(archivo); // Plantilla
             OutputStream  out=new FileOutputStream(ruta);
             wbook = Workbook.getWorkbook(in);

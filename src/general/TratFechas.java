@@ -14,6 +14,11 @@ public class TratFechas {
     public static final String FECHA_MIN = "01/01/1970 00:00:00.000";
     public static final String FECHA_MAX = "31/12/2999 23:59:59.999";
 
+    public static final String HORA_MIN = "00:00:00.000";
+    public static final String HORA_SIMPLE_MIN = "00:00:00";
+
+    public static final String MINUTOS_MIN = "00:00.000";
+    public static final String MINUTOS_SIMPLE_MIN = "00:00";
 
     //Obtiene los milisegundos de una fecha con el formato <formato>
     public static long millisFechaGen(String fecha, String formato) {
